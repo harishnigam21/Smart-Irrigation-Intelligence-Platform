@@ -2,6 +2,7 @@ import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface IAlert extends Document {
   sensorId: mongoose.Types.ObjectId;
+  sensorLocalId: string;
   farmId: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
   type: string;
@@ -16,6 +17,12 @@ const alertSchema = new Schema<IAlert>(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "sensors",
+      index: true,
+    },
+    sensorLocalId: {
+      type: String,
+      required: true,
+      unique: true,
       index: true,
     },
     farmId: {
