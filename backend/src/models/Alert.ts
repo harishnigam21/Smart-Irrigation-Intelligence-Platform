@@ -1,9 +1,9 @@
 import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface IAlert extends Document {
-  sensorId: mongoose.ObjectId;
-  farmId: mongoose.ObjectId;
-  userId: mongoose.ObjectId;
+  sensorId: mongoose.Types.ObjectId;
+  farmId: mongoose.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
   type: string;
   status: boolean;
   severity: "LOW" | "MEDIUM" | "HIGH";

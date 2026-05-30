@@ -1,9 +1,9 @@
 import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface ISensor extends Document {
-  userId: mongoose.ObjectId;
+  userId: mongoose.Types.ObjectId;
   sensorLocalId: string;
-  farmId: mongoose.ObjectId;
+  farmId: mongoose.Types.ObjectId;
   sensorType: "soil" | "water_flow" | "temperature";
   status: "active" | "inactive";
   lastSeen: Date;

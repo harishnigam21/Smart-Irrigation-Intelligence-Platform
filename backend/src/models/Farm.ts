@@ -1,7 +1,7 @@
 import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface IFarm extends Document {
-  userId: mongoose.ObjectId;
+  userId: mongoose.Types.ObjectId;
   name: string;
   location: {
     lat: number;

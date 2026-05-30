@@ -1,10 +1,10 @@
 import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface ISystemMetrics extends Document {
-  userId: mongoose.ObjectId;
-  totalFields: mongoose.ObjectId[];
-  totalSensors: mongoose.ObjectId[];
-  activeAlerts: mongoose.ObjectId[];
+  userId: mongoose.Types.ObjectId;
+  totalFields: mongoose.Types.ObjectId[];
+  totalSensors: mongoose.Types.ObjectId[];
+  activeAlerts: mongoose.Types.ObjectId[];
   averageTemperature: number;
   averageSoilMoisture: number;
   averageWaterFlow: number;
