@@ -41,19 +41,6 @@ const userSchema = new mongoose.Schema(
       default: "Newly Registered User",
       select: false,
     },
-    fields: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "fields",
-      },
-    ],
-    sensors: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "sensors",
-        default: [],
-      },
-    ],
   },
   { timestamps: true },
 );

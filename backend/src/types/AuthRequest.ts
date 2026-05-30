@@ -10,7 +10,5 @@ export interface AuthRequest extends Request {
     gender: string;
     dob: string;
     email: string;
-    fields: mongoose.Types.ObjectId[];
-    sensors: mongoose.Types.ObjectId[];
   };
 }
