@@ -1,7 +1,7 @@
 import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface ISensorReading extends Document {
-  sensorId: mongoose.Types.ObjectId;
+  sensorId:mongoose.Types.ObjectId;
   sensorLocalId: string;
   timestamp: Date;
   soilMoisture: number;
