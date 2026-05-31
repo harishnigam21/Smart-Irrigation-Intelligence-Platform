@@ -2,8 +2,9 @@ import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface ISystemMetrics extends Document {
   userId: mongoose.Types.ObjectId;
-  totalFields: mongoose.Types.ObjectId[];
+  totalFarms: mongoose.Types.ObjectId[];
   totalSensors: mongoose.Types.ObjectId[];
+  activeSensors: mongoose.Types.ObjectId[];
   activeAlerts: mongoose.Types.ObjectId[];
   averageTemperature: number;
   averageSoilMoisture: number;
@@ -18,7 +19,7 @@ const systemMetricsSchema = new Schema<ISystemMetrics>({
     ref: "users",
     index: true,
   },
-  totalFields: [
+  totalFarms: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "fields",
@@ -26,6 +27,13 @@ const systemMetricsSchema = new Schema<ISystemMetrics>({
     },
   ],
   totalSensors: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "sensors",
+      default: [],
+    },
+  ],
+  activeSensors: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "sensors",

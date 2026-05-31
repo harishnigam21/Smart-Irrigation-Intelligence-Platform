@@ -25,3 +25,5 @@ todo.txt
 *.sln
 *.sw?
 backend/src/envConfig.ts
+frontend/src/envConfig.ts
+frontend
