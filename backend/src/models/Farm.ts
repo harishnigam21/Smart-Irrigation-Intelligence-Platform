@@ -4,8 +4,8 @@ export interface IFarm extends Document {
   userId: mongoose.Types.ObjectId;
   name: string;
   location: {
-    lat: number;
-    lng: number;
+    type: "Point";
+    coordinates: [number, number]; // [longitude, latitude]
   };
 }
 
@@ -23,13 +23,21 @@ const farmSchema = new Schema<IFarm>(
     },
 
     location: {
-      lat: Number,
-      lng: Number,
+      type: {
+        type: String,
+        enum: ["Point"],
+        required: true,
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
     },
   },
   {
     timestamps: true,
   },
 );
-
+farmSchema.index({ location: "2dsphere" });
 export const Farm = model<IFarm>("Farm", farmSchema);
