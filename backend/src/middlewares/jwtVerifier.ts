@@ -14,11 +14,16 @@ const jwtVerifier = async (
     if (!header) {
       return res
         .status(400)
-        .json({ message: "Looks Like you have not login yet",issue:'not verified' });
+        .json({
+          message: "Looks Like you have not login yet",
+          issue: "not verified",
+        });
     }
     const token = header.split(" ")[1]; // bearer token...
     if (!token) {
-      return res.status(403).json({ message: "Invalid token format",issue:'not verified' });
+      return res
+        .status(403)
+        .json({ message: "Invalid token format", issue: "not verified" });
     }
     console.log("1.1 Verifying Token...");
     const decoded = jwt.verify(
@@ -30,11 +35,13 @@ const jwtVerifier = async (
     const UserExist = await User.findById(decoded.id).lean();
     if (!UserExist) {
       console.error("2.2 User no longer exists");
-      return res.status(404).json({ message: "User no longer exists",issue:'not verified' });
+      return res
+        .status(404)
+        .json({ message: "User no longer exists", issue: "not verified" });
     }
     console.log("2.2 User Existence passed");
     const { _id, ...rest } = UserExist;
-    req.user = { ...rest, id: _id.toString() };
+    req.user = { ...rest, _id: _id.toString() };
     next();
   } catch (err) {
     //All kind of jwt error is handled
