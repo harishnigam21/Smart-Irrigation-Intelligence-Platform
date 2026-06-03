@@ -7,6 +7,6 @@ const router = express.Router();
 router
   .route("/farm")
   .get(jwtVerifier, getFarms)
-  .post(farmValidation, jwtVerifier, addFarm)
+  .post(jwtVerifier, farmValidation, addFarm)
   .delete(Validate, jwtVerifier, deleteFarm);
 export default router;

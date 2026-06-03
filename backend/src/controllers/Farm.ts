@@ -1,73 +1,108 @@
 import { Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
-import { Farm } from "../models/Farm";
+import { Farm, IFarm } from "../models/Farm";
 import { getServerError } from "../utils/serverError";
 import mongoose from "mongoose";
 import { SystemMetrics } from "../models/SystemMetrics";
+import { getFarmDB, getFarmsDB } from "../services/farm";
+import { coordinatesIntersection } from "../utils/coordinatesIntersection";
 
 export const getFarms = async (req: AuthRequest, res: Response) => {
   try {
-    const farm = await Farm.find({ userId: req.user!.id }).select("name");
-    return res.status(200).json({ data: farm });
+    const farms = await getFarmsDB(req.user!._id);
+    return res.status(200).json({ data: farms || null });
   } catch (error) {
     getServerError(res, error, "getFarms Controller");
   }
 };
+export const getFarm = async (req: AuthRequest, res: Response) => {
+  try {
+    const id = req.params.id as string;
+    const farm = await getFarmDB(id, req.user!._id);
+    if (!farm) {
+      return res.status(404).json({ message: "No such farm exist" });
+    }
+    return res.status(200).json({ data: farm || null });
+  } catch (error) {
+    getServerError(res, error, "getFarm Controller");
+  }
+};
 export const addFarm = async (req: AuthRequest, res: Response) => {
-  const { farmName, latitude, longitude } = req.body;
+  const { nickName, soilType, coordinates } = req.body;
+  const reqBody: Pick<IFarm, "nickName" | "soilType" | "coordinates"> = {
+    nickName,
+    soilType,
+    coordinates,
+  };
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
-    const cleanedSearchTerm = farmName.trim().replace(/\s+/g, " ");
-    const safeSearchTerm = cleanedSearchTerm.replace(
-      /[-\/\\^$*+?.()|[\]{}]/g,
-      "\\$&",
-    );
-    const checkExisting = await Farm.findOne({
-      $or: [
-        { name: { $regex: new RegExp(`^${safeSearchTerm}$`, "i") } },
-        {
-          location: {
-            $near: {
-              $geometry: {
-                type: "Point",
-                coordinates: [longitude, latitude], // Must be strictly [longitude, latitude]
-              },
-              $maxDistance: 100, // Distance threshold directly in meters
-            },
-          },
-        },
-      ],
-    });
-    if (checkExisting) {
-      await session.abortTransaction();
-      return res.status(400).json({
-        message:
-          "Farm with same name or this farm is 100m near to any one of the existing farm",
-      });
+    const cleanedSearchTerm = nickName.trim().replace(/\s+/g, " ");
+    const payloadB = {
+      A: coordinates[0],
+      B: coordinates[1],
+      C: coordinates[2],
+      D: coordinates[3],
+    };
+    const getAllUserFarm = await Farm.find({ userId: req.user!._id });
+    const farmName = getAllUserFarm.map((item) => item.nickName.toLowerCase());
+    if (farmName.includes(cleanedSearchTerm.toLowerCase().trim())) {
+      throw new Error("DFN");
+    }
+    if (getAllUserFarm.length > 0) {
+      for (let i = 0; i < getAllUserFarm.length; i++) {
+        const existingcoordinates = getAllUserFarm[i].coordinates;
+        const payloadA = {
+          A: existingcoordinates[0],
+          B: existingcoordinates[1],
+          C: existingcoordinates[2],
+          D: existingcoordinates[3],
+        };
+        const result = coordinatesIntersection(payloadA, payloadB);
+        if (!result.success && result.message.includes("error")) {
+          throw new Error(`EFCI:${result.message.split(":")[1]}`);
+        }
+        if (result.success && result.message === "inside") {
+          throw new Error("DFC");
+        }
+        if (result.success && result.message === "outside") {
+          const resultOpposite = coordinatesIntersection(payloadB, payloadA);
+          if (
+            !resultOpposite.success &&
+            resultOpposite.message.includes("error")
+          ) {
+            throw new Error(`EFCI:${resultOpposite.message.split(":")[1]}`);
+          }
+          if (resultOpposite.success && resultOpposite.message === "inside") {
+            throw new Error(`FIC:${getAllUserFarm[i].nickName}`);
+          }
+          reqBody.coordinates =
+            result?.alignedCoordinates || reqBody.coordinates;
+        }
+      }
     }
     const [farm] = await Farm.create(
       [
         {
-          userId: req.user!.id,
-          name: farmName,
-          location: {
-            type: "Point",
-            coordinates: [longitude, latitude], // Crucial: [longitude, latitude] order
-          },
+          userId: req.user!._id,
+          nickName,
+          coordinates: reqBody.coordinates,
+          soilType,
         },
       ],
       { session },
     );
     await SystemMetrics.findByIdAndUpdate(
-      req.user!.id,
+      req.user!._id,
       {
         $addToSet: { totalFarms: farm._id },
       },
-      { session },
+      { session, upsert: true },
     );
     await session.commitTransaction();
-    return res.status(201).json({ data: { _id: farm._id, name: farm.name } });
+    return res
+      .status(201)
+      .json({ data: { _id: farm._id, name: farm.nickName } });
   } catch (error) {
     await session.abortTransaction();
     getServerError(res, error, "addFarm Controller");
@@ -80,13 +115,16 @@ export const deleteFarm = async (req: AuthRequest, res: Response) => {
   try {
     session.startTransaction();
     const id = req.params.id as string;
-    const farm = await Farm.findOneAndDelete({ userId: req.user!.id, _id: id });
+    const farm = await Farm.findOneAndDelete({
+      userId: req.user!._id,
+      _id: id,
+    });
     if (!farm) {
       await session.abortTransaction();
       return res.status(400).json({ message: "No Such Farm Found" });
     }
     await SystemMetrics.findByIdAndUpdate(
-      req.user!.id,
+      req.user!._id,
       {
         $pull: { totalFarms: id },
       },
