@@ -1,14 +1,26 @@
 import mongoose, { Schema, model, Document } from "mongoose";
-
+export const VALID_SOIL_TYPES = [
+  "NA",
+  "alluvial soil",
+  "red soil",
+  "black soil (regur)",
+  "forest & mountain soil",
+  "arid & desert soil",
+  "laterite soil",
+  "saline & alkaline soil",
+  "peaty & marshy soil",
+] as const;
+export type soilType = (typeof VALID_SOIL_TYPES)[number];
 export interface IFarm extends Document {
   userId: mongoose.Types.ObjectId;
-  name: string;
-  location: {
-    type: "Point";
-    coordinates: [number, number]; // [longitude, latitude]
+  nickName: string;
+  size: {
+    width: number | null;
+    length: number | null;
   };
+  soilType: soilType;
+  coordinates: [number, number][];
 }
-
 const farmSchema = new Schema<IFarm>(
   {
     userId: {
@@ -17,27 +29,45 @@ const farmSchema = new Schema<IFarm>(
       ref: "users",
       index: true,
     },
-    name: {
+    nickName: {
       type: String,
       required: true,
+      trim: true,
     },
-
-    location: {
-      type: {
-        type: String,
-        enum: ["Point"],
-        required: true,
-        default: "Point",
+    //Calculate when farm created through coordinates
+    size: {
+      width: {
+        type: Number,
+        default: null,
       },
-      coordinates: {
-        type: [Number],
-        required: true,
+      length: {
+        type: Number,
+        default: null,
       },
+    },
+    coordinates: {
+      type: [[Number]],
+      required: true,
+    },
+    soilType: {
+      type: String,
+      enum: [
+        "NA",
+        "alluvial soil",
+        "red soil",
+        "black soil (regur)",
+        "forest & mountain soil",
+        "arid & desert soil",
+        "laterite soil",
+        "saline & alkaline soil",
+        "peaty & marshy soil",
+      ],
+      default: "NA",
     },
   },
   {
     timestamps: true,
   },
 );
-farmSchema.index({ location: "2dsphere" });
+farmSchema.index({ "coordinates.coordinates": "2dsphere" });
 export const Farm = model<IFarm>("Farm", farmSchema);
