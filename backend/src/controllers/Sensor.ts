@@ -5,22 +5,19 @@ import { getServerError } from "../utils/serverError";
 import { AuthRequest } from "../types/AuthRequest";
 import mongoose from "mongoose";
 import { SystemMetrics } from "../models/SystemMetrics";
+import Device from "../models/Device";
 
 export const ingestReading = async (req: Request, res: Response) => {
   try {
-    const { sensorId, soilMoisture, waterFlow, temperature } = req.body;
-    const sensorExist = await Sensor.findOne({ sensorLocalId: sensorId });
-    if (!sensorExist) {
+    const { deviceId, soilMoisture, waterFlow, temperature } = req.body;
+    const deviceExist = await Device.findById(deviceId);
+    if (!deviceExist) {
       return res
         .status(403)
-        .json({ message: "Invalid Sensor trying to send data" });
+        .json({ message: "Invalid Device trying to send data" });
     }
     await sensorQueue.add("process-reading", {
-      sensorId: sensorExist._id,
-      sensorLocalId: sensorId,
-      farmId: sensorExist.farmId,
-      userId: sensorExist.userId,
-      timestamp: new Date().toISOString(),
+      deviceId: deviceExist._id,
       soilMoisture,
       waterFlow,
       temperature,
@@ -37,8 +34,8 @@ export const ingestReading = async (req: Request, res: Response) => {
 
 export const getSensors = async (req: AuthRequest, res: Response) => {
   try {
-    const sensors = await Sensor.find({ userId: req.user!.id }).select(
-      "sensorLocalId sensorType",
+    const sensors = await Sensor.find({ userId: req.user!._id }).select(
+      "deviceId farmId pinNumber sensorType status lastSeen",
     );
     return res.status(200).json({ data: sensors });
   } catch (error) {
@@ -46,42 +43,44 @@ export const getSensors = async (req: AuthRequest, res: Response) => {
   }
 };
 export const addSensor = async (req: AuthRequest, res: Response) => {
-  const { sensorType, farmId, sensorLocalId } = req.body;
+  const { sensorType, farmId, pinNumber } = req.body;
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
-    const checkExisting = await Sensor.findOne({ sensorLocalId });
+    const checkExisting = await Sensor.findOne({
+      userId: req.user!._id,
+      farmId,
+      pinNumber,
+    });
     if (checkExisting) {
       await session.abortTransaction();
       return res.status(400).json({
-        message: "Sensor ID must be unique",
+        errors: {
+          sensor_pinNumber: `Pin Number : ${pinNumber}, already have ${checkExisting.sensorType} sensor`,
+        },
       });
     }
     const [sensor] = await Sensor.create(
       [
         {
-          userId: req.user!.id,
+          userId: req.user!._id,
           farmId,
-          sensorLocalId,
+          pinNumber,
           sensorType,
         },
       ],
       { session },
     );
     await SystemMetrics.findByIdAndUpdate(
-      req.user!.id,
+      req.user!._id,
       {
-        $addToSet: { totalSensors: sensor._id, activeSensors: sensor._id },
+        $addToSet: { totalSensors: sensor._id },
       },
-      { session },
+      { upsert: true, session },
     );
     await session.commitTransaction();
     return res.status(201).json({
-      data: {
-        _id: sensor._id,
-        sensorType: sensor.sensorType,
-        sensorLocalId: sensor.sensorLocalId,
-      },
+      data: sensor,
     });
   } catch (error) {
     await session.abortTransaction();
@@ -96,7 +95,7 @@ export const deleteSensor = async (req: AuthRequest, res: Response) => {
     session.startTransaction();
     const id = req.params.id as string;
     const sensor = await Sensor.findOneAndDelete({
-      userId: req.user!.id,
+      userId: req.user!._id,
       _id: id,
     });
     if (!sensor) {
@@ -104,7 +103,7 @@ export const deleteSensor = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ message: "No Such Sensor Found" });
     }
     await SystemMetrics.findByIdAndUpdate(
-      req.user!.id,
+      req.user!._id,
       {
         $pull: { totalSensors: id, activeSensors: id },
       },

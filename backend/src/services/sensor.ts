@@ -1,17 +1,31 @@
+import mongoose, { ClientSession } from "mongoose";
+import Device from "../models/Device";
 import { Sensor } from "../models/Sensor";
 
 export const updateSensorLastSeen = async (
-  sensorId: string
+  deviceId: string,
+  session: ClientSession,
 ) => {
-  await Sensor.findOneAndUpdate(
-    { sensorId },
+  const targetDeviceId = new mongoose.Types.ObjectId(deviceId);
+  const currentTimestamp = new Date();
+  await Device.updateOne(
+    { _id: targetDeviceId },
     {
-      lastSeen: new Date(),
-      status: "active",
+      $set: {
+        "hardware.telemetrySummary.lastSeen": currentTimestamp,
+        "hardware.telemetrySummary.status": "online",
+      },
     },
+    { session },
+  );
+  await Sensor.updateMany(
+    { deviceId: targetDeviceId },
     {
-      upsert: true,
-      new: true,
-    }
+      $set: {
+        lastSeen: currentTimestamp,
+        status: "active",
+      },
+    },
+    { session },
   );
 };

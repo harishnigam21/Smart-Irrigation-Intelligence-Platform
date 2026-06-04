@@ -14,7 +14,7 @@ const router = Router();
 
 router.post("/readings", sensorReadingValidation, ingestReading);
 router
-  .route("/farm")
+  .route("/sensor")
   .get(jwtVerifier, getSensors)
   .post(sensorValidation, jwtVerifier, addSensor)
   .delete(Validate, jwtVerifier, deleteSensor);

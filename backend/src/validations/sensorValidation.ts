@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { ValidateByLoad } from "./mongooseIDValidation";
 
 const sensorValidation = (req: Request, res: Response, next: NextFunction) => {
-  const { sensorType, farmId, sensorLocalId } = req.body;
+  const { sensorType, farmId, pinNumber } = req.body;
   const sendError = (type: string, error: string) => {
     console.error(error);
     return res.status(422).json({ success: false, errors: { [type]: error } });
@@ -18,8 +18,8 @@ const sensorValidation = (req: Request, res: Response, next: NextFunction) => {
   if (!ValidateByLoad(farmId)) {
     return sendError("sensor_farmId", "Selected Invalid Farm");
   }
-  if (!sensorLocalId || sensorLocalId.trim.length <= 1) {
-    return sendError("sensor_sensorLocalId", "Invalid sensor ID");
+  if (!pinNumber || pinNumber < 0) {
+    return sendError("sensor_pinNumber", "Invalid pin number");
   }
   next();
 };

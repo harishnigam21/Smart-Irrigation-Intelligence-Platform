@@ -1,6 +1,7 @@
 import { Alert } from "../models/Alert";
 import { AlertType } from "../constants/Alert";
 import { Sensor } from "../models/Sensor";
+import { ClientSession } from "mongoose";
 
 interface CreateAlertInput {
   sensorId: string;
@@ -12,8 +13,12 @@ interface CreateAlertInput {
   message: string;
 }
 
-export const createAlert = async (payload: CreateAlertInput) => {
-  return Alert.create(payload);
+export const createAlert = async (
+  payload: CreateAlertInput,
+  session: ClientSession,
+) => {
+  const [newAlert] = await Alert.create([payload], { session });
+  return newAlert;
 };
 export const hasActiveMissingAlert = async (sensorId: string) => {
   return Alert.findOne({

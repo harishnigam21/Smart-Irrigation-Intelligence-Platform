@@ -1,31 +1,17 @@
 import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface ISensorReading extends Document {
-  sensorId:mongoose.Types.ObjectId;
-  sensorLocalId: string;
-  timestamp: Date;
+  deviceId: mongoose.Types.ObjectId;
   soilMoisture: number;
   waterFlow: number;
   temperature: number;
 }
-
 const sensorReadingSchema = new Schema<ISensorReading>(
   {
-    sensorId: {
+    deviceId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "sensors",
-      index: true,
-    },
-    sensorLocalId: {
-      type: String,
-      required: true,
-      unique: true,
-      index: true,
-    },
-    timestamp: {
-      type: Date,
-      required: true,
+      ref: "devices",
       index: true,
     },
 
@@ -50,8 +36,8 @@ const sensorReadingSchema = new Schema<ISensorReading>(
 );
 
 sensorReadingSchema.index({
-  sensorId: 1,
-  timestamp: -1,
+  deviceId: 1,
+  updatedAt: -1,
 });
 
 export const SensorReading = model<ISensorReading>(
