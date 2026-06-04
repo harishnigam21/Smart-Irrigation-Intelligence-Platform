@@ -1,14 +1,8 @@
 import { Request } from "express";
-import mongoose from "mongoose";
+import { IUser } from "../models/User";
+type User = Omit<IUser, "password" | "refreshToken"> & {
+  _id: string;
+};
 export interface AuthRequest extends Request {
-  user?: {
-    id: string;
-    firstname: string;
-    middlename?: string | null;
-    lastname: string;
-    pic?: string | null;
-    gender: string;
-    dob: string;
-    email: string;
-  };
+  user?: User;
 }
