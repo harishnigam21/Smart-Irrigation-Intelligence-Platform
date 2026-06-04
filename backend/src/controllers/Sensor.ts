@@ -103,6 +103,18 @@ export const addSensor = async (req: AuthRequest, res: Response) => {
       ],
       { session },
     );
+    await Device.findByIdAndUpdate(
+      checkDevice._id,
+      {
+        $push: {
+          "hardware.pinConfiguration": {
+            pinNumber: Number(pinNumber),
+            sensors: sensor._id,
+          },
+        },
+      },
+      { session },
+    );
     await SystemMetrics.findByIdAndUpdate(
       req.user!._id,
       {
