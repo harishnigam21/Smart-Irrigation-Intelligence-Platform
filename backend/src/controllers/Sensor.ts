@@ -5,7 +5,7 @@ import { getServerError } from "../utils/serverError";
 import { AuthRequest } from "../types/AuthRequest";
 import mongoose from "mongoose";
 import { SystemMetrics } from "../models/SystemMetrics";
-import Device from "../models/Device";
+import Device, { IDevice } from "../models/Device";
 
 export const ingestReading = async (req: Request, res: Response) => {
   try {
@@ -43,20 +43,51 @@ export const getSensors = async (req: AuthRequest, res: Response) => {
   }
 };
 export const addSensor = async (req: AuthRequest, res: Response) => {
-  const { sensorType, farmId, pinNumber } = req.body;
+  const { sensorType, deviceId, pinNumber } = req.body;
   const session = await mongoose.startSession();
+  interface IPopulatedSensor {
+    _id: mongoose.Types.ObjectId;
+    sensorType: "soil" | "water_flow" | "temperature";
+    status: "active" | "inactive";
+    lastSeen: Date;
+  }
+  interface ICheckDeviceResult {
+    _id: mongoose.Types.ObjectId;
+    farmId: mongoose.Types.ObjectId;
+    hardware: {
+      pinConfiguration: {
+        pinNumber: number;
+        direction: "INPUT" | "OUTPUT";
+        sensors: IPopulatedSensor;
+      }[];
+    };
+  }
   try {
     session.startTransaction();
-    const checkExisting = await Sensor.findOne({
-      userId: req.user!._id,
-      farmId,
-      pinNumber,
-    });
-    if (checkExisting) {
+    const checkDevice = await Device.findById(deviceId)
+      .populate(
+        "hardware.pinConfiguration.sensors",
+        "sensorType status lastSeen",
+      )
+      .select("_id hardware.pinConfiguration")
+      .lean<ICheckDeviceResult>()
+      .session(session);
+    if (!checkDevice) {
+      return res.status(400).json({
+        errors: {
+          sensor_device: "Device not found",
+        },
+      });
+    }
+    const pinConfiguration = checkDevice.hardware.pinConfiguration;
+    const checkExistingSensor = pinConfiguration.find(
+      (item) => item.pinNumber == pinNumber,
+    );
+    if (checkExistingSensor) {
       await session.abortTransaction();
       return res.status(400).json({
         errors: {
-          sensor_pinNumber: `Pin Number : ${pinNumber}, already have ${checkExisting.sensorType} sensor`,
+          sensor_pinNumber: `Pin Number : ${checkExistingSensor.pinNumber}, already have ${checkExistingSensor.sensors.sensorType} sensor`,
         },
       });
     }
@@ -64,7 +95,8 @@ export const addSensor = async (req: AuthRequest, res: Response) => {
       [
         {
           userId: req.user!._id,
-          farmId,
+          deviceId: checkDevice._id,
+          farmId: checkDevice.farmId,
           pinNumber,
           sensorType,
         },
