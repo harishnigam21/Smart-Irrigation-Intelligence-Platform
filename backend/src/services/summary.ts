@@ -11,18 +11,18 @@ export const getSystemSummary = async (req: AuthRequest) => {
   if (cached) {
     return cached;
   }
-  const totalSensors = await Sensor.distinct("_id", { userId: req.user!.id });
+  const totalSensors = await Sensor.distinct("_id", { userId: req.user!._id });
   const activeSensors = await Sensor.distinct("_id", {
-    userId: req.user!.id,
+    userId: req.user!._id,
     status: "active",
   });
-  const totalFarms = await Farm.distinct("_id", { userId: req.user!.id });
+  const totalFarms = await Farm.distinct("_id", { userId: req.user!._id });
   const activeAlerts = await Alert.distinct("_id", {
-    userId: req.user!.id,
+    userId: req.user!._id,
     status: true,
   });
 
-  const readings = await SensorReading.find({ userId: req.user!.id })
+  const readings = await SensorReading.find({ userId: req.user!._id })
     .sort({
       timestamp: -1,
     })

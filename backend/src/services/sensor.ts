@@ -1,7 +1,7 @@
 import mongoose, { ClientSession } from "mongoose";
 import Device from "../models/Device";
 import { Sensor } from "../models/Sensor";
-
+ 
 export const updateSensorLastSeen = async (
   deviceId: string,
   session: ClientSession,

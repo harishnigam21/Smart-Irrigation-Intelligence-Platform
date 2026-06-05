@@ -32,8 +32,7 @@ export const startSensorWorker = () => {
         for (const anomaly of anomalies) {
           await createAlert(
             {
-              sensorId: reading.sensorId,
-              sensorLocalId: reading.sensorLocalId,
+              deviceId: reading.deviceId,
               farmId: reading.farmId,
               userId: reading.userId,
               type: anomaly.type,

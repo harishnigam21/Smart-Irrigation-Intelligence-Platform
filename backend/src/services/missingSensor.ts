@@ -1,14 +1,13 @@
-import { Sensor } from "../models/Sensor";
+import { ClientSession } from "mongoose";
+import Device from "../models/Device";
 
-export const findMissingSensors = async () => {
-  const twoMinutesAgo = new Date(
-    Date.now() - 2 * 60 * 1000
-  );
+export const findMissingSensors = async (session: ClientSession) => {
+  const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000);
 
-  return Sensor.find({
-    lastSeen: {
+  return Device.find({
+    "hardware.telemetrySummary.lastSeen": {
       $lt: twoMinutesAgo,
     },
-    status: "active",
-  });
+    "hardware.telemetrySummary.status": "online",
+  }).session(session);
 };
