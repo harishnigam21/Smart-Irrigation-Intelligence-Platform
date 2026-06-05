@@ -34,9 +34,15 @@ export const ingestReading = async (req: Request, res: Response) => {
 
 export const getSensors = async (req: AuthRequest, res: Response) => {
   try {
-    const sensors = await Sensor.find({ userId: req.user!._id }).select(
-      "deviceId farmId pinNumber sensorType status lastSeen",
-    );
+    const id = req.params.id;
+    const extraFilter: Record<string, any> = {};
+    if (id) {
+      extraFilter.deviceId = new mongoose.Types.ObjectId(id);
+    }
+    const sensors = await Sensor.find({
+      ...extraFilter,
+      userId: req.user!._id,
+    }).select("deviceId farmId pinNumber sensorType status lastSeen");
     return res.status(200).json({ data: sensors });
   } catch (error) {
     getServerError(res, error, "getSensors Controller");

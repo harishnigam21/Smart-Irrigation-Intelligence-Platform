@@ -9,6 +9,8 @@ import {
   coordinatesIntersection,
   getFarmInfo,
 } from "../utils/coordinatesIntersection";
+import Device from "../models/Device";
+import { Sensor } from "../models/Sensor";
 
 export const getFarms = async (req: AuthRequest, res: Response) => {
   try {
@@ -148,6 +150,8 @@ export const deleteFarm = async (req: AuthRequest, res: Response) => {
       },
       { session },
     );
+    await Device.deleteMany({ farmId: farm._id }, { session });
+    await Sensor.deleteMany({ farmId: farm._id }, { session });
     await session.commitTransaction();
     return res.status(200).json({ message: "Farm Deleted" });
   } catch (error) {

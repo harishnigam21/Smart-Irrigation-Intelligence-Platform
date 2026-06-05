@@ -6,6 +6,7 @@ import Device, { IDevice } from "../models/Device";
 import { Farm } from "../models/Farm";
 import { singleCoordinatesIntersection } from "../utils/coordinatesIntersection";
 import { SystemMetrics } from "../models/SystemMetrics";
+import { Sensor } from "../models/Sensor";
 
 interface IDeviceFilterQuery {
   userId?: string;
@@ -84,11 +85,9 @@ export const addDevices = async (req: AuthRequest, res: Response) => {
       },
     });
     if (conflicetDevice) {
-      return res
-        .status(403)
-        .json({
-          message: `Try to place your new device ${geofenceLimitMeters}m away from existing devices`,
-        });
+      return res.status(403).json({
+        message: `Try to place your new device ${geofenceLimitMeters}m away from existing devices`,
+      });
     }
     const isInside = singleCoordinatesIntersection(
       farmCoords,
@@ -160,6 +159,8 @@ export const deleteDevice = async (req: AuthRequest, res: Response) => {
       },
       { session },
     );
+    await Sensor.deleteMany({ deviceId: device._id }, { session });
+
     await session.commitTransaction();
     return res.status(200).json({ message: "Device Deleted" });
   } catch (error) {
