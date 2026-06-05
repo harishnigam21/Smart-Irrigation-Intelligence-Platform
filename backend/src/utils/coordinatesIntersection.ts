@@ -1,3 +1,5 @@
+import { analyzePolygonDimensions } from "./fieldInfo";
+
 type CoorType = [number, number];
 const getMetricMultiplier = (payload: number[]) => {
   const sum = payload.reduce((acc, cur) => acc + cur, 0);
@@ -350,4 +352,18 @@ export const singleCoordinatesIntersection = (
       message: "error:Issue while calculating point",
     };
   }
+};
+
+export const getFarmInfo = (
+  C1: CoorType,
+  C2: CoorType,
+  C3: CoorType,
+  C4: CoorType,
+) => {
+  if (!C1 || !C2 || !C3 || !C4) {
+    return null;
+  }
+  const getPoints = get4Point(C1, C2, C3, C4);
+  const result = analyzePolygonDimensions(getPoints);
+  return result;
 };
