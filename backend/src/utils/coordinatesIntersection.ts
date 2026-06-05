@@ -254,3 +254,100 @@ export const coordinatesIntersection = (
 //   //   },
 // );
 // console.dir(result, { depth: null });
+
+export const singleCoordinatesIntersection = (
+  payloadA: {
+    A: CoorType;
+    B: CoorType;
+    C: CoorType;
+    D: CoorType;
+  },
+  payloadB: CoorType,
+): {
+  success: boolean;
+  message: string;
+} => {
+  if (Object.keys(payloadA).length != 4 || payloadB.length !== 2) {
+    return {
+      success: false,
+      message: `Not valid coordinates`,
+    };
+  }
+  //check if they are same
+  const check = Object.values(payloadA).some(
+    (item) => item.toString() == payloadB.toString(),
+  );
+  if (check) {
+    return {
+      success: false,
+      message:
+        "error:Try to allocate Device inside the boundary, not on the boundary",
+    };
+  }
+  //then go for next steps
+  const C1: CoorType = payloadA.A;
+  const C2: CoorType = payloadA.B;
+  const C3: CoorType = payloadA.C;
+  const C4: CoorType = payloadA.D;
+  const [a, b, c, d] = get4Point(C1, C2, C3, C4);
+  const points: string | number[][] = checkPointContinuity([a, b, c, d]);
+  if (typeof points === "string" && points.includes("error")) {
+    return {
+      success: false,
+      message: points,
+    };
+  }
+  if (Array.isArray(points)) {
+    let finalpoints: number[][][] = [];
+    for (let i = 0; i < points.length; i++) {
+      if (i == points.length - 1) {
+        finalpoints.push([points[i], points[0]]);
+      } else {
+        finalpoints.push([points[i], points[i + 1]]);
+      }
+    }
+    const x = getSinglePoint(C1, payloadB);
+    const result: number[] = finalpoints.map((item) => {
+      let condition1 = false;
+      let condition2 = false;
+      let a;
+      let b;
+      if (item[0][1] < item[1][1]) {
+        a = item[0][1];
+        b = item[1][1];
+      } else {
+        a = item[1][1];
+        b = item[0][1];
+      }
+      condition1 = a <= x[1] && x[1] < b;
+      const result =
+        item[0][0] +
+        ((x[1] - item[0][1]) * (item[1][0] - item[0][0])) /
+          (item[1][1] - item[0][1]);
+      condition2 = x[0] < result;
+      return condition1 && condition2 ? 1 : 0;
+    });
+    const finalResult = result?.reduce((acc, curr) => acc + curr, 0);
+    if (finalResult % 2 !== 0) {
+      return {
+        success: true,
+        message: "inside",
+      };
+    }
+    // Odd total crosses - Inside
+    // Even total crosses - Outside
+    const returnResult: {
+      success: boolean;
+      message: string;
+    } = {
+      success: true,
+      message: "outside",
+    };
+    return returnResult;
+  } else {
+    return {
+      success: false,
+      message: "error:Issue while calculating point",
+    };
+  }
+};
