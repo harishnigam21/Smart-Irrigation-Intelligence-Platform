@@ -5,7 +5,10 @@ import { getServerError } from "../utils/serverError";
 import mongoose from "mongoose";
 import { SystemMetrics } from "../models/SystemMetrics";
 import { getFarmDB, getFarmsDB } from "../services/farm";
-import { coordinatesIntersection } from "../utils/coordinatesIntersection";
+import {
+  coordinatesIntersection,
+  getFarmInfo,
+} from "../utils/coordinatesIntersection";
 
 export const getFarms = async (req: AuthRequest, res: Response) => {
   try {
@@ -81,11 +84,26 @@ export const addFarm = async (req: AuthRequest, res: Response) => {
         }
       }
     }
+    //all measured in meter
+    const FarmInfo: IFarm["info"] | null = getFarmInfo(
+      payloadB.A,
+      payloadB.B,
+      payloadB.C,
+      payloadB.D,
+    ) as IFarm["info"] | null;
+    if (!FarmInfo) {
+      await session.abortTransaction();
+      return res.status(400).json({
+        message:
+          "We failed to calculate your farm parameter, pease try later again after some time",
+      });
+    }
     const [farm] = await Farm.create(
       [
         {
           userId: req.user!._id,
           nickName,
+          info: FarmInfo,
           coordinates: reqBody.coordinates,
           soilType,
         },

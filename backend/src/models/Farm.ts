@@ -14,9 +14,11 @@ export type soilType = (typeof VALID_SOIL_TYPES)[number];
 export interface IFarm extends Document {
   userId: mongoose.Types.ObjectId;
   nickName: string;
-  size: {
-    width: number | null;
-    length: number | null;
+  info: {
+    dimensions: Record<string, number | string> | null;
+    shapeType: string | null;
+    area: number | null;
+    perimeter: number | null;
   };
   soilType: soilType;
   coordinates: [number, number][];
@@ -35,12 +37,22 @@ const farmSchema = new Schema<IFarm>(
       trim: true,
     },
     //Calculate when farm created through coordinates
-    size: {
-      width: {
+    info: {
+      // Record<string, string> maps to a Mongoose Map of Strings
+      dimensions: {
+        type: Map,
+        of: String,
+        default: null,
+      },
+      shapeType: {
+        type: String,
+        default: null,
+      },
+      area: {
         type: Number,
         default: null,
       },
-      length: {
+      perimeter: {
         type: Number,
         default: null,
       },
