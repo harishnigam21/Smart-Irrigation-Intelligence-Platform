@@ -1,6 +1,6 @@
 import { Sensor } from "../models/Sensor";
 import { Alert } from "../models/Alert";
-import { SensorReading } from "../models/SensorReading";
+import { SensorReading } from "../models/SensorReadings";
 import { getCache, setCache } from "./cache";
 import { AuthRequest } from "../types/AuthRequest";
 import { Farm } from "../models/Farm";

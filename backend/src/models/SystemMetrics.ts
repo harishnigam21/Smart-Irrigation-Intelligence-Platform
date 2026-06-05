@@ -4,6 +4,7 @@ export interface ISystemMetrics extends Document {
   totalSensors: mongoose.Types.ObjectId[];
   activeSensors: mongoose.Types.ObjectId[];
   totalDevices: mongoose.Types.ObjectId[];
+  activeDevices: mongoose.Types.ObjectId[];
   totalFarms: mongoose.Types.ObjectId[];
   activeAlerts: mongoose.Types.ObjectId[];
   averageTemperature: number;
@@ -30,6 +31,13 @@ const systemMetricsSchema = new Schema<ISystemMetrics>(
       },
     ],
     totalDevices: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "devices",
+        default: [],
+      },
+    ],
+    activeDevices: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "devices",

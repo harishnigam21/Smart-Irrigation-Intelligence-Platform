@@ -54,4 +54,4 @@ const sensorSchema = new Schema<ISensor>(
   },
 );
 sensorSchema.index({ status: 1, deviceId: 1 });
-export const Sensor = model<ISensor>("Sensor", sensorSchema);
+export const Sensor = model<ISensor>("sensors", sensorSchema);
