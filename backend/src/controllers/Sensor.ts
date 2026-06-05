@@ -34,7 +34,7 @@ export const ingestReading = async (req: Request, res: Response) => {
 
 export const getSensors = async (req: AuthRequest, res: Response) => {
   try {
-    const id = req.params.id;
+    const {id} = req.query;
     const extraFilter: Record<string, any> = {};
     if (id) {
       extraFilter.deviceId = new mongoose.Types.ObjectId(id);
@@ -75,10 +75,11 @@ export const addSensor = async (req: AuthRequest, res: Response) => {
         "hardware.pinConfiguration.sensors",
         "sensorType status lastSeen",
       )
-      .select("_id hardware.pinConfiguration")
+      .select("_id farmId hardware.pinConfiguration")
       .lean<ICheckDeviceResult>()
       .session(session);
     if (!checkDevice) {
+      await session.abortTransaction();
       return res.status(400).json({
         errors: {
           sensor_device: "Device not found",

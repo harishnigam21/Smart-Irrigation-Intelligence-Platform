@@ -13,7 +13,7 @@ import sensorValidation from "../validations/sensorValidation";
 const router = Router();
 
 router.post("/readings", sensorReadingValidation, ingestReading);
-router.route("/sensor/:id").get(jwtVerifier, getSensors);
+router.route("/sensor").get(jwtVerifier, getSensors);
 router
   .route("/sensor")
   .post(sensorValidation, jwtVerifier, addSensor)
