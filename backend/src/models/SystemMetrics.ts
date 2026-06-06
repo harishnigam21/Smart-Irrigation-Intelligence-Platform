@@ -87,6 +87,6 @@ const systemMetricsSchema = new Schema<ISystemMetrics>(
 );
 
 export const SystemMetrics = model<ISystemMetrics>(
-  "SystemMetrics",
+  "systemmetrics",
   systemMetricsSchema,
 );

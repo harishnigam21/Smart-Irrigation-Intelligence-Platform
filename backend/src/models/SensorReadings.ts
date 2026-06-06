@@ -41,6 +41,6 @@ sensorReadingSchema.index({
 });
 
 export const SensorReading = model<ISensorReading>(
-  "SensorReading",
+  "sensorreadings",
   sensorReadingSchema,
 );

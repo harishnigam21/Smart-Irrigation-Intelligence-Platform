@@ -22,10 +22,9 @@ export const getServerError = (res: Response, error: unknown, from: string) => {
         message: `${error.message.split(":")[1]} is existing withing this coordinates, kindly delete this farm and try again.`,
       });
     }
-    if (error.message == "DFC") {
+    if (error.message.includes("DFC")) {
       return res.status(403).json({
-        message:
-          "The Farm Coordinates overlaps with your Existing Farm Coordinates",
+        message: `The Farm Coordinates overlaps with your Existing ${error.message.split(":")[1]} Coordinates`,
       });
     }
   }

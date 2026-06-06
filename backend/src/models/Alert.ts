@@ -58,4 +58,4 @@ alertSchema.index({
   createdAt: -1,
   type: 1,
 });
-export const Alert = model<IAlert>("Alert", alertSchema);
+export const Alert = model<IAlert>("alerts", alertSchema);

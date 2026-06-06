@@ -12,12 +12,10 @@ const jwtVerifier = async (
   try {
     const header = req.headers["authorization"];
     if (!header) {
-      return res
-        .status(400)
-        .json({
-          message: "Looks Like you have not login yet",
-          issue: "not verified",
-        });
+      return res.status(400).json({
+        message: "Looks Like you have not login yet",
+        issue: "not verified",
+      });
     }
     const token = header.split(" ")[1]; // bearer token...
     if (!token) {
@@ -48,7 +46,10 @@ const jwtVerifier = async (
     if (err instanceof jwt.TokenExpiredError) {
       return res
         .status(401)
-        .send({ error: "Auth token expired. Please refresh." });
+        .send({
+          error: "Auth token expired. Please refresh.",
+          issue: "token expired",
+        });
     }
     if (err instanceof jwt.JsonWebTokenError) {
       if (err.message === "invalid signature") {

@@ -34,7 +34,7 @@ export const ingestReading = async (req: Request, res: Response) => {
 
 export const getSensors = async (req: AuthRequest, res: Response) => {
   try {
-    const {id} = req.query;
+    const { id } = req.query;
     const extraFilter: Record<string, any> = {};
     if (id) {
       extraFilter.deviceId = new mongoose.Types.ObjectId(id);
@@ -94,7 +94,7 @@ export const addSensor = async (req: AuthRequest, res: Response) => {
       await session.abortTransaction();
       return res.status(400).json({
         errors: {
-          sensor_pinNumber: `Pin Number : ${checkExistingSensor.pinNumber}, already have ${checkExistingSensor.sensors.sensorType} sensor`,
+          Pin_Number: `Pin Number : ${checkExistingSensor.pinNumber}, already have ${checkExistingSensor.sensors.sensorType} sensor`,
         },
       });
     }
@@ -131,7 +131,11 @@ export const addSensor = async (req: AuthRequest, res: Response) => {
     );
     await session.commitTransaction();
     return res.status(201).json({
-      data: sensor,
+      data: {
+        _id: sensor._id,
+        sensorType: sensor.sensorType,
+        pinNumber: sensor.pinNumber,
+      },
     });
   } catch (error) {
     await session.abortTransaction();
@@ -153,6 +157,13 @@ export const deleteSensor = async (req: AuthRequest, res: Response) => {
       await session.abortTransaction();
       return res.status(400).json({ message: "No Such Sensor Found" });
     }
+    await Device.findByIdAndUpdate(sensor.deviceId, {
+      $pull: {
+        "hardware.pinConfiguration": {
+          sensors: sensor._id,
+        },
+      },
+    });
     await SystemMetrics.findByIdAndUpdate(
       req.user!._id,
       {

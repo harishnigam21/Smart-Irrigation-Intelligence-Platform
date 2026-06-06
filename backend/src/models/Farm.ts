@@ -82,4 +82,4 @@ const farmSchema = new Schema<IFarm>(
   },
 );
 farmSchema.index({ "coordinates.coordinates": "2dsphere" });
-export const Farm = model<IFarm>("Farm", farmSchema);
+export const Farm = model<IFarm>("farms", farmSchema);

@@ -8,7 +8,7 @@ const sensorValidation = (req: Request, res: Response, next: NextFunction) => {
     return res.status(422).json({ success: false, errors: { [type]: error } });
   };
   if (!req.body || Object.keys(req.body).length == 0) {
-    return sendError("device_all", "Invalid request");
+    return sendError("message", "Invalid request");
   }
   const { sensorType, deviceId, pinNumber } = req.body as Pick<
     ISensor,
@@ -21,13 +21,13 @@ const sensorValidation = (req: Request, res: Response, next: NextFunction) => {
       modifySensorType.toLowerCase(),
     )
   ) {
-    return sendError("sensor_type", "Invalid Type");
+    return sendError("Sensor_Type", "Invalid Type");
   }
   if (!ValidateByLoad(deviceId as string)) {
-    return sendError("sensor_deviceId", "Selected Invalid Farm");
+    return sendError("DeviceId", "Selected Invalid Device");
   }
-  if (!pinNumber || pinNumber < 0) {
-    return sendError("sensor_pinNumber", "Invalid pin number");
+  if (!pinNumber || pinNumber <= 0 || pinNumber > 50) {
+    return sendError("Pin_Number", "Invalid pin number");
   }
   next();
 };

@@ -10,11 +10,23 @@ const farmValidation = (req: Request, res: Response, next: NextFunction) => {
 
   const checkCoordinates = (coordinates: number[][]) => {
     if (coordinates.length == 4) {
-      coordinates.forEach((item) => {
-        if (item.length !== 2) {
-          return false;
+      for (let i = 0; i < coordinates.length; i++) {
+        {
+          if (coordinates[i].length !== 2) {
+            return false;
+          }
+          const deepCheck =
+            coordinates[i][0] >= -90 &&
+            coordinates[i][0] <= 90 &&
+            coordinates[i][0] != 0 &&
+            coordinates[i][1] >= -180 &&
+            coordinates[i][1] <= 180 &&
+            coordinates[i][1] != 0;
+          console.log(coordinates[i], deepCheck);
+          return deepCheck;
         }
-      });
+      }
+
       return true;
     } else {
       return false;
@@ -25,7 +37,7 @@ const farmValidation = (req: Request, res: Response, next: NextFunction) => {
     return sendError("farm", "Invalid Name");
   }
   if (!checkCoordinates(coordinates)) {
-    return sendError("farm_latitude", "Invalid coordinates");
+    return sendError("farm_coordinates", "Invalid coordinates");
   }
   if (
     !VALID_SOIL_TYPES.some(
