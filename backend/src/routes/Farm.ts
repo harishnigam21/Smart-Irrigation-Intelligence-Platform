@@ -1,6 +1,12 @@
 import express from "express";
 import jwtVerifier from "../middlewares/jwtVerifier";
-import { addFarm, deleteFarm, getFarm, getFarms } from "../controllers/Farm";
+import {
+  addFarm,
+  deleteFarm,
+  getFarm,
+  getFarms,
+  getFarmsShort,
+} from "../controllers/Farm";
 import farmValidation from "../validations/farmValidation";
 import Validate from "../validations/mongooseIDValidation";
 const router = express.Router();
@@ -9,5 +15,6 @@ router
   .post(jwtVerifier, farmValidation, addFarm)
   .delete(Validate, jwtVerifier, deleteFarm);
 router.route("/farms").get(jwtVerifier, getFarms);
+router.route("/farms-short").get(jwtVerifier, getFarmsShort);
 router.route("/farm/:id").get(jwtVerifier, getFarm);
 export default router;

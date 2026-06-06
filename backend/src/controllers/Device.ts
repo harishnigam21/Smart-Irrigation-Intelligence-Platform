@@ -6,7 +6,7 @@ import Device, { IDevice } from "../models/Device";
 import { Farm } from "../models/Farm";
 import { singleCoordinatesIntersection } from "../utils/coordinatesIntersection";
 import { SystemMetrics } from "../models/SystemMetrics";
-import { Sensor } from "../models/Sensor";
+import { ISensor, Sensor } from "../models/Sensor";
 
 interface IDeviceFilterQuery {
   userId?: string;
@@ -46,6 +46,58 @@ export const getDevices = async (
     return res.status(200).json({ message: "Devices Fetched", data: devices });
   } catch (error) {
     getServerError(res, error, "getDevices controller");
+  }
+};
+export const getDevicesShort = async (
+  req: AuthRequest<{}, {}, {}, IDeviceFilterQuery>,
+  res: Response,
+) => {
+  interface Device {
+    _id: string;
+    farmId: { _id: string; nickName: string };
+    nickName: string;
+    macAddress: string;
+    hardware: {
+      model: string;
+      telemetrySummary: { status: "online" | "offline" | "error" };
+      pinConfiguration: {
+        sensors: Pick<ISensor, "pinNumber" | "sensorType" | "status">;
+      }[];
+    };
+  }
+  try {
+    const { userId, farmId, deviceId } = req.query;
+    const queryFilter: Record<string, any> = {};
+    if (userId) {
+      queryFilter.userId = new mongoose.Types.ObjectId(userId);
+    }
+    if (farmId) {
+      queryFilter.farmId = new mongoose.Types.ObjectId(farmId);
+    }
+    if (deviceId) {
+      queryFilter._id = new mongoose.Types.ObjectId(deviceId);
+    }
+    const devices = await Device.find({
+      ...queryFilter,
+      userId: req.user!._id,
+    })
+      .populate("farmId", "_id nickName")
+      .populate(
+        "hardware.pinConfiguration.sensors",
+        "pinNumber sensorType status ",
+      )
+      .select(
+        "_id farmId nickName macAddress hardware.model hardware.telemetrySummary.status hardware.pinConfiguration.sensors",
+      )
+      .lean<Device[]>();
+    if (devices.length == 0) {
+      return res
+        .status(404)
+        .json({ message: "No device found for this query" });
+    }
+    return res.status(200).json({ message: "Devices Fetched", data: devices });
+  } catch (error) {
+    getServerError(res, error, "getDevicesShort controller");
   }
 };
 export const addDevices = async (req: AuthRequest, res: Response) => {

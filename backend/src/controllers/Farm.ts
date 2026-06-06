@@ -32,6 +32,14 @@ export const getFarm = async (req: AuthRequest, res: Response) => {
     getServerError(res, error, "getFarm Controller");
   }
 };
+export const getFarmsShort = async (req: AuthRequest, res: Response) => {
+  try {
+    const farm = await Farm.find({ userId: req.user!._id }).select("nickName");
+    return res.status(200).json({ data: farm });
+  } catch (error) {
+    getServerError(res, error, "getFarmShort Controller");
+  }
+};
 export const addFarm = async (req: AuthRequest, res: Response) => {
   const { nickName, soilType, coordinates } = req.body;
   const reqBody: Pick<IFarm, "nickName" | "soilType" | "coordinates"> = {
@@ -68,7 +76,7 @@ export const addFarm = async (req: AuthRequest, res: Response) => {
           throw new Error(`EFCI:${result.message.split(":")[1]}`);
         }
         if (result.success && result.message === "inside") {
-          throw new Error("DFC");
+          throw new Error(`DFC:${getAllUserFarm[i].nickName}`);
         }
         if (result.success && result.message === "outside") {
           const resultOpposite = coordinatesIntersection(payloadB, payloadA);
@@ -122,7 +130,7 @@ export const addFarm = async (req: AuthRequest, res: Response) => {
     await session.commitTransaction();
     return res
       .status(201)
-      .json({ data: { _id: farm._id, name: farm.nickName } });
+      .json({ data: { _id: farm._id, nickName: farm.nickName } });
   } catch (error) {
     await session.abortTransaction();
     getServerError(res, error, "addFarm Controller");
