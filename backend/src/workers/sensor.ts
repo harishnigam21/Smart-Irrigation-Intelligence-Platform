@@ -6,6 +6,7 @@ import { createAlert } from "../services/alert";
 import { updateSensorLastSeen } from "../services/sensor";
 import { redisConfig } from "../config/redis";
 import mongoose from "mongoose";
+import { SystemMetrics } from "../models/SystemMetrics";
 
 export const startSensorWorker = () => {
   return new Worker(
@@ -30,7 +31,7 @@ export const startSensorWorker = () => {
         const anomalies = detectAnomalies(reading);
 
         for (const anomaly of anomalies) {
-          await createAlert(
+          const alert = await createAlert(
             {
               deviceId: reading.deviceId,
               farmId: reading.farmId,
@@ -41,6 +42,15 @@ export const startSensorWorker = () => {
             },
             session,
           );
+          if (alert) {
+            await SystemMetrics.findOneAndUpdate(
+              { userId: alert.userId },
+              {
+                $addToSet: { activeSensors: alert._id },
+              },
+              { upsert: true, session },
+            );
+          }
         }
       } catch (error) {
         await session.abortTransaction();

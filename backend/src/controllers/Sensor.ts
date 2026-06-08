@@ -10,6 +10,7 @@ import Device, { IDevice } from "../models/Device";
 export const ingestReading = async (req: Request, res: Response) => {
   try {
     const { deviceId, soilMoisture, waterFlow, temperature } = req.body;
+    //TODO:When you have to verify device enable jwt verification, use here finding with userId
     const deviceExist = await Device.findById(deviceId);
     if (!deviceExist) {
       return res
@@ -122,8 +123,8 @@ export const addSensor = async (req: AuthRequest, res: Response) => {
       },
       { session },
     );
-    await SystemMetrics.findByIdAndUpdate(
-      req.user!._id,
+    await SystemMetrics.findOneAndUpdate(
+      { userId: req.user!._id },
       {
         $addToSet: { totalSensors: sensor._id },
       },
@@ -164,8 +165,8 @@ export const deleteSensor = async (req: AuthRequest, res: Response) => {
         },
       },
     });
-    await SystemMetrics.findByIdAndUpdate(
-      req.user!._id,
+    await SystemMetrics.findOneAndUpdate(
+      { userId: req.user!._id },
       {
         $pull: { totalSensors: id, activeSensors: id },
       },

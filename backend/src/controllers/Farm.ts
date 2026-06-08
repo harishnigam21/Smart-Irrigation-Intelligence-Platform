@@ -120,8 +120,8 @@ export const addFarm = async (req: AuthRequest, res: Response) => {
       ],
       { session },
     );
-    await SystemMetrics.findByIdAndUpdate(
-      req.user!._id,
+    await SystemMetrics.findOneAndUpdate(
+      { userId: req.user!._id },
       {
         $addToSet: { totalFarms: farm._id },
       },
@@ -151,8 +151,8 @@ export const deleteFarm = async (req: AuthRequest, res: Response) => {
       await session.abortTransaction();
       return res.status(400).json({ message: "No Such Farm Found" });
     }
-    await SystemMetrics.findByIdAndUpdate(
-      req.user!._id,
+    await SystemMetrics.findOneAndUpdate(
+      { userId: req.user!._id },
       {
         $pull: { totalFarms: id },
       },

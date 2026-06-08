@@ -170,8 +170,8 @@ export const addDevices = async (req: AuthRequest, res: Response) => {
       ],
       { session },
     );
-    await SystemMetrics.findByIdAndUpdate(
-      req.user!._id,
+    await SystemMetrics.findOneAndUpdate(
+      { userId: req.user!._id },
       {
         $addToSet: { totalDevices: device._id },
       },
@@ -204,8 +204,8 @@ export const deleteDevice = async (req: AuthRequest, res: Response) => {
       await session.abortTransaction();
       return res.status(400).json({ message: "No Such Device Found" });
     }
-    await SystemMetrics.findByIdAndUpdate(
-      req.user!._id,
+    await SystemMetrics.findOneAndUpdate(
+      { userId: req.user!._id },
       {
         $pull: { totalDevices: device._id, activeDevices: id },
       },

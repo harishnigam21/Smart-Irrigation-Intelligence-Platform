@@ -7,9 +7,11 @@ interface FarmsFetch {
   _id: string;
   nickName: string;
   soilType: soilType;
-  size: {
-    width: number | null;
-    length: number | null;
+  info: {
+    dimensions: Record<string, number | string> | null;
+    shapeType: string | null;
+    area: number | null;
+    perimeter: number | null;
   };
   devices: {
     _id: string;
@@ -28,7 +30,7 @@ interface FarmsFetch {
 }
 type FarmFetch = Pick<
   IFarm,
-  "nickName" | "soilType" | "size" | "coordinates"
+  "nickName" | "soilType" | "info" | "coordinates"
 > & {
   _id: string;
   devices: (Pick<IDevice, "macAddress" | "nickName" | "hardware"> & {
@@ -78,7 +80,7 @@ export const getFarmsDB = async (
         _id: 1,
         nickName: 1,
         soilType: 1,
-        size: 1,
+        info: 1,
         devices: 1,
       },
     },
@@ -150,7 +152,7 @@ export const getFarmDB = async (
         _id: 1,
         nickName: 1,
         soilType: 1,
-        size: 1,
+        info: 1,
         coordinates: 1,
         devices: 1,
       },

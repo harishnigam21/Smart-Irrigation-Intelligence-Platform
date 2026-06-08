@@ -1,21 +1,27 @@
 import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface ISystemMetrics extends Document {
+  userId: mongoose.Types.ObjectId;
   totalSensors: mongoose.Types.ObjectId[];
   activeSensors: mongoose.Types.ObjectId[];
   totalDevices: mongoose.Types.ObjectId[];
   activeDevices: mongoose.Types.ObjectId[];
   totalFarms: mongoose.Types.ObjectId[];
   activeAlerts: mongoose.Types.ObjectId[];
-  averageTemperature: number;
-  averageSoilMoisture: number;
-  averageWaterFlow: number;
-  userId: mongoose.Types.ObjectId;
+  averageTemperature: number[];
+  averageSoilMoisture: number[];
+  averageWaterFlow: number[];
   updatedAt: Date;
 }
 
 const systemMetricsSchema = new Schema<ISystemMetrics>(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "users",
+      index: true,
+    },
     totalSensors: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -59,22 +65,16 @@ const systemMetricsSchema = new Schema<ISystemMetrics>(
       },
     ],
     averageTemperature: {
-      type: Number,
-      default: 0,
+      type: [Number],
+      default: [],
     },
     averageSoilMoisture: {
-      type: Number,
-      default: 0,
+      type: [Number],
+      default: [],
     },
     averageWaterFlow: {
-      type: Number,
-      default: 0,
-    },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "users",
-      index: true,
+      type: [Number],
+      default: [],
     },
     updatedAt: {
       type: Date,

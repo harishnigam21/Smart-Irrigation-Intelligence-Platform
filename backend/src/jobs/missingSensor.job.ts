@@ -4,6 +4,7 @@ import { AlertType } from "../constants/Alert";
 import { createAlert, hasActiveMissingAlert } from "../services/alert";
 import { findMissingSensors } from "../services/missingSensor";
 import mongoose from "mongoose";
+import { SystemMetrics } from "../models/SystemMetrics";
 
 //later use mongoose bulk for 1 DB call
 export const startMissingSensorJob = () => {
@@ -17,7 +18,7 @@ export const startMissingSensorJob = () => {
         const id = device._id.toString();
         const existingAlert = await hasActiveMissingAlert(id, session);
         if (existingAlert) continue;
-        await createAlert(
+        const alert = await createAlert(
           {
             deviceId: id,
             farmId: device.farmId.toString(),
@@ -28,6 +29,15 @@ export const startMissingSensorJob = () => {
           },
           session,
         );
+        if (alert) {
+          await SystemMetrics.findOneAndUpdate(
+            { userId: alert.userId },
+            {
+              $addToSet: { activeSensors: alert._id },
+            },
+            { upsert: true, session },
+          );
+        }
       }
 
       await session.commitTransaction();
