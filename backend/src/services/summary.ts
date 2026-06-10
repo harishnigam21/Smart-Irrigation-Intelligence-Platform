@@ -4,6 +4,7 @@ import { SensorReading } from "../models/SensorReadings";
 import { getCache, setCache } from "./cache";
 import { AuthRequest } from "../types/AuthRequest";
 import { Farm } from "../models/Farm";
+import Device from "../models/Device";
 const CACHE_KEY = "system-summary";
 export const getSystemSummary = async (req: AuthRequest) => {
   const cached = await getCache<any>(CACHE_KEY);
@@ -11,23 +12,33 @@ export const getSystemSummary = async (req: AuthRequest) => {
   if (cached) {
     return cached;
   }
-  const totalSensors = await Sensor.distinct("_id", { userId: req.user!._id });
-  const activeSensors = await Sensor.distinct("_id", {
-    userId: req.user!._id,
-    status: "active",
-  });
-  const totalFarms = await Farm.distinct("_id", { userId: req.user!._id });
+  const totalSensors = await Sensor.find({ userId: req.user!._id })
+    .select("_id deviceId pinNumber sensorType status lastSeen")
+    .lean();
+
+  const totalDevices = await Device.find({ userId: req.user!._id })
+    .select(
+      "_id farmId nickName macAddress farmPoint hardware.telemetrySummary.status hardware.telemetrySummary.lastSeen",
+    )
+    .lean();
+
+  const totalFarms = await Farm.find({ userId: req.user!._id })
+    .select("_id nickName soilType info.points")
+    .lean();
+
   const activeAlerts = await Alert.distinct("_id", {
     userId: req.user!._id,
     status: true,
-  });
+  }).lean();
 
   const readings = await SensorReading.find({ userId: req.user!._id })
+    .populate("deviceId", "nickName")
     .sort({
-      timestamp: -1,
+      createdAt: -1,
     })
-    .limit(100);
-
+    .select("_id deviceId soilMoisture waterFlow temperature createdAt")
+    .limit(100)
+    .lean();
   const averageTemperature =
     readings.reduce((sum, item) => sum + item.temperature, 0) /
     (readings.length || 1);
@@ -41,13 +52,16 @@ export const getSystemSummary = async (req: AuthRequest) => {
     (readings.length || 1);
 
   const summary = {
-    totalSensors: totalSensors.length,
-    activeSensors: activeSensors.length,
-    totalFarms: totalFarms.length,
-    activeAlerts: activeAlerts.length,
-    averageTemperature: Number(averageTemperature.toFixed(2)),
-    averageSoilMoisture: Number(averageSoilMoisture.toFixed(2)),
-    averageWaterFlow: Number(averageWaterFlow.toFixed(2)),
+    farms: totalFarms,
+    device: totalDevices,
+    sensor: totalSensors,
+    alerts: activeAlerts,
+    reading: {
+      data: readings,
+      temperature: Number(averageTemperature.toFixed(2)),
+      soilMoisture: Number(averageSoilMoisture.toFixed(2)),
+      waterFlow: Number(averageWaterFlow.toFixed(2)),
+    },
   };
 
   await setCache(CACHE_KEY, summary, 30);

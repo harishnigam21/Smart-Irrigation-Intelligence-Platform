@@ -7,12 +7,36 @@ import { Farm } from "../models/Farm";
 import { singleCoordinatesIntersection } from "../utils/coordinatesIntersection";
 import { SystemMetrics } from "../models/SystemMetrics";
 import { ISensor, Sensor } from "../models/Sensor";
+import { getReadingDB } from "../services/reading";
 
 interface IDeviceFilterQuery {
   userId?: string;
   farmId?: string;
   deviceId?: string;
 }
+interface IDeviceFilterGetQuery {
+  userId?: string;
+  deviceId?: string;
+}
+export const getReadings = async (
+  req: AuthRequest<{}, {}, {}, IDeviceFilterGetQuery>,
+  res: Response,
+) => {
+  try {
+    const { userId, deviceId } = req.query;
+    const queryFilter: Record<string, any> = {};
+    if (userId) {
+      queryFilter.userId = new mongoose.Types.ObjectId(userId);
+    }
+    if (deviceId) {
+      queryFilter.deviceId = new mongoose.Types.ObjectId(deviceId);
+    }
+    const reading = await getReadingDB(queryFilter,req);
+    return res.status(200).json({ message: "Reading Fetched", data: reading });
+  } catch (error) {
+    getServerError(res, error, "getReadings controller");
+  }
+};
 export const getDevices = async (
   req: AuthRequest<{}, {}, {}, IDeviceFilterQuery>,
   res: Response,
@@ -145,7 +169,6 @@ export const addDevices = async (req: AuthRequest, res: Response) => {
       farmCoords,
       hardware.coordinates,
     );
-    console.log(isInside);
     if (isInside.success && isInside.message == "outside") {
       await session.abortTransaction();
       return res
@@ -166,6 +189,7 @@ export const addDevices = async (req: AuthRequest, res: Response) => {
           nickName,
           macAddress,
           hardware,
+          farmPoint: isInside?.xValue || null,
         },
       ],
       { session },

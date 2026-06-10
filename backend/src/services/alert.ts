@@ -1,6 +1,7 @@
 import { Alert } from "../models/Alert";
 import { AlertType } from "../constants/Alert";
 import { ClientSession } from "mongoose";
+import { io, userSockedIds } from "../socket/socket";
 
 interface CreateAlertInput {
   deviceId: string;
@@ -16,6 +17,18 @@ export const createAlert = async (
   session: ClientSession,
 ) => {
   const [newAlert] = await Alert.create([payload], { session });
+  const userId = payload.userId;
+  const targetSocketID = userSockedIds[userId];
+  if (targetSocketID && newAlert) {
+    io.to(targetSocketID).emit("newAlert", {
+      _id: newAlert._id,
+      type: newAlert.type,
+      status: newAlert.status,
+      severity: newAlert.severity,
+      message: newAlert.message,
+      createdAt: newAlert.createdAt,
+    });
+  }
   return newAlert;
 };
 export const hasActiveMissingAlert = async (

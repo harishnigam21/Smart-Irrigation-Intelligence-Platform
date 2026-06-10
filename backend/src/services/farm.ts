@@ -12,6 +12,7 @@ interface FarmsFetch {
     shapeType: string | null;
     area: number | null;
     perimeter: number | null;
+    points: [number, number][];
   };
   devices: {
     _id: string;
@@ -20,12 +21,9 @@ interface FarmsFetch {
       model: string;
       powerSource: "solar" | "battery" | "grid";
       telemetrySummary: { status: "online" | "offline" | "error" };
-      location: {
-        type: "Point";
-        coordinates: [number, number];
-        macAddress: string;
-      };
+      coordinates: [number, number];
     };
+    farmPoint: number[];
   }[];
 }
 type FarmFetch = Pick<
@@ -33,7 +31,10 @@ type FarmFetch = Pick<
   "nickName" | "soilType" | "info" | "coordinates"
 > & {
   _id: string;
-  devices: (Pick<IDevice, "macAddress" | "nickName" | "hardware"> & {
+  devices: (Pick<
+    IDevice,
+    "macAddress" | "nickName" | "hardware" | "farmPoint"
+  > & {
     _id: string;
     sensors: (Pick<
       ISensor,
@@ -65,8 +66,10 @@ export const getFarmsDB = async (
             $project: {
               _id: 1,
               macAddress: 1,
+              farmPoint: 1,
+              nickName: 1,
               "hardware.model": 1,
-              "hardware.location": 1,
+              "hardware.coordinates": 1,
               "hardware.powerSource": 1,
               "hardware.telemetrySummary.status": 1,
             },

@@ -25,6 +25,7 @@ export interface IDevice extends Document {
       signalStrengthDbm: number;
     };
   };
+  farmPoint: number[] | null;
 }
 const deviceSchema = new mongoose.Schema<IDevice>(
   {
@@ -94,6 +95,11 @@ const deviceSchema = new mongoose.Schema<IDevice>(
         batteryPercentage: { type: Number, min: 0, max: 100, default: 0 },
         signalStrengthDbm: { type: Number }, // RSSI
       },
+    },
+    farmPoint: {
+      type: [Number],
+      required: true,
+      default: null,
     },
   },
   { timestamps: true },

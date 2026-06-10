@@ -9,23 +9,25 @@ import mongoose from "mongoose";
 import { SystemMetrics } from "../models/SystemMetrics";
 
 export const startSensorWorker = () => {
-  return new Worker(
+  const worker = new Worker(
     "sensor-processing",
     async (job) => {
       const reading = job.data;
+      const userId = reading.userId as string;
       const session = await mongoose.startSession();
       try {
         session.startTransaction();
         await saveReading(
           {
+            userId: reading.userId,
             deviceId: reading.deviceId,
             soilMoisture: reading.soilMoisture,
             waterFlow: reading.waterFlow,
             temperature: reading.temperature,
           },
+          userId,
           session,
         );
-
         await updateSensorLastSeen(reading.deviceId, session);
 
         const anomalies = detectAnomalies(reading);
@@ -52,6 +54,7 @@ export const startSensorWorker = () => {
             );
           }
         }
+        await session.commitTransaction();
       } catch (error) {
         await session.abortTransaction();
         console.error(error);
@@ -63,4 +66,24 @@ export const startSensorWorker = () => {
       connection: redisConfig,
     },
   );
+  worker.on("ready", () => {
+    console.log("Worker ready");
+  });
+
+  worker.on("active", (job) => {
+    console.log("Active:", job.id);
+  });
+
+  worker.on("completed", (job) => {
+    console.log("Completed:", job.id);
+  });
+
+  worker.on("failed", (job, err) => {
+    console.log("Failed:", job?.id, err);
+  });
+
+  worker.on("error", (err) => {
+    console.error("Worker error:", err);
+  });
+  return worker;
 };

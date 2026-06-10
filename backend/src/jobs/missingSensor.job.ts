@@ -5,6 +5,7 @@ import { createAlert, hasActiveMissingAlert } from "../services/alert";
 import { findMissingSensors } from "../services/missingSensor";
 import mongoose from "mongoose";
 import { SystemMetrics } from "../models/SystemMetrics";
+import Device from "../models/Device";
 
 //later use mongoose bulk for 1 DB call
 export const startMissingSensorJob = () => {
@@ -17,6 +18,13 @@ export const startMissingSensorJob = () => {
       for (const device of devices) {
         const id = device._id.toString();
         const existingAlert = await hasActiveMissingAlert(id, session);
+        await Device.findByIdAndUpdate(
+          id,
+          {
+            $set: { "hardware.telemetrySummary.status": "error" },
+          },
+          { session, runValidators: true },
+        );
         if (existingAlert) continue;
         const alert = await createAlert(
           {

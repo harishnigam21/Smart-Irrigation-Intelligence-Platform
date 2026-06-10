@@ -8,6 +8,7 @@ export interface IAlert extends Document {
   status: boolean;
   severity: "LOW" | "MEDIUM" | "HIGH";
   message: string;
+  createdAt: Date;
 }
 //TODO:Currently getting sensorId, farmId, userId, later you can use nested populate from sensorId only to get this information
 const alertSchema = new Schema<IAlert>(

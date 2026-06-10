@@ -19,6 +19,7 @@ export interface IFarm extends Document {
     shapeType: string | null;
     area: number | null;
     perimeter: number | null;
+    points: [number, number][];
   };
   soilType: soilType;
   coordinates: [number, number][];
@@ -55,6 +56,10 @@ const farmSchema = new Schema<IFarm>(
       perimeter: {
         type: Number,
         default: null,
+      },
+      points: {
+        type: [[Number]],
+        required: true,
       },
     },
     coordinates: {

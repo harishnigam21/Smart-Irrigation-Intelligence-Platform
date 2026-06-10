@@ -6,7 +6,7 @@ export interface ISensor extends Document {
   userId: mongoose.Types.ObjectId;
   pinNumber: number;
   sensorType: "soil" | "water_flow" | "temperature";
-  status: "active" | "inactive";
+  status: "active" | "inactive" | "error";
   lastSeen: Date;
 }
 //TODO:Currently getting farmId, userId, later you can use nested populate from farmId only to get this information
@@ -41,7 +41,7 @@ const sensorSchema = new Schema<ISensor>(
     },
     status: {
       type: String,
-      enum: ["active", "inactive"],
+      enum: ["active", "inactive", "error"],
       default: "inactive",
     },
     lastSeen: {

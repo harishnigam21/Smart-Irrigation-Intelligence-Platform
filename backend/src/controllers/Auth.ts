@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import envVariables from "../envConfig";
 import { getServerError } from "../utils/serverError";
+import { AuthRequest } from "../types/AuthRequest";
 
 export const LogIn = async (req: Request, res: Response) => {
   const { email } = req.body;
@@ -56,7 +57,9 @@ export const LogIn = async (req: Request, res: Response) => {
     getServerError(res, error, "LogIn controller");
   }
 };
-
+export const getUser = async (req: AuthRequest, res: Response) => {
+  return res.status(200).json({ data: req!.user });
+};
 export const Register = async (req: Request, res: Response) => {
   try {
     const { firstname, lastname, email, password } = req.body;

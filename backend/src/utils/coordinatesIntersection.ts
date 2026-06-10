@@ -268,6 +268,7 @@ export const singleCoordinatesIntersection = (
 ): {
   success: boolean;
   message: string;
+  xValue?: number[];
 } => {
   if (Object.keys(payloadA).length != 4 || payloadB.length !== 2) {
     return {
@@ -334,6 +335,7 @@ export const singleCoordinatesIntersection = (
       return {
         success: true,
         message: "inside",
+        xValue: x,
       };
     }
     // Odd total crosses - Inside
@@ -365,5 +367,5 @@ export const getFarmInfo = (
   }
   const getPoints = get4Point(C1, C2, C3, C4);
   const result = analyzePolygonDimensions(getPoints);
-  return result;
+  return { ...result, points: getPoints };
 };

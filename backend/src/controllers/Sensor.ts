@@ -18,12 +18,14 @@ export const ingestReading = async (req: Request, res: Response) => {
         .json({ message: "Invalid Device trying to send data" });
     }
     await sensorQueue.add("process-reading", {
+      userId: deviceExist.userId,
       deviceId: deviceExist._id,
+      farmId: deviceExist.farmId,
       soilMoisture,
       waterFlow,
       temperature,
     });
-    console.log("Reading queued");
+    console.log("Reading queued...");
     return res.status(202).json({
       success: true,
       message: "Reading queued successfully",
@@ -55,7 +57,7 @@ export const addSensor = async (req: AuthRequest, res: Response) => {
   interface IPopulatedSensor {
     _id: mongoose.Types.ObjectId;
     sensorType: "soil" | "water_flow" | "temperature";
-    status: "active" | "inactive";
+    status: "active" | "inactive" | "error";
     lastSeen: Date;
   }
   interface ICheckDeviceResult {
