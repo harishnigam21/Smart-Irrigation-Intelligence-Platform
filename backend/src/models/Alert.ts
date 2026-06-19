@@ -6,6 +6,9 @@ export interface IAlert extends Document {
   userId: mongoose.Types.ObjectId;
   type: string;
   status: boolean;
+  star: boolean;
+  important: boolean;
+  deleted: boolean;
   severity: "LOW" | "MEDIUM" | "HIGH";
   message: string;
   createdAt: Date;
@@ -16,7 +19,7 @@ const alertSchema = new Schema<IAlert>(
     deviceId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "sensors",
+      ref: "devices",
       index: true,
     },
     farmId: {
@@ -34,6 +37,18 @@ const alertSchema = new Schema<IAlert>(
     type: {
       type: String,
       required: true,
+    },
+    star: {
+      type: Boolean,
+      default: false,
+    },
+    important: {
+      type: Boolean,
+      default: false,
+    },
+    deleted: {
+      type: Boolean,
+      default: false,
     },
     status: {
       type: Boolean,
