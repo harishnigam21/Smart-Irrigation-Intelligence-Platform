@@ -142,6 +142,8 @@ export const handleRefresh = async (req: Request, res: Response) => {
         res.cookie("acTk", access_token, {
           httpOnly: true,
           maxAge: 24 * 60 * 60 * 1000,
+          secure: in_production,
+          sameSite: in_production ? "none" : "lax",
         });
         return res.status(200).json({ acTk: access_token, userInfo: other });
       },

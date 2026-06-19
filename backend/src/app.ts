@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import credentials from "./middlewares/credentials";
 import corsOptions from "./config/cors";
 import Auth from "./routes/Auth";
@@ -13,6 +14,7 @@ const app = express();
 
 //App level middlewares
 app.use(express.json());
+app.use(cookieParser());
 app.use(credentials);
 app.use(cors(corsOptions));
 
