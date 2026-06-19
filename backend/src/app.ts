@@ -8,6 +8,7 @@ import Sensor from "./routes/Sensor";
 import Summary from "./routes/Summary";
 import Health from "./routes/health";
 import Device from "./routes/Device";
+import Alert from "./routes/Alert";
 const app = express();
 
 //App level middlewares
@@ -22,6 +23,7 @@ app.use("/api", Farm);
 app.use("/api", Sensor);
 app.use("/api", Summary);
 app.use("/api", Device);
+app.use("/api", Alert);
 
 app.get("/", (_, res) => {
   res.send("Smart Irrigation Intelligence Platform API Running..");
