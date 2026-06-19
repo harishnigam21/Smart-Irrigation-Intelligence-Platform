@@ -5,6 +5,9 @@ import jwt from "jsonwebtoken";
 import envVariables from "../envConfig";
 import { getServerError } from "../utils/serverError";
 import { AuthRequest } from "../types/AuthRequest";
+import { FAILOVER_MODES } from "redis";
+
+const in_production = envVariables.IN_PRODUCTION === "true";
 
 export const LogIn = async (req: Request, res: Response) => {
   const { email } = req.body;
@@ -43,9 +46,17 @@ export const LogIn = async (req: Request, res: Response) => {
       },
       { new: true, runValidators: true },
     );
-    res.cookie("jwt", refresh_token, {
+    res.cookie("acTk", access_token, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
+      secure: in_production,
+      sameSite: in_production ? "none" : "lax",
+    });
+    res.cookie("jwt", refresh_token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: in_production,
+      sameSite: in_production ? "none" : "lax",
     }); //TODO: add secure:true at production level
     console.log("Successfully Verified User : ", ExistingUser.email);
     return res.status(200).json({
@@ -110,7 +121,10 @@ export const handleRefresh = async (req: Request, res: Response) => {
         }
       >();
     if (!findUser) {
-      res.clearCookie("jwt", { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+      res.clearCookie("jwt", {
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
       return res.status(403).json({ message: "Invalid payload" });
     }
     const { refreshToken, ...other } = findUser;
@@ -125,6 +139,10 @@ export const handleRefresh = async (req: Request, res: Response) => {
           envVariables.ACCESS_TOKEN_KEY as string,
           { expiresIn: "1d" },
         );
+        res.cookie("acTk", access_token, {
+          httpOnly: true,
+          maxAge: 24 * 60 * 60 * 1000,
+        });
         return res.status(200).json({ acTk: access_token, userInfo: other });
       },
     );
