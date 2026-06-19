@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.next
 uploads/
 .env
 dist
@@ -25,5 +26,4 @@ todo.txt
 *.sln
 *.sw?
 backend/src/envConfig.ts
-frontend/
 frontend/src/envConfig.ts
