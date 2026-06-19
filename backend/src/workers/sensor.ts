@@ -2,11 +2,9 @@ import { Worker } from "bullmq";
 
 import { saveReading } from "../services/reading";
 import { detectAnomalies } from "../services/anomaly";
-import { createAlert } from "../services/alert";
 import { updateSensorLastSeen } from "../services/sensor";
 import { redisConfig } from "../config/redis";
-import mongoose from "mongoose";
-import { SystemMetrics } from "../models/SystemMetrics";
+import { alertQueue } from "../queues/Alert";
 
 export const startSensorWorker = () => {
   const worker = new Worker(
@@ -14,52 +12,31 @@ export const startSensorWorker = () => {
     async (job) => {
       const reading = job.data;
       const userId = reading.userId as string;
-      const session = await mongoose.startSession();
-      try {
-        session.startTransaction();
-        await saveReading(
-          {
-            userId: reading.userId,
+      await saveReading(
+        {
+          userId: reading.userId,
+          deviceId: reading.deviceId,
+          soilMoisture: reading.soilMoisture,
+          waterFlow: reading.waterFlow,
+          temperature: reading.temperature,
+        },
+        userId,
+      );
+      await updateSensorLastSeen(reading.deviceId);
+
+      const anomalies = detectAnomalies(reading);
+      if (anomalies.length > 0) {
+        const alertPromises = anomalies.map((anomaly) =>
+          alertQueue.add("alert-reading", {
             deviceId: reading.deviceId,
-            soilMoisture: reading.soilMoisture,
-            waterFlow: reading.waterFlow,
-            temperature: reading.temperature,
-          },
-          userId,
-          session,
+            farmId: reading.farmId,
+            userId: reading.userId,
+            type: anomaly.type,
+            severity: anomaly.severity as "LOW" | "MEDIUM" | "HIGH",
+            message: anomaly.message,
+          }),
         );
-        await updateSensorLastSeen(reading.deviceId, session);
-
-        const anomalies = detectAnomalies(reading);
-
-        for (const anomaly of anomalies) {
-          const alert = await createAlert(
-            {
-              deviceId: reading.deviceId,
-              farmId: reading.farmId,
-              userId: reading.userId,
-              type: anomaly.type,
-              severity: anomaly.severity as "LOW" | "MEDIUM" | "HIGH",
-              message: anomaly.message,
-            },
-            session,
-          );
-          if (alert) {
-            await SystemMetrics.findOneAndUpdate(
-              { userId: alert.userId },
-              {
-                $addToSet: { activeSensors: alert._id },
-              },
-              { upsert: true, session },
-            );
-          }
-        }
-        await session.commitTransaction();
-      } catch (error) {
-        await session.abortTransaction();
-        console.error(error);
-      } finally {
-        await session.endSession();
+        await Promise.all(alertPromises);
       }
     },
     {
@@ -67,23 +44,23 @@ export const startSensorWorker = () => {
     },
   );
   worker.on("ready", () => {
-    console.log("Worker ready");
+    console.log("Sensor Worker is ready");
   });
 
   worker.on("active", (job) => {
-    console.log("Active:", job.id);
+    console.log("Sensor Worker is Active:", job.id);
   });
 
   worker.on("completed", (job) => {
-    console.log("Completed:", job.id);
+    console.log("Sensor Worker job Completed:", job.id);
   });
 
   worker.on("failed", (job, err) => {
-    console.log("Failed:", job?.id, err);
+    console.log("Sensor Worker Failed:", job?.id, err);
   });
 
   worker.on("error", (err) => {
-    console.error("Worker error:", err);
+    console.error("Sensor Worker error:", err);
   });
   return worker;
 };

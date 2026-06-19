@@ -57,7 +57,7 @@ export const getSystemSummary = async (req: AuthRequest) => {
     sensor: totalSensors,
     alerts: activeAlerts,
     reading: {
-      data: readings,
+      data: readings.slice(0, 10),
       temperature: Number(averageTemperature.toFixed(2)),
       soilMoisture: Number(averageSoilMoisture.toFixed(2)),
       waterFlow: Number(averageWaterFlow.toFixed(2)),

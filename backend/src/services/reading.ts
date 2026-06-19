@@ -1,4 +1,4 @@
-import mongoose, { ClientSession } from "mongoose";
+import mongoose from "mongoose";
 import { ISensorReading, SensorReading } from "../models/SensorReadings";
 import { io, userSockedIds } from "../socket/socket";
 import { AuthRequest } from "../types/AuthRequest";
@@ -27,13 +27,8 @@ export const getReadingDB = async (
     }>();
   return reading;
 };
-export const saveReading = async (
-  data: ReadingType,
-  userId: string,
-  session: ClientSession,
-) => {
-  console.log("creating reading..");
-  const [newReading] = await SensorReading.create([data], { session: session });
+export const saveReading = async (data: ReadingType, userId: string) => {
+  const newReading = await SensorReading.create(data);
   await newReading.populate("deviceId", "nickName");
   const device = newReading.deviceId as unknown as {
     _id: mongoose.Types.ObjectId;

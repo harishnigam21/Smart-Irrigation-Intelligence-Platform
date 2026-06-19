@@ -1,9 +1,10 @@
 import { Alert } from "../models/Alert";
 import { AlertType } from "../constants/Alert";
-import { ClientSession } from "mongoose";
+import mongoose, { ClientSession } from "mongoose";
 import { io, userSockedIds } from "../socket/socket";
+import { SystemMetrics } from "../models/SystemMetrics";
 
-interface CreateAlertInput {
+export interface CreateAlertInput {
   deviceId: string;
   farmId: string;
   userId: string;
@@ -12,24 +13,44 @@ interface CreateAlertInput {
   message: string;
 }
 
-export const createAlert = async (
-  payload: CreateAlertInput,
-  session: ClientSession,
-) => {
-  const [newAlert] = await Alert.create([payload], { session });
-  const userId = payload.userId;
-  const targetSocketID = userSockedIds[userId];
-  if (targetSocketID && newAlert) {
-    io.to(targetSocketID).emit("newAlert", {
-      _id: newAlert._id,
-      type: newAlert.type,
-      status: newAlert.status,
-      severity: newAlert.severity,
-      message: newAlert.message,
-      createdAt: newAlert.createdAt,
-    });
+export const createAlert = async (payload: CreateAlertInput) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    const [newAlert] = await Alert.create([payload], { session });
+    if (newAlert) {
+      await SystemMetrics.findOneAndUpdate(
+        { userId: newAlert.userId },
+        {
+          $addToSet: { activeSensors: newAlert._id },
+        },
+        { upsert: true, session },
+      );
+    }
+    await newAlert.populate("deviceId", "_id nickName");
+    await session.commitTransaction();
+    const userId = newAlert.userId.toString();
+    const targetSocketID = userSockedIds[userId];
+    if (targetSocketID && newAlert) {
+      io.to(targetSocketID).emit("newAlert", {
+        _id: newAlert._id,
+        type: newAlert.type,
+        status: newAlert.status,
+        severity: newAlert.severity,
+        message: newAlert.message,
+        createdAt: newAlert.createdAt,
+        important: newAlert.important,
+        star: newAlert.star,
+        deleted: newAlert.deleted,
+        deviceId: newAlert.deviceId,
+      });
+    }
+    return newAlert;
+  } catch (error) {
+    await session.abortTransaction();
+  } finally {
+    await session.endSession();
   }
-  return newAlert;
 };
 export const hasActiveMissingAlert = async (
   deviceId: string,

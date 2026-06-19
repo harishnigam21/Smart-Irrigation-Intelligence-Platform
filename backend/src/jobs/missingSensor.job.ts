@@ -1,11 +1,11 @@
 import cron from "node-cron";
 
 import { AlertType } from "../constants/Alert";
-import { createAlert, hasActiveMissingAlert } from "../services/alert";
+import { hasActiveMissingAlert } from "../services/alert";
 import { findMissingSensors } from "../services/missingSensor";
 import mongoose from "mongoose";
-import { SystemMetrics } from "../models/SystemMetrics";
 import Device from "../models/Device";
+import { alertQueue } from "../queues/Alert";
 
 //later use mongoose bulk for 1 DB call
 export const startMissingSensorJob = () => {
@@ -15,39 +15,30 @@ export const startMissingSensorJob = () => {
       session.startTransaction();
       console.log("Checking missing sensors...");
       const devices = await findMissingSensors(session);
-      for (const device of devices) {
-        const id = device._id.toString();
-        const existingAlert = await hasActiveMissingAlert(id, session);
-        await Device.findByIdAndUpdate(
-          id,
-          {
-            $set: { "hardware.telemetrySummary.status": "error" },
-          },
-          { session, runValidators: true },
-        );
-        if (existingAlert) continue;
-        const alert = await createAlert(
-          {
-            deviceId: id,
-            farmId: device.farmId.toString(),
-            userId: device.userId.toString(),
-            type: AlertType.MISSING_SENSOR_DATA,
-            severity: "HIGH",
-            message: `No reading received from ${device.nickName} for over 2 minutes`,
-          },
-          session,
-        );
-        if (alert) {
-          await SystemMetrics.findOneAndUpdate(
-            { userId: alert.userId },
+      if (Device.length > 0) {
+        const devicePromises = devices.map(async (device) => {
+          const id = device._id.toString();
+          const existingAlert = await hasActiveMissingAlert(id, session);
+          await Device.findByIdAndUpdate(
+            id,
             {
-              $addToSet: { activeSensors: alert._id },
+              $set: { "hardware.telemetrySummary.status": "error" },
             },
-            { upsert: true, session },
+            { session, runValidators: true },
           );
-        }
+          if (!existingAlert) {
+            await alertQueue.add("alert-reading", {
+              deviceId: id,
+              farmId: device.farmId.toString(),
+              userId: device.userId.toString(),
+              type: AlertType.MISSING_SENSOR_DATA,
+              severity: "HIGH",
+              message: `No reading received from ${device.nickName} for over 2 minutes`,
+            });
+          }
+        });
+        await Promise.all(devicePromises);
       }
-
       await session.commitTransaction();
     } catch (error) {
       await session.abortTransaction();
