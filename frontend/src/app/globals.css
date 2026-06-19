@@ -1,0 +1,175 @@
+@import "tailwindcss";
+body,
+#root {
+  margin: 0px;
+  padding: 0px;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
+  background-color: var(--color-bgprimary);
+  color: var(--color-text);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+.noscrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+@layer base {
+  * {
+    @apply scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent;
+    &::-webkit-scrollbar {
+      width: 4px !important;
+      max-height: 4px !important;
+    }
+    &::-webkit-scrollbar-track {
+      margin-inline: calc(50% - 40px) !important;
+      border-radius: 100px !important;
+    }
+    &::-webkit-scrollbar-thumb {
+      margin-inline: calc(50% - 40px) !important;
+      border-radius: 100px !important;
+    }
+  }
+}
+@utility animate-ping-once {
+  animation: ping 0.5s cubic-bezier(0, 0, 0.2, 1) 3; /* '1' means play 1 time */
+}
+@theme {
+  /* --- Light Mode  --- */
+  --color-bgprimary: #ffffff;
+  --color-bgsecondary: #f0f4fa;
+  --color-primary: #4f9732;
+  --color-secondary: #c7924e;
+  --color-tertiary: #02134b;
+  --color-border: #a0cf76;
+  --color-borderhover: #07422a;
+  --color-text: black;
+  --color-txlight: #839298;
+}
+@media (prefers-color-scheme: dark) {
+  /* ---Dark Mode --- */
+  :root:not(.light):not(.dark) {
+    --color-bgprimary: #0f0f0f;
+    --color-bgsecondary: #1f2021;
+    --color-primary: #4f9732;
+    --color-secondary: #c7924e;
+    --color-tertiary: #359ec6;
+    --color-borderhover: #07422a;
+    --color-border: #60a027;
+    --color-text: white;
+    --color-txlight: #839298;
+  }
+}
+.dark {
+  --color-bgprimary: #0f0f0f;
+  --color-bgsecondary: #1f2021;
+  --color-primary: #4f9732;
+  --color-secondary: #c7924e;
+  --color-tertiary: #359ec6;
+  --color-borderhover: #07422a;
+  --color-border: #60a027;
+  --color-text: white;
+  --color-txlight: #839298;
+}
+
+.light {
+  --color-bgprimary: #ffffff;
+  --color-bgsecondary: #f0f4fa;
+  --color-primary: #4f9732;
+  --color-secondary: #c7924e;
+  --color-tertiary: #02134b;
+  --color-border: #a0cf76;
+  --color-borderhover: #07422a;
+  --color-text: black;
+  --color-txlight: #839298;
+}
+.icon,
+svg {
+  cursor: pointer;
+}
+button:disabled {
+  color: rgba(68, 63, 63, 0.488);
+}
+@layer components {
+  .spinner {
+    @apply w-5 aspect-square rounded-full border-4 animate-[spin_0.3s_linear_infinite];
+    @apply border-l-violet-500 border-r-green-500 border-b-orange-600 border-t-red-500;
+  }
+}
+@layer utilities {
+  /* Hide spin-buttons for Chrome, Safari, Edge, and Opera */
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Hide spin-buttons for Firefox */
+  .no-spinner {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+}
+@keyframes HorizontalBarAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+@keyframes moveRight {
+  0% {
+    transform: translateX(-5px);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(5px);
+    opacity: 0;
+  }
+}
+
+.animate-move-right {
+  animation: moveRight 1.5s infinite linear;
+}
+
+/* BouncingLoading */
+.bouncing-loader {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  animation: bounceBall 0.6s infinite alternate;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.dot:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.dot:nth-child(4) {
+  animation-delay: 0.1s;
+}
+
+@keyframes bounceBall {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-8px);
+  }
+}
