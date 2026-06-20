@@ -11,7 +11,7 @@ import {
   Thermometer,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function SummarySlider() {
   const [
@@ -24,7 +24,7 @@ export default function SummarySlider() {
   ] = useHorzSlider();
   const summary = useAppSelector((store) => store.summary);
   const router = useRouter();
-
+  const [mounted, setMounted] = useState<boolean>(false);
   const alertRef = useRef<HTMLDivElement>(null);
   const handleViewToAlert = () => {
     alertRef.current?.scrollIntoView({
@@ -73,6 +73,12 @@ export default function SummarySlider() {
       removeInteractionListeners();
     };
   }, [summary.alerts]);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) {
+    return null;
+  }
   return (
     <>
       {summary && (

@@ -2,10 +2,18 @@
 import { useAppSelector } from "@/store/Store";
 import { getDaysBetween } from "@/utils/getDate";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function SummaryReadings() {
   const summary = useAppSelector((store) => store.summary);
   const router = useRouter();
+  const [mounted, setMounted] = useState<boolean>(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) {
+    return null;
+  }
   return summary.reading.data && summary.reading.data.length > 0 ? (
     <article className="bg-bgsecondary rounded-xl p-4 flex flex-col mt-4">
       <h2 className="mb-2 text-xl lg:text-2xl px-4">

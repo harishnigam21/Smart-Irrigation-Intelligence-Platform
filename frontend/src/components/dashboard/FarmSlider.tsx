@@ -2,7 +2,7 @@
 import { DeviceInSummary } from "@/store/slices/SummarySlice";
 import { useAppSelector } from "@/store/Store";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import FarmVisual from "../Imp/FarmVisual";
 import { useRouter } from "next/navigation";
 
@@ -32,6 +32,13 @@ export default function FarmSlider() {
     setFarms(calculate);
   }, [summary.farms, summary.device]);
   const router = useRouter();
+  const [mounted, setMounted] = useState<boolean>(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) {
+    return null;
+  }
   return farms && farms.length > 0 ? (
     <article className="relative max-h-screen bg-bgsecondary rounded-xl py-4">
       <h2 className="mb-2 text-xl lg:text-2xl px-4">
