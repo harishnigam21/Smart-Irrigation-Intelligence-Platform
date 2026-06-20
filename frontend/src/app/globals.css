@@ -164,7 +164,16 @@ button:disabled {
 .dot:nth-child(4) {
   animation-delay: 0.1s;
 }
-
+/* Fix autofill background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color: var(--color-text) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
 @keyframes bounceBall {
   from {
     transform: translateY(0);
