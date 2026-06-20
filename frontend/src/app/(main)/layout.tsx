@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { Toaster } from "react-hot-toast";
 import ScreenSize from "@/components/Imp/ScreenSize";
@@ -7,15 +6,8 @@ import { serverFetch } from "@/utils/serverApi";
 import { Data } from "@/types/data";
 import { User } from "@/types/user";
 import UserInfo from "@/components/data/UserInfo";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { Summary } from "@/store/slices/SummarySlice";
+import SummaryData from "@/components/data/SummaryData";
 
 export const metadata: Metadata = {
   title: "AgriFlow",
@@ -27,11 +19,16 @@ export default async function MainLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const response = await serverFetch("api/user", "GET");
-  const data = response.data as Data<User> | null;
+  const responseUser = await serverFetch("api/user", "GET");
+  const dataUser = responseUser.data as Data<User> | null;
+  const responseSummary = await serverFetch("api/summary", "GET");
+  const dataSummary = responseSummary.data as Data<Summary> | null;
   return (
     <main>
-      {response.status && <UserInfo userInfo={data?.data || null} />}
+      {responseUser.status && <UserInfo userInfo={dataUser?.data || null} />}
+      {responseSummary.status && (
+        <SummaryData data={dataSummary?.data || null} />
+      )}
       <ScreenSize />
       {children}
       <Toaster position="top-center" />

@@ -1,10 +1,6 @@
 import FarmSlider from "@/components/dashboard/FarmSlider";
 import SummaryReadings from "@/components/dashboard/SummaryReadings";
 import SummarySlider from "@/components/dashboard/SummarySlider";
-import SummaryData from "@/components/data/SummaryData";
-import { Summary } from "@/store/slices/SummarySlice";
-import { Data } from "@/types/data";
-import { serverFetch } from "@/utils/serverApi";
 export const VALID_SOIL_TYPES = [
   "NA",
   "alluvial soil",
@@ -20,11 +16,9 @@ export type soilType = (typeof VALID_SOIL_TYPES)[number];
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export default async function Dashboard() {
   await delay(1000);
-  const response = await serverFetch("api/summary", "GET");
-  const data = response.data as Data<Summary> | null;
+
   return (
     <section className="relative m-auto h-screen w-full p-6 space-y-6 overflow-y-auto">
-      <SummaryData data={data?.data || null} />
       {/* summary slider */}
       <SummarySlider />
       {/* Farm Slider */}
