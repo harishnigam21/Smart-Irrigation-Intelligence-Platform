@@ -1,4 +1,4 @@
-
+import DashboardHeaderShell from "@/components/dashboard/DashboardHeaderShell";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,14 +12,5 @@ export default async function dashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
-  
-  return (
-    <div className=" flex flex-col">
-      <header className="fixed top-0 left-0 z-50 flex justify-between w-full items-center px-8 py-4 border-b-[0.1px] gap-4 border-primary backdrop-blur-xl">
-        <h1 className="text-2xl font-bold tracking-wide">AgriFlow</h1>
-      </header>
-      {children}
-    </div>
-  );
+  return <DashboardHeaderShell>{children}</DashboardHeaderShell>;
 }
