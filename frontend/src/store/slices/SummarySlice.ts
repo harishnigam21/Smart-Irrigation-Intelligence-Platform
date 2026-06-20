@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-interface FarmInSummary {
+export interface FarmInSummary {
   _id: string;
   nickName: string;
   soilType: string;
@@ -20,7 +20,7 @@ export interface DeviceInSummary {
     };
   };
 }
-interface SensorInSummary {
+export interface SensorInSummary {
   _id: string;
   deviceId: string;
   pinNumber: number;
@@ -102,8 +102,20 @@ const SummarySlice = createSlice({
       }
       state.alerts.unshift(action.payload);
     },
+    addSensor: (state, action: PayloadAction<SensorInSummary>) => {
+      if (action.payload) state.sensor.unshift(action.payload);
+    },
+    addFarm: (state, action: PayloadAction<FarmInSummary>) => {
+      if (action.payload) state.farms.unshift(action.payload);
+    },
   },
 });
-export const { setSummary, addReading, setReading, setAlertID } =
-  SummarySlice.actions;
+export const {
+  setSummary,
+  addReading,
+  setReading,
+  setAlertID,
+  addSensor,
+  addFarm,
+} = SummarySlice.actions;
 export default SummarySlice.reducer;
