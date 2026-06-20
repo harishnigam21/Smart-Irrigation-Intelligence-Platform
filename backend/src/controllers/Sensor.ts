@@ -138,6 +138,9 @@ export const addSensor = async (req: AuthRequest, res: Response) => {
         _id: sensor._id,
         sensorType: sensor.sensorType,
         pinNumber: sensor.pinNumber,
+        deviceId: sensor.deviceId,
+        lastSeen: sensor.lastSeen,
+        status: sensor.status,
       },
     });
   } catch (error) {

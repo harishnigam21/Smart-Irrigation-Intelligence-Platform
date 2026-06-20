@@ -130,7 +130,14 @@ export const addFarm = async (req: AuthRequest, res: Response) => {
     await session.commitTransaction();
     return res
       .status(201)
-      .json({ data: { _id: farm._id, nickName: farm.nickName } });
+      .json({
+        data: {
+          _id: farm._id,
+          nickName: farm.nickName,
+          soilType: farm.soilType,
+          info: { points: farm.info.points },
+        },
+      });
   } catch (error) {
     await session.abortTransaction();
     getServerError(res, error, "addFarm Controller");
