@@ -2,7 +2,7 @@ import HorizontalBar from "@/components/Loading/HorizontalBar";
 
 export default function loading() {
   return (
-    <section className="relative m-auto h-full w-screen p-6 space-y-6 overflow-hidden">
+    <section className="relative m-auto h-full w-full p-6 space-y-6 overflow-hidden">
       <HorizontalBar position="top-0 left-0" />
       {/* summary slider */}
       <div className="flex justify-start relative flex-nowrap overflow-x-auto scrollbar-none gap-4 mb-4">

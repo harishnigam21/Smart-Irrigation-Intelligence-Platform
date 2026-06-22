@@ -1,5 +1,6 @@
 import { RootState } from "@/store/Store";
 import { Focus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -53,6 +54,7 @@ const FarmVisual: React.FC<FarmVisualProps> = ({
   const screenSize = useSelector<RootState>(
     (store) => store.layout.screenSize,
   ) as { width: number; height: number };
+  const router = useRouter();
   const canvasW = Math.min(screenSize?.width, screenSize?.height) || 400;
   const canvasH = canvasW / 2 || 100;
   const padding = 5;
@@ -109,7 +111,6 @@ const FarmVisual: React.FC<FarmVisualProps> = ({
   const validPoints = points || [];
   const validDevices = devices || [];
   //Graph portion ends
-
 
   //Magnifier Portion starts
   const [focus, setFocus] = useState<boolean>(false);
@@ -261,6 +262,9 @@ const FarmVisual: React.FC<FarmVisualProps> = ({
               className={`relative cursor-pointer ${device.status == "error" && "animate-pulse"}`}
               key={device.id || `device-${index}`}
               transform={`translate(${x}, ${y})`}
+              onClick={() => {
+                router.push(`/device/view?v=${device.id}`);
+              }}
             >
               {device.status == "error" && (
                 <g transform="translate(-8, -15)">

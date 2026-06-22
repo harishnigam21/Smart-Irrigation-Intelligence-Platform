@@ -9,7 +9,12 @@ body,
   background-color: var(--color-bgprimary);
   color: var(--color-text);
 }
-
+@font-face {
+  font-family: 'Carrington';
+  src: url('../assets/font/Carrington.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 *,
 *::before,
 *::after {

@@ -66,15 +66,12 @@ export default function Login() {
             if (data?.acTk) {
               localStorage.setItem("acTk", data.acTk);
             }
-
             if (data?.data) {
               dispatch(setUser(data.data));
               dispatch(setLoginStatus("authenticated"));
               localStorage.setItem("userInfo", JSON.stringify(data.data));
             }
-            setTimeout(() => {
-              router.push("/dashboard");
-            }, 1000);
+            router.push("/dashboard");
           } else {
             if (data?.errors) {
               setErrorMess(data.errors);
