@@ -14,6 +14,7 @@ export interface DeviceInSummary {
   macAddress: string;
   farmPoint: [number, number];
   hardware: {
+    model: string;
     telemetrySummary: {
       status: "online" | "offline" | "error";
       lastSeen: Date;

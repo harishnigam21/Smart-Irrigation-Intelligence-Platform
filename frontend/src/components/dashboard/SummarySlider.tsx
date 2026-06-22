@@ -101,7 +101,19 @@ export default function SummarySlider() {
             </div>
           )}
           {/* Average Readings */}
-          <div className="rounded-lg border border-border hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2">
+          <div
+            className="rounded-lg border border-border hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer"
+            onClick={() => {
+              const target = document.getElementById("homeReadingRef");
+              if (target) {
+                target.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                  inline: "center",
+                });
+              }
+            }}
+          >
             <p className="font-medium">Average Readings</p>
             <div className="flex flex-nowrap gap-4 justify-around items-center p-2">
               {/* //farm */}
@@ -262,7 +274,12 @@ export default function SummarySlider() {
             </div>
           </div>
           {/* devices */}
-          <div className="rounded-lg border border-border hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2">
+          <div
+            className="rounded-lg border border-border hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer"
+            onClick={() => {
+              router.push("/device");
+            }}
+          >
             <p className="font-medium">Devices</p>
             <div className="flex flex-nowrap gap-4 justify-around items-center p-2">
               {/* //total */}
@@ -315,7 +332,7 @@ export default function SummarySlider() {
             </div>
           </div>
           {/* sensors */}
-          <div className="rounded-lg border border-border hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2">
+          <div className="rounded-lg border border-border hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer">
             <p className="font-medium">Sensors</p>
             <div className="flex flex-nowrap gap-4 justify-around items-center p-2">
               {/* //total */}
@@ -413,7 +430,7 @@ export default function SummarySlider() {
           )}
         </div>
       )}
-      {alertAudioRef.current && (
+      {alertAudioRef.current && summary.alerts.length > 0 && (
         <div
           className="fixed m-0 bottom-2 right-2 z-50 bg-red-500 animate-pulse p-2 rounded-full cursor-pointer"
           onClick={() => {

@@ -114,14 +114,17 @@ export default function Login() {
 
   return (
     <section className="w-screen h-screen fixed top-0 left-0 m-auto bg-bgsecondary z-100 p-4 flex justify-center-safe items-center-safe text-text">
-      <article className="relative w-full md:w-[75%] p-8 rounded-4xl bg-bgprimary overflow-x-hidden">
+      <article className="relative w-full md:w-3/4 lg:w-1/2 p-8 rounded-4xl bg-bgprimary overflow-x-hidden">
         {loadingBar && <HorizontalBar position="top-0 left-0" />}
         <div className="pb-4">
           <Image
             src={mediaList.shortLogo}
             alt="siteLogo"
-            className="h-15 w-15"
+            className="h-15 w-15 cursor-pointer"
             loading="eager"
+            onClick={() => {
+              router.push("/");
+            }}
           />
         </div>
         <article className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2">

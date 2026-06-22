@@ -9,6 +9,7 @@ import {
   User,
 } from "lucide-react";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import React from "react";
 
 export default function MainHeader({
@@ -26,9 +27,12 @@ export default function MainHeader({
         <Menu onClick={() => setSideBar((prev) => !prev)} />
         <div className="hidden min-[480px]:flex items-center gap-2">
           <Image
+            onClick={() => {
+              redirect("/");
+            }}
             src={mediaList.shortLogo}
             alt="short logo"
-            className="size-8"
+            className="size-8 cursor-pointer"
           />
           <h2 className="text-lg text-text font-medium">{title}</h2>
         </div>

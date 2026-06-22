@@ -9,7 +9,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import envVariables from "../../../../envConfig";
 import useApi from "@/hooks/useApi";
 const months = [
   "January",
@@ -299,14 +298,17 @@ export default function Register() {
   };
   return (
     <section className="w-screen h-screen fixed top-0 left-0 z-100 m-auto bg-bgsecondary p-4 flex justify-center-safe items-center-safe text-text">
-      <article className="relative w-full md:w-[75%] p-8 rounded-4xl bg-bgprimary overflow-hidden">
+      <article className="relative w-full md:w-3/4 lg:w-1/2 p-8 rounded-4xl bg-bgprimary overflow-hidden">
         {loadingBar && <HorizontalBar position="top-0 left-0" />}
         <div className="pb-4">
           <Image
             src={mediaList.shortLogo}
             alt="siteLogo"
-            className="h-15 w-15"
+            className="h-15 w-15 cursor-pointer"
             loading="eager"
+            onClick={() => {
+              router.push("/");
+            }}
           />
         </div>
         <article className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2">

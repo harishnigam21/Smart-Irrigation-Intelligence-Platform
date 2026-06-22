@@ -18,7 +18,7 @@ export const getSystemSummary = async (req: AuthRequest) => {
 
   const totalDevices = await Device.find({ userId: req.user!._id })
     .select(
-      "_id farmId nickName macAddress farmPoint hardware.telemetrySummary.status hardware.telemetrySummary.lastSeen",
+      "_id farmId nickName macAddress farmPoint hardware.model hardware.telemetrySummary.status hardware.telemetrySummary.lastSeen",
     )
     .lean();
 
