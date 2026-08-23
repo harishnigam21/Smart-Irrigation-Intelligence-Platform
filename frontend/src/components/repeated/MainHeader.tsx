@@ -46,7 +46,7 @@ export default function MainHeader({
             alt="short logo"
             className="size-8 cursor-pointer"
           />
-          <h2 className="text-lg text-text font-medium">{title}</h2>
+          <h2 className="text-lg text-textPri font-medium">{title}</h2>
         </div>
       </div>
       <div>

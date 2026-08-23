@@ -82,7 +82,7 @@ export default function SummaryReadings() {
         Farms : <span className="text-red-500">No Readings</span>
       </h2>
       <div
-        className="py-2 px-4 rounded-full bg-tertiary text-black font-semibold cursor-pointer hover:bg-tertiary/80 hover:scale-105"
+        className="py-2 px-4 rounded-full bg-ter text-black font-semibold cursor-pointer hover:bg-ter/80 hover:scale-105"
         onClick={() => {
           router.push("/farm");
         }}

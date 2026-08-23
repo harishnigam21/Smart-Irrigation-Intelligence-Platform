@@ -105,7 +105,7 @@ export default function Sensor() {
     setMounted(true);
   }, []);
   return (
-    <section className="w-screen h-screen fixed top-0 left-0 m-auto bg-bgsecondary z-100 p-4 flex justify-center-safe items-center-safe text-text">
+    <section className="w-screen h-screen fixed top-0 left-0 m-auto bg-bgsecondary z-100 p-4 flex justify-center-safe items-center-safe text-textPri">
       <article className="relative w-full max-h-full md:w-[75%] p-8 rounded-4xl bg-bgprimary overflow-x-hidden">
         {(loading || !mounted) && <HorizontalBar position="top-0 left-0" />}
         {mounted ? (
@@ -121,7 +121,7 @@ export default function Sensor() {
                     return (
                       <div
                         key={`show/device/${index}`}
-                        className={`p-2 rounded-xl flex flex-col border ${deviceSelected?._id == item._id ? "border-tertiary" : "border-border"} hover:scale-103 hover:border-tertiary cursor-pointer transition-all w-50 max-w-80 grow`}
+                        className={`p-2 rounded-xl flex flex-col border ${deviceSelected?._id == item._id ? "border-ter" : "border-border"} hover:scale-103 hover:border-ter cursor-pointer transition-all w-50 max-w-80 grow`}
                         onClick={() => {
                           setLoading(true);
                           setDeviceSelected({
@@ -163,7 +163,7 @@ export default function Sensor() {
                 <div className="flex items-center justify-between">
                   <strong className="text-red-500">no devices...</strong>
                   <button
-                    className="py-1 px-3 rounded-full bg-primary cursor-pointer text-sm hover:bg-primary/75 transition-all"
+                    className="py-1 px-3 rounded-full bg-pri cursor-pointer text-sm hover:bg-pri/75 transition-all"
                     onClick={() => router.push("/device")}
                   >
                     Add Device
@@ -192,7 +192,7 @@ export default function Sensor() {
                     <div className="relative flex w-full flex-col items-center justify-center my-4">
                       <small
                         title="Click me to change"
-                        className="border rounded-full bg-tertiary text-black p-1 font-medium w-fit px-2 cursor-pointer"
+                        className="border rounded-full bg-ter text-black p-1 font-medium w-fit px-2 cursor-pointer"
                         onClick={() => {
                           setDeviceSelected(null);
                           setStep(1);
@@ -266,7 +266,7 @@ export default function Sensor() {
                 )}
                 <button
                   onClick={handleSensorSubmit}
-                  className="self-end rounded-full mt-6 font-medium py-2 px-5 cursor-pointer bg-tertiary hover:bg-tertiary/80 text-black"
+                  className="self-end rounded-full mt-6 font-medium py-2 px-5 cursor-pointer bg-ter hover:bg-ter/80 text-black"
                 >
                   Submit
                 </button>

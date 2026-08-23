@@ -297,7 +297,7 @@ export default function Register() {
     }
   };
   return (
-    <section className="w-screen h-screen fixed top-0 left-0 z-100 m-auto bg-bgprimary p-4 flex justify-center-safe items-center-safe text-text">
+    <section className="w-screen h-screen fixed top-0 left-0 z-100 m-auto bg-bgprimary p-4 flex justify-center-safe items-center-safe text-textPri">
       <article className="relative w-full md:w-3/4 lg:w-1/2 p-8 rounded-4xl bg-bgsecondary shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-hidden">
         {loadingBar && <HorizontalBar position="top-0 left-0" />}
         <div className="pb-4">
@@ -586,7 +586,7 @@ export default function Register() {
                   id="showPassword"
                   checked={showPassword}
                   onChange={(e) => setShowPassword(e.currentTarget.checked)}
-                  className="w-3 h-3 accent-tertiary border border-txlight cursor-pointer"
+                  className="w-3 h-3 accent-ter border border-txlight cursor-pointer"
                 />
                 <label htmlFor="showPassword" className="text-sm">
                   Show password

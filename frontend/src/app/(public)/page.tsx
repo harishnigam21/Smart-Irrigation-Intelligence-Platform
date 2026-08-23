@@ -26,7 +26,7 @@ export default function Home() {
           </Link>
           <Link
             href="/login"
-            className="px-6 py-3 rounded-xl border border-primary hover:bg-primary/20 transition font-bold"
+            className="px-6 py-3 rounded-xl border border-pri hover:bg-pri/20 transition font-bold"
           >
             Login
           </Link>
@@ -54,7 +54,7 @@ export default function Home() {
         ].map((item, i) => (
           <div
             key={`home/card/${i}`}
-            className="rounded-2xl bg-bgprimary/40 backdrop-blur p-6 hover:scale-105 border border-borderhover transition"
+            className="rounded-2xl bg-bgpri/40 backdrop-blur p-6 hover:scale-105 border border-borderhover transition"
           >
             <div className="mb-4 text-borderhover">{item.icon}</div>
             <h3 className="text-lg font-semibold mb-2">{item.title}</h3>

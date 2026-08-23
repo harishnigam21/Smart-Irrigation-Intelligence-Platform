@@ -43,7 +43,7 @@ export default function FarmSlider() {
     <article className="relative max-h-screen bg-bgsecondary rounded-xl py-4">
       <h2 className="mb-2 text-xl lg:text-2xl px-4">
         Farm{" "}
-        <span className="text-tertiary">
+        <span className="text-ter">
           ({farms[selectedFarmSlide.index].nickName})
         </span>
       </h2>
@@ -94,7 +94,7 @@ export default function FarmSlider() {
                     }
                   }}
                 >
-                  <ChevronLeft className="text-tertiary" />
+                  <ChevronLeft className="text-ter" />
                 </div>
                 <FarmVisual
                   points={farms[selectedFarmSlide.index].info.points}
@@ -143,7 +143,7 @@ export default function FarmSlider() {
                     }
                   }}
                 >
-                  <ChevronRight className="text-tertiary" />
+                  <ChevronRight className="text-ter" />
                 </div>
               </div>
             </div>
@@ -175,7 +175,7 @@ export default function FarmSlider() {
         Farms : <span className="text-red-500">No Farms Found !</span>
       </h2>
       <div
-        className="py-2 px-4 rounded-full bg-tertiary text-black font-semibold cursor-pointer hover:bg-tertiary/80 hover:scale-105"
+        className="py-2 px-4 rounded-full bg-ter text-black font-semibold cursor-pointer hover:bg-ter/80 hover:scale-105"
         onClick={() => {
           router.push("/farm");
         }}

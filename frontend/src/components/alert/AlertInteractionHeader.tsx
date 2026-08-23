@@ -615,7 +615,7 @@ export default function AlertInteractionHeader({
                       )}
                     </div>
                     <p
-                      className={`line-clamp-1 ${item.status ? "text-text font-medium" : "text-txlight"}`}
+                      className={`line-clamp-1 ${item.status ? "text-textPri font-medium" : "text-txlight"}`}
                     >
                       {item.deviceId.nickName}
                     </p>
@@ -624,7 +624,7 @@ export default function AlertInteractionHeader({
                     {item.message}
                   </p>
                   <small
-                    className={`line-clamp-1 flex group-hover:hidden ${item.status ? "text-text" : "text-txlight"}`}
+                    className={`line-clamp-1 flex group-hover:hidden ${item.status ? "text-textPri" : "text-txlight"}`}
                   >
                     {isMounted ? getDaysBetween(item.createdAt) : "..."}
                   </small>

@@ -191,7 +191,7 @@ export default function Farm() {
     setMounted(true);
   }, []);
   return (
-    <section className="w-full h-full m-auto p-4 flex justify-center-safe items-center-safe text-text">
+    <section className="w-full h-full m-auto p-4 flex justify-center-safe items-center-safe text-textPri">
       <article className="relative max-h-full w-full md:w-[75%] p-8 rounded-4xl bg-bgsecondary overflow-x-hidden overflow-y-auto">
         {(loading || !mounted) && <HorizontalBar position="top-0 left-0" />}
         <article className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -201,7 +201,7 @@ export default function Farm() {
               {mounted ? (
                 farm.length > 0 ? (
                   <div className="flex flex-col gap-2 mb-6">
-                    <strong className="text-tertiary">Existing Farms : </strong>
+                    <strong className="text-ter">Existing Farms : </strong>
                     <div className="flex flex-nowrap overflow-x-auto scrollbar-none gap-2">
                       {farm.map((item, index) => (
                         <small
@@ -216,7 +216,7 @@ export default function Farm() {
                     <small className="mt-4">
                       Want to add{" "}
                       <span
-                        className="text-tertiary font-medium cursor-pointer"
+                        className="text-ter font-medium cursor-pointer"
                         onClick={() => router.push("/sensor")}
                       >
                         Sensor
@@ -231,7 +231,7 @@ export default function Farm() {
                 )
               ) : (
                 <div className="flex flex-col gap-2 mb-6">
-                  <strong className="text-tertiary max-w-30 h-7 rounded-md bg-bgsecondary/80 animate-pulse">
+                  <strong className="text-ter max-w-30 h-7 rounded-md bg-bgsecondary/80 animate-pulse">
                     {" "}
                   </strong>
                   <div className="flex flex-nowrap overflow-x-auto scrollbar-none gap-2">
@@ -251,13 +251,13 @@ export default function Farm() {
               <div className="relative w-50 h-50 border skew-y-1 skew-x-2">
                 <div className="absolute -top-2 -left-2 flex">
                   <div
-                    className={`w-6 h-6 flex items-center justify-center ${coordinateSelected == "A" ? "bg-tertiary text-black" : "bg-bgprimary text-text"} rounded-full p-2 overflow-hidden text-xs font-extrabold `}
+                    className={`w-6 h-6 flex items-center justify-center ${coordinateSelected == "A" ? "bg-ter text-black" : "bg-bgprimary text-textPri"} rounded-full p-2 overflow-hidden text-xs font-extrabold `}
                   >
                     A
                   </div>
                   <div className="flex flex-col items-start -mt-5">
                     <small
-                      className={`${coordinateSelected == "A" ? "text-tertiary" : "text-green-500"}`}
+                      className={`${coordinateSelected == "A" ? "text-ter" : "text-green-500"}`}
                     >{`(${coordinateCollection.A[0].toString().slice(0, 2)}...${coordinateCollection.A[0].toString().slice(-3)},${coordinateCollection.A[1].toString().slice(0, 2)}...${coordinateCollection.A[1].toString().slice(-3)})`}</small>
                     {coordinateSelected == "A" && (
                       <div className="-scale-x-100 mt-2">🚶</div>
@@ -266,13 +266,13 @@ export default function Farm() {
                 </div>
                 <div className="absolute -top-2 -right-2 flex flex-col">
                   <div
-                    className={`w-6 h-6 flex items-center justify-center ${coordinateSelected == "B" ? "bg-tertiary text-black" : "bg-bgprimary text-text"} rounded-full p-2 overflow-hidden text-xs font-extrabold self-end`}
+                    className={`w-6 h-6 flex items-center justify-center ${coordinateSelected == "B" ? "bg-ter text-black" : "bg-bgprimary text-textPri"} rounded-full p-2 overflow-hidden text-xs font-extrabold self-end`}
                   >
                     B
                   </div>
                   <div className="flex">
                     <small
-                      className={`${coordinateSelected == "B" ? "text-tertiary" : "text-green-500"}`}
+                      className={`${coordinateSelected == "B" ? "text-ter" : "text-green-500"}`}
                     >{`(${coordinateCollection.B[0].toString().slice(0, 2)}...${coordinateCollection.B[0].toString().slice(-3)},${coordinateCollection.B[1].toString().slice(0, 2)}...${coordinateCollection.B[1].toString().slice(-3)})`}</small>
                     {coordinateSelected == "B" && (
                       <div className=" rotate-270 mr-2">🚶</div>
@@ -283,11 +283,11 @@ export default function Farm() {
                   <div className="flex flex-col items-end justify-end -mb-3">
                     {coordinateSelected == "C" && <div className="">🚶</div>}
                     <small
-                      className={`${coordinateSelected == "C" ? "text-tertiary" : "text-green-500"}`}
+                      className={`${coordinateSelected == "C" ? "text-ter" : "text-green-500"}`}
                     >{`(${coordinateCollection.C[0].toString().slice(0, 2)}...${coordinateCollection.C[0].toString().slice(-3)},${coordinateCollection.C[1].toString().slice(0, 2)}...${coordinateCollection.C[1].toString().slice(-3)})`}</small>
                   </div>
                   <div
-                    className={`w-6 h-6 flex self-end items-center justify-center ${coordinateSelected == "C" ? "bg-tertiary text-black" : "bg-bgprimary text-text"} rounded-full p-2 overflow-hidden text-xs font-extrabold `}
+                    className={`w-6 h-6 flex self-end items-center justify-center ${coordinateSelected == "C" ? "bg-ter text-black" : "bg-bgprimary text-textPri"} rounded-full p-2 overflow-hidden text-xs font-extrabold `}
                   >
                     C
                   </div>
@@ -298,11 +298,11 @@ export default function Farm() {
                       <div className="rotate-90 ml-2">🚶</div>
                     )}
                     <small
-                      className={`${coordinateSelected == "D" ? "text-tertiary" : "text-green-500"}`}
+                      className={`${coordinateSelected == "D" ? "text-ter" : "text-green-500"}`}
                     >{`(${coordinateCollection.D[0].toString().slice(0, 2)}...${coordinateCollection.D[0].toString().slice(-3)},${coordinateCollection.D[1].toString().slice(0, 2)}...${coordinateCollection.D[1].toString().slice(-3)})`}</small>
                   </div>
                   <div
-                    className={`w-6 h-6 flex self-start items-center justify-center ${coordinateSelected == "D" ? "bg-tertiary text-black" : "bg-bgprimary text-text"} rounded-full p-2 overflow-hidden text-xs font-extrabold `}
+                    className={`w-6 h-6 flex self-start items-center justify-center ${coordinateSelected == "D" ? "bg-ter text-black" : "bg-bgprimary text-textPri"} rounded-full p-2 overflow-hidden text-xs font-extrabold `}
                   >
                     D
                   </div>
@@ -370,7 +370,7 @@ export default function Farm() {
                   <button
                     key={`coordinates/button/${index}`}
                     title={`Farm Corner ${index + 1}`}
-                    className={`rounded-full w-9 h-9 flex items-center justify-center aspect-square p-2 ${coordinateSelected.toLowerCase() == item.toLowerCase() ? "bg-tertiary text-black" : "bg-bgprimary text-white"} font-bold  cursor-pointer hover:scale-90 hover:opacity-75 transition-all`}
+                    className={`rounded-full w-9 h-9 flex items-center justify-center aspect-square p-2 ${coordinateSelected.toLowerCase() == item.toLowerCase() ? "bg-ter text-black" : "bg-bgprimary text-white"} font-bold  cursor-pointer hover:scale-90 hover:opacity-75 transition-all`}
                     onClick={() => setCoordinatedSelected(item)}
                   >
                     {item}
@@ -433,7 +433,7 @@ export default function Farm() {
               <p>
                 {`If you don't know coordinated, then `}
                 <span
-                  className={`font-bold text-tertiary cursor-pointer whitespace-nowrap`}
+                  className={`font-bold text-ter cursor-pointer whitespace-nowrap`}
                   onClick={getLocation}
                 >
                   Click me
@@ -445,7 +445,7 @@ export default function Farm() {
               </p>
             </div>
             <button
-              className="rounded-full self-end my-4 py-1 px-4 cursor-pointer font-medium bg-tertiary hover:bg-tertiary/80 text-black"
+              className="rounded-full self-end my-4 py-1 px-4 cursor-pointer font-medium bg-ter hover:bg-ter/80 text-black"
               onClick={handleSubmit}
             >
               Submit

@@ -87,7 +87,7 @@ export default function SummarySlider() {
           className="flex justify-start relative flex-nowrap overflow-x-auto scrollbar-none gap-4 mb-4"
         >
           {summaryLeft && (
-            <div className="z-10 sticky left-0 flex items-center min-h-full rounded-r-md shadow-[0.1px_0.1px_10px_10px] bg-bgsecondary shadow-bgprimary text-text cursor-pointer transition-colors">
+            <div className="z-10 sticky left-0 flex items-center min-h-full rounded-r-md shadow-[0.1px_0.1px_10px_10px] bg-bgsecondary shadow-bgprimary text-textPri cursor-pointer transition-colors">
               <button
                 onClick={() => summaryScroll("left")}
                 className="py-4 cursor-pointer"
@@ -420,7 +420,7 @@ export default function SummarySlider() {
             </div>
           </div>
           {summaryRight && (
-            <div className="z-10 sticky right-0 flex items-center min-h-full rounded-r-md shadow-[0.1px_0.1px_10px_10px] bg-bgprimary shadow-bgprimary text-text cursor-pointer transition-colors">
+            <div className="z-10 sticky right-0 flex items-center min-h-full rounded-r-md shadow-[0.1px_0.1px_10px_10px] bg-bgprimary shadow-bgprimary text-textPri cursor-pointer transition-colors">
               <button
                 onClick={() => summaryScroll("right")}
                 className="py-4 cursor-pointer"

@@ -114,7 +114,7 @@ export default function Login() {
   };
 
   return (
-    <section className="w-screen h-screen fixed top-0 left-0 m-auto bg-bgprimary z-100 p-4 flex justify-center-safe items-center-safe text-text">
+    <section className="w-screen h-screen fixed top-0 left-0 m-auto bg-bgprimary z-100 p-4 flex justify-center-safe items-center-safe text-textPri">
       <article className="relative w-full md:w-3/4 lg:w-1/2 p-8 rounded-4xl bg-bgsecondary shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-x-hidden">
         {loadingBar && <HorizontalBar position="top-0 left-0" />}
         <div className="pb-4">
@@ -128,7 +128,7 @@ export default function Login() {
             }}
           />
         </div>
-        <article className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2 text-textPri">
+        <article className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2 text-textPriPri">
           <div className="flex flex-col gap-3">
             <h3 className="text-2xl md:text-4xl font-light">
               {currentStep == 1 ? "Sign in" : "Welcome"}
@@ -170,7 +170,7 @@ export default function Login() {
               </Link>
               <div className="flex justify-end-safe gap-4 mt-8">
                 <button
-                  className="rounded-full py-1 px-4 cursor-pointer hover:bg-border/10 text-textSec"
+                  className="rounded-full py-1 px-4 cursor-pointer hover:bg-border/10 text-textPriSec"
                   onClick={() => {
                     router.push("/register");
                   }}
@@ -210,7 +210,7 @@ export default function Login() {
                   id="showPassword"
                   checked={showPassword}
                   onChange={(e) => setShowPassword(e.currentTarget.checked)}
-                  className="w-4 h-4 accent-tertiary border border-txlight"
+                  className="w-4 h-4 accent-ter border border-txlight"
                 />
                 <label htmlFor="showPassword">Show password</label>
               </div>

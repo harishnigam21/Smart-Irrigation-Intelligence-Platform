@@ -45,7 +45,7 @@ export default function MicrocontrollerTwin() {
 
   return mounted && selectedDevice ? (
     <article className="relative w-full h-full flex flex-col justify-center items-center">
-      <div className="flex items-center justify-center-safe text-text gap-3 absolute top-0 z-10 pt-14">
+      <div className="flex items-center justify-center-safe text-textPri gap-3 absolute top-0 z-10 pt-14">
         {summary.device.length > 1 && deviceIndex !== 0 && !id && (
           <ChevronLeft
             onClick={() => {
