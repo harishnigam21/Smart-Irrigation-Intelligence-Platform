@@ -4,6 +4,7 @@ import Validate from "../validations/mongooseIDValidation";
 import {
   addDevices,
   deleteDevice,
+  deviceToggle,
   getDevices,
   getDevicesShort,
 } from "../controllers/Device";
@@ -19,6 +20,7 @@ router
   .get(jwtVerifier, getDeviceValidation, getDevices)
   .post(jwtVerifier, deviceValidation, addDevices);
 router.route("/device/:id").delete(jwtVerifier, Validate, deleteDevice);
+router.route("/device/powerToggle/:id").get(jwtVerifier, Validate, deviceToggle);
 router
   .route("/devices-short")
   .get(jwtVerifier, getDeviceValidation, getDevicesShort);

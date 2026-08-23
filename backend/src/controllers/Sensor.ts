@@ -27,7 +27,7 @@ export const ingestReading = async (req: Request, res: Response) => {
     });
     console.log("Reading queued...");
     return res.status(202).json({
-      success: true,
+      status: true,
       message: "Reading queued successfully",
     });
   } catch (error) {

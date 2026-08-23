@@ -31,7 +31,7 @@ export const getReadings = async (
     if (deviceId) {
       queryFilter.deviceId = new mongoose.Types.ObjectId(deviceId);
     }
-    const reading = await getReadingDB(queryFilter,req);
+    const reading = await getReadingDB(queryFilter, req);
     return res.status(200).json({ message: "Reading Fetched", data: reading });
   } catch (error) {
     getServerError(res, error, "getReadings controller");
@@ -242,6 +242,49 @@ export const deleteDevice = async (req: AuthRequest, res: Response) => {
   } catch (error) {
     await session.abortTransaction();
     getServerError(res, error, "deleteDevice Controller");
+  } finally {
+    await session.endSession();
+  }
+};
+
+export const deviceToggle = async (req: AuthRequest, res: Response) => {
+  const session = await mongoose.startSession();
+  const deviceId = req.params.id;
+  try {
+    session.startTransaction();
+    const deviceExist = await Device.findById(deviceId).session(session);
+    if (!deviceExist) {
+      await session.abortTransaction();
+      return res.status(404).json({ message: "No such device found" });
+    }
+    if (deviceExist.hardware.telemetrySummary.status == "online") {
+      deviceExist.hardware.telemetrySummary.status = "offline";
+      const sensors = deviceExist.hardware.pinConfiguration;
+      const sensorIds = sensors.map((item) => item.sensors);
+      await Sensor.updateMany(
+        { _id: { $in: sensorIds } },
+        { $set: { status: "inactive" } },
+        { session },
+      );
+    } else if (deviceExist.hardware.telemetrySummary.status == "offline") {
+      deviceExist.hardware.telemetrySummary.status = "online";
+      const sensors = deviceExist.hardware.pinConfiguration;
+      const sensorIds = sensors.map((item) => item.sensors);
+      await Sensor.updateMany(
+        { _id: { $in: sensorIds } },
+        { $set: { status: "active" } },
+        { session },
+      );
+    } else if (deviceExist.hardware.telemetrySummary.status == "error") {
+      await session.abortTransaction();
+      return res.status(200).json({ message: "Your Device is on Error" });
+    }
+    await deviceExist.save({ session });
+    await session.commitTransaction();
+    return res.status(200).json({ status: true });
+  } catch (error) {
+    await session.abortTransaction();
+    getServerError(res, error, "deviceToggle Controller");
   } finally {
     await session.endSession();
   }

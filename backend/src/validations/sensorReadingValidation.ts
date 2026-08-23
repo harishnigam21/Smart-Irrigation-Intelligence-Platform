@@ -12,7 +12,7 @@ const sensorReadingValidation = (
   if (!deviceId || deviceId.length == 0) {
     return sendError("Invalid Sensor ID");
   }
-  if (!soilMoisture || !waterFlow || !temperature) {
+  if (soilMoisture == null || waterFlow == null || temperature == null) {
     return sendError(
       "Missing any of them soilMoisture, waterFlow, temperature",
     );
