@@ -59,7 +59,7 @@ export default function FarmSlider() {
                   farms[selectedFarmSlide.index].devices.map((item, index) => (
                     <small
                       key={`farm/listedDevice/${index}`}
-                      className="px-2 text-[10px] py-1 sm:px-3 sm:text-xs rounded-full bg-tertiary hover:bg-tertiary/75 transition-all text-black font-semibold cursor-pointer"
+                      className="px-2 text-[10px] py-1 sm:px-3 sm:text-xs rounded-full bg-ter font-bold hover:bg-ter/75 transition-all text-black cursor-pointer"
                       onClick={() =>
                         setSelectedFarmSlide((prev) => ({
                           ...prev,
@@ -72,7 +72,7 @@ export default function FarmSlider() {
                     </small>
                   ))
                 ) : (
-                  <small className="md:py-1 md:px-3 rounded-full bg-borderhover text-white font-medium">
+                  <small className="md:py-1 md:px-3 rounded-full bg-ter text-black font-bold">
                     No device Found
                   </small>
                 )}

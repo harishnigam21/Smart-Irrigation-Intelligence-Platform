@@ -4,7 +4,7 @@ interface compoProps {
 export default function HorizontalBar({ position }: compoProps) {
   return (
     <div
-      className={`absolute ${position ? position : "top-0 left-0"} w-1/4 h-1 bg-tertiary animate-[HorizontalBarAnimation_1s_linear_infinite] transition-colors`}
+      className={`absolute ${position ? position : "top-0 left-0"} w-1/4 h-1 bg-ter animate-[HorizontalBarAnimation_1s_linear_infinite] transition-colors`}
     ></div>
   );
 }

@@ -14,6 +14,7 @@ interface compoProps<T extends string | number | null> {
   htmlFor: string;
   id: string;
   label: string;
+  labelBgColor?: string;
   options: string[] | readonly string[];
   autoFocus: boolean;
   required: boolean;
@@ -30,6 +31,7 @@ export default function Input2<T extends string | number | null>({
   htmlFor,
   id,
   label,
+  labelBgColor = "bgsecondary",
   options,
   autoFocus,
   required,
@@ -67,7 +69,7 @@ export default function Input2<T extends string | number | null>({
     <div className="grow">
       <div className="relative group flex flex-col justify-center-safe cursor-text">
         <div
-          className={`absolute left-3 ${inputField ? "-top-2 bg-bgprimary text-xs whitespace-nowrap" : "bg-transparent whitespace-normal text-base"} ${active ? "text-border" : "text-txlight"} cursor-text  px-1 transition-all ${required && `after:content-['*'] after:pl-1 after:text-red-500`} `}
+          className={`absolute left-3 ${inputField ? `-top-2 bg-${labelBgColor} text-xs whitespace-nowrap` : "bg-transparent whitespace-normal text-base"} ${active ? "text-pri" : "text-txlight"} cursor-text  px-1 transition-all ${required && `after:content-['*'] after:pl-1 after:text-red-500`} `}
         >
           {label}
         </div>
@@ -75,7 +77,7 @@ export default function Input2<T extends string | number | null>({
         <div
           ref={inputRef}
           tabIndex={0}
-          className={`border-2 ${errorMess && errorMess[errorKey] ? "border-red-500" : "border-txlight"} outline-none focus:border-border p-4 rounded-sm w-full transition-all`}
+          className={`border-2 ${errorMess && errorMess[errorKey] ? "border-red-500" : "border-txlight"} outline-none focus:border-pri p-4 rounded-sm w-full transition-all`}
           id={id}
           autoFocus={autoFocus}
           onFocus={handleInputMode}
@@ -97,11 +99,11 @@ export default function Input2<T extends string | number | null>({
         {active && (
           <ol
             style={{ maxHeight: `${height ? height : 150}px` }}
-            className={`absolute left-0 top-full z-10 overflow-y-auto bg-bgsecondary rounded-md min-w-full noscrollbar`}
+            className={`absolute left-0 top-full z-10 overflow-y-auto bg-bgprimary rounded-md min-w-full noscrollbar`}
           >
             {options.map((item, index) => (
               <li
-                className="py-2 px-4 hover:bg-borderhover cursor-pointer"
+                className="py-2 px-4 hover:bg-borderhover/40 cursor-pointer"
                 key={`${name}/option/${index}`}
                 onMouseOver={() => {
                   const parsedValue =

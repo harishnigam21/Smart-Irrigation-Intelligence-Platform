@@ -97,17 +97,73 @@ const SummarySlice = createSlice({
       }
       state.reading.data = action.payload;
     },
-    setAlertID: (state, action: PayloadAction<string>) => {
-      if (!action.payload) {
-        return;
+    setAlertID: (state, action: PayloadAction<string[]>) => {
+      if (action.payload.length > 0) {
+        const current = state.alerts;
+        state.alerts = [...action.payload, ...current];
       }
-      state.alerts.unshift(action.payload);
+    },
+    removeAlertID: (state, action: PayloadAction<string[]>) => {
+      if (action.payload.length > 0) {
+        state.alerts = state.alerts.filter(
+          (item) => !action.payload.includes(item),
+        );
+      }
     },
     addSensor: (state, action: PayloadAction<SensorInSummary>) => {
       if (action.payload) state.sensor.unshift(action.payload);
     },
     addFarm: (state, action: PayloadAction<FarmInSummary>) => {
       if (action.payload) state.farms.unshift(action.payload);
+    },
+    devicePowerToggle: (state, action: PayloadAction<string>) => {
+      const deviceId = action.payload;
+      if (deviceId) {
+        const findDevice = state.device.findIndex(
+          (item) => item._id === deviceId,
+        );
+        if (findDevice !== -1) {
+          const current =
+            state.device[findDevice].hardware.telemetrySummary.status;
+          state.device[findDevice].hardware.telemetrySummary.status =
+            current == "offline"
+              ? "online"
+              : current == "online"
+                ? "offline"
+                : "error";
+          state.sensor = state.sensor.map((item) => {
+            if (item.deviceId == deviceId) {
+              return {
+                ...item,
+                status: current == "offline" ? "active" : "inactive",
+              };
+            } else {
+              return item;
+            }
+          });
+        }
+      }
+    },
+    devicePowerON: (state, action: PayloadAction<string>) => {
+      const deviceId = action.payload;
+      if (deviceId) {
+        const findDevice = state.device.findIndex(
+          (item) => item._id === deviceId,
+        );
+        if (findDevice !== -1) {
+          state.device[findDevice].hardware.telemetrySummary.status = "online";
+          state.sensor = state.sensor.map((item) => {
+            if (item.deviceId == deviceId) {
+              return {
+                ...item,
+                status: "active",
+              };
+            } else {
+              return item;
+            }
+          });
+        }
+      }
     },
   },
 });
@@ -118,5 +174,8 @@ export const {
   setAlertID,
   addSensor,
   addFarm,
+  removeAlertID,
+  devicePowerToggle,
+  devicePowerON,
 } = SummarySlice.actions;
 export default SummarySlice.reducer;

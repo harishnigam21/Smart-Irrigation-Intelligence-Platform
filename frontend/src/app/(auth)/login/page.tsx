@@ -51,9 +51,13 @@ export default function Login() {
     setLoadingBar(true);
     try {
       dispatch(setLoginStatus("loading"));
-      if (password.trim().length == 0) {
+      if (password.trim().length <= 2) {
         setErrorMess({ password: "Password should not be Empty" });
         return;
+      }
+      if (!email || email.length <= 2) {
+        setErrorMess({ email: "Email should not be Empty" });
+        setCurrentStep(1);
       }
       //sending request to the backend to verify user
       await sendRequest("api/login", "POST", { email, password }).then(
@@ -110,8 +114,8 @@ export default function Login() {
   };
 
   return (
-    <section className="w-screen h-screen fixed top-0 left-0 m-auto bg-bgsecondary z-100 p-4 flex justify-center-safe items-center-safe text-text">
-      <article className="relative w-full md:w-3/4 lg:w-1/2 p-8 rounded-4xl bg-bgprimary overflow-x-hidden">
+    <section className="w-screen h-screen fixed top-0 left-0 m-auto bg-bgprimary z-100 p-4 flex justify-center-safe items-center-safe text-text">
+      <article className="relative w-full md:w-3/4 lg:w-1/2 p-8 rounded-4xl bg-bgsecondary shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-x-hidden">
         {loadingBar && <HorizontalBar position="top-0 left-0" />}
         <div className="pb-4">
           <Image
@@ -124,19 +128,19 @@ export default function Login() {
             }}
           />
         </div>
-        <article className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2">
+        <article className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2 text-textPri">
           <div className="flex flex-col gap-3">
-            <h3 className="text-2xl md:text-4xl">
+            <h3 className="text-2xl md:text-4xl font-light">
               {currentStep == 1 ? "Sign in" : "Welcome"}
             </h3>
             {currentStep == 1 ? (
-              <p>{`to continue to ${envVariables.SITE_NAME}`}</p>
+              <p className="text-pri">{`to continue to ${envVariables.SITE_NAME}`}</p>
             ) : (
               <div
-                className="flex gap-2 items-center rounded-full border border-border py-1 px-3 self-start cursor-pointer"
+                className="flex gap-2 items-center rounded-full border border-pri py-1 px-3 self-start cursor-pointer"
                 onClick={() => setCurrentStep(1)}
               >
-                <User2 size={20} />
+                <User2 size={20} className="text-pri" />
                 {email}
               </div>
             )}
@@ -160,13 +164,13 @@ export default function Login() {
               />
               <Link
                 href={"/forgot-email"}
-                className="text-tertiary font-medium self-start transition-all"
+                className="text-ter font-medium self-start transition-all text-xs"
               >
                 Forgot email?
               </Link>
               <div className="flex justify-end-safe gap-4 mt-8">
                 <button
-                  className="rounded-full py-1 px-4 cursor-pointer hover:bg-border/10 text-border"
+                  className="rounded-full py-1 px-4 cursor-pointer hover:bg-border/10 text-textSec"
                   onClick={() => {
                     router.push("/register");
                   }}
@@ -175,7 +179,7 @@ export default function Login() {
                 </button>
                 <button
                   onClick={handleEmailNext}
-                  className="rounded-full py-1 px-4 cursor-pointer bg-border hover:bg-border/80 font-medium text-black"
+                  className="rounded-full py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 text-black font-bold"
                 >
                   Next
                 </button>
@@ -199,7 +203,7 @@ export default function Login() {
                 errorKey="password"
               />
               {/* show password */}
-              <div className="flex items-center gap-2 pl-2">
+              <div className="flex items-center gap-2 pl-2 text-sm">
                 <input
                   type="checkbox"
                   name="showPassword"
@@ -211,12 +215,12 @@ export default function Login() {
                 <label htmlFor="showPassword">Show password</label>
               </div>
               <div className="flex justify-end-safe gap-4 mt-8">
-                <button className="rounded-full py-1 px-3 cursor-pointer text-tertiary font-medium">
+                <button className="rounded-full py-1 px-3 cursor-pointer text-ter font-medium">
                   Forgot password?
                 </button>
                 <button
                   onClick={handlePasswordNext}
-                  className="rounded-full py-2 px-5 cursor-pointer bg-border hover:bg-border/80 text-black"
+                  className="rounded-full py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 text-black font-bold transition-all"
                 >
                   Next
                 </button>

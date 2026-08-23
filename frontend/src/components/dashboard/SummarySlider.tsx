@@ -87,7 +87,7 @@ export default function SummarySlider() {
           className="flex justify-start relative flex-nowrap overflow-x-auto scrollbar-none gap-4 mb-4"
         >
           {summaryLeft && (
-            <div className="z-10 sticky left-0 flex items-center min-h-full rounded-r-md shadow-[0.1px_0.1px_10px_10px] bg-bgprimary shadow-bgprimary text-text cursor-pointer transition-colors">
+            <div className="z-10 sticky left-0 flex items-center min-h-full rounded-r-md shadow-[0.1px_0.1px_10px_10px] bg-bgsecondary shadow-bgprimary text-text cursor-pointer transition-colors">
               <button
                 onClick={() => summaryScroll("left")}
                 className="py-4 cursor-pointer"
@@ -332,7 +332,12 @@ export default function SummarySlider() {
             </div>
           </div>
           {/* sensors */}
-          <div className="rounded-lg border border-border hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer">
+          <div
+            className="rounded-lg border border-border hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer"
+            onClick={() => {
+              router.push("/sensor");
+            }}
+          >
             <p className="font-medium">Sensors</p>
             <div className="flex flex-nowrap gap-4 justify-around items-center p-2">
               {/* //total */}

@@ -15,6 +15,7 @@ interface compoProps<T extends string | number | null> {
   htmlFor: string;
   id: string;
   label: string;
+  labelBgColor?:string;
   autoFocus: boolean;
   required: boolean;
   errorKey: string;
@@ -33,6 +34,7 @@ export default function Input1<T extends string | number | null>({
   htmlFor,
   id,
   label,
+  labelBgColor='bgsecondary',
   autoFocus,
   required,
   errorKey,
@@ -70,7 +72,7 @@ export default function Input1<T extends string | number | null>({
       <div className="relative w-full group flex flex-col justify-center-safe cursor-text">
         <label
           htmlFor={htmlFor}
-          className={`absolute left-3 ${inputField ? "-top-2 bg-bgprimary text-xs whitespace-nowrap" : "text-base max-w-full whitespace-normal bg-transparent"} ${active ? "text-border" : "text-txlight"} cursor-text  px-1 transition-all ${required && `after:content-['*'] after:pl-1 after:text-red-500`} `}
+          className={`absolute left-3 ${inputField ? `-top-2 bg-${labelBgColor} text-xs whitespace-nowrap` : "text-base max-w-full whitespace-normal bg-transparent"} ${active ? "text-pri" : "text-txlight"} cursor-text  px-1 transition-all ${required && `after:content-['*'] after:pl-1 after:text-red-500`} `}
         >
           {label}
         </label>
@@ -84,7 +86,7 @@ export default function Input1<T extends string | number | null>({
           min={min}
           autoFocus={autoFocus}
           required={required}
-          className={`no-spinner border-2 ${errorMess && errorMess[errorKey] ? "border-red-500" : "border-txlight"} outline-none focus:border-border p-4 rounded-sm w-full transition-all`}
+          className={`no-spinner border-2 ${errorMess && errorMess[errorKey] ? "border-red-500" : "border-txlight"} outline-none focus:border-pri p-4 rounded-sm w-full transition-all`}
           onFocus={handleInputMode}
           onBlur={handleInputMode}
           onChange={(e) => {

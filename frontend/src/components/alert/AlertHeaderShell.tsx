@@ -53,7 +53,7 @@ export default function AlertHeaderShell({
       dispatch(setSelectedSidebarItem("important"));
   }, []);
   return (
-    <section className="w-full h-screen bg-bgprimary">
+    <section className="w-full h-screen bg-bgprimary text-textPri">
       <MainHeader setSideBar={setSideBar} title="Alerts" type="alert" />
       <article className="w-full h-full flex flex-nowrap gap-3 pt-15">
         {/* sidebar */}

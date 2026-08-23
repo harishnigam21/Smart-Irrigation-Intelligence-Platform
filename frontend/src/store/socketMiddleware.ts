@@ -26,7 +26,7 @@ export const socketMiddleware: Middleware =
         });
         socket.on("newAlert", (payload: Alert) => {
           store.dispatch(addAlertWS(payload));
-          store.dispatch(setAlertID(payload._id));
+          store.dispatch(setAlertID([payload._id]));
         });
         socket.on("newReading", (payload: ReadingData) => {
           store.dispatch(addReading(payload));

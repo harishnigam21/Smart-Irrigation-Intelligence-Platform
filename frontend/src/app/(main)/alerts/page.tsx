@@ -25,7 +25,7 @@ export default async function Alert({ searchParams }: PageProps) {
   const data = response.data as Data<Alert[]> | null;
 
   return (
-    <article className="relative w-full h-[98%] flex flex-col justify-between mx-3 bg-bgsecondary rounded-xl overflow-hidden">
+    <article className="relative w-full h-[98%] flex flex-col justify-between mx-3 bg-bgprimary rounded-xl overflow-hidden">
       <AlertInteractionHeader data={data || null} />
       <div className="w-full flex items-center justify-center py-2">
         <small className="text-[10px] text-txlight">

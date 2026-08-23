@@ -12,19 +12,19 @@ export default function publicLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen bg-linear-to-br from-primary/40 via-tertiary/40 to-primary/40 text-text flex flex-col">
+    <div className="min-h-screen bg-linear-to-br from-pri via-ter/40 to-pri text-text flex flex-col text-textPri">
       <header className="flex justify-between max-w-full items-center px-8 py-4 border-b-[0.1px] gap-4 border-primary backdrop-blur-md">
         <h1 className="text-2xl font-bold tracking-wide">AgriFlow</h1>
         <div className=" hidden sm:flex gap-3">
           <Link
             href="/login"
-            className="px-4 py-2 rounded-xl border border-primary hover:bg-primary/20 transition"
+            className="px-4 py-2 rounded-xl border font-bold hover:bg-primary/20 transition"
           >
             Login
           </Link>
           <Link
             href="/dashboard"
-            className="px-5 py-2 rounded-xl bg-bgprimary/75 text-text hover:bg-bgprimary transition"
+            className="px-5 py-2 rounded-xl bg-pri/80 font-bold text-black hover:bg-pri transition"
           >
             Dashboard
           </Link>

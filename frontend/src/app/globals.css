@@ -10,8 +10,8 @@ body,
   color: var(--color-text);
 }
 @font-face {
-  font-family: 'Carrington';
-  src: url('../assets/font/Carrington.ttf') format('truetype');
+  font-family: "Carrington";
+  src: url("../assets/font/Carrington.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -47,50 +47,54 @@ body,
 @theme {
   /* --- Light Mode  --- */
   --color-bgprimary: #ffffff;
-  --color-bgsecondary: #f0f4fa;
-  --color-primary: #4f9732;
-  --color-secondary: #c7924e;
-  --color-tertiary: #02134b;
-  --color-border: #a0cf76;
-  --color-borderhover: #07422a;
-  --color-text: black;
+  --color-bgsecondary: #e0d2d2;
+  --color-pri: #34d399;
+  --color-sec: #ff5f56;
+  --color-ter: #359ec6;
+  --color-borderhover: #8e6bf7;
+  --color-border: #60a027;
+  --color-textPri: black;
+  --color-textSec: #38bdf8;
   --color-txlight: #839298;
 }
 @media (prefers-color-scheme: dark) {
   /* ---Dark Mode --- */
   :root:not(.light):not(.dark) {
-    --color-bgprimary: #0f0f0f;
-    --color-bgsecondary: #1f2021;
-    --color-primary: #4f9732;
-    --color-secondary: #c7924e;
-    --color-tertiary: #359ec6;
-    --color-borderhover: #07422a;
+    --color-bgprimary: #020711;
+    --color-bgsecondary: #08132b;
+    --color-pri: #34d399;
+    --color-sec: #ff5f56;
+    --color-ter: #359ec6;
+    --color-borderhover: #8e6bf7;
     --color-border: #60a027;
-    --color-text: white;
+    --color-textPri: white;
+    --color-textSec: #38bdf8;
     --color-txlight: #839298;
   }
 }
 .dark {
-  --color-bgprimary: #0f0f0f;
-  --color-bgsecondary: #1f2021;
-  --color-primary: #4f9732;
-  --color-secondary: #c7924e;
-  --color-tertiary: #359ec6;
-  --color-borderhover: #07422a;
+  --color-bgprimary: #020711;
+  --color-bgsecondary: #08132b;
+  --color-pri: #34d399;
+  --color-sec: #ff5f56;
+  --color-ter: #359ec6;
+  --color-borderhover: #8e6bf7;
   --color-border: #60a027;
-  --color-text: white;
+  --color-textPri: white;
+  --color-textSec: #38bdf8;
   --color-txlight: #839298;
 }
 
 .light {
   --color-bgprimary: #ffffff;
-  --color-bgsecondary: #f0f4fa;
-  --color-primary: #4f9732;
-  --color-secondary: #c7924e;
-  --color-tertiary: #02134b;
-  --color-border: #a0cf76;
-  --color-borderhover: #07422a;
-  --color-text: black;
+  --color-bgsecondary: #e0d2d2;
+  --color-pri: #34d399;
+  --color-sec: #ff5f56;
+  --color-ter: #bbcdd4;
+  --color-borderhover: #8e6bf7;
+  --color-border: #60a027;
+  --color-textPri: black;
+  --color-textSec: #38bdf8;
   --color-txlight: #839298;
 }
 .icon,
@@ -185,5 +189,26 @@ select:-webkit-autofill {
   }
   to {
     transform: translateY(-8px);
+  }
+}
+.box {
+  opacity: 0;
+  transform: translateY(60px);
+}
+
+.box.animate {
+  animation: slideUp 0.5s linear forwards;
+  animation-delay: var(--delay);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

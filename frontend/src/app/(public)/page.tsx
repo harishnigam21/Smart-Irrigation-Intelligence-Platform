@@ -5,14 +5,14 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center text-center flex-1 px-6 py-16">
+      <section className="flex flex-col items-center justify-center text-center text-textPri flex-1 px-6 py-16">
         <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
           Manage Farms
           <br />
-          <span className="text-gray-400">Like a Pro ⚡</span>
+          <span className="text-textSec">Like a Pro ⚡</span>
         </h2>
 
-        <p className="text-gray-400 max-w-xl mb-8 text-lg">
+        <p className="text-textPri/80 max-w-xl mb-8 text-lg">
           Stay focused, organized, and productive with a minimal yet powerful
           smart Irrigation System system built for consistensy.
         </p>
@@ -20,13 +20,13 @@ export default function Home() {
         <div className="flex gap-4">
           <Link
             href="/dashboard"
-            className="px-6 py-3 rounded-xl bg-bgprimary/75 text-text hover:scale-105 transition"
+            className="px-6 py-3 rounded-xl bg-pri/80 font-bold text-black hover:bg-pri transition"
           >
             Get Started
           </Link>
           <Link
             href="/login"
-            className="px-6 py-3 rounded-xl border border-primary hover:bg-primary/20 transition"
+            className="px-6 py-3 rounded-xl border border-primary hover:bg-primary/20 transition font-bold"
           >
             Login
           </Link>
@@ -54,11 +54,11 @@ export default function Home() {
         ].map((item, i) => (
           <div
             key={`home/card/${i}`}
-            className="rounded-2xl bg-primary/30 backdrop-blur p-6 hover:scale-105 transition"
+            className="rounded-2xl bg-bgprimary/40 backdrop-blur p-6 hover:scale-105 border border-borderhover transition"
           >
-            <div className="mb-4 text-tertiary">{item.icon}</div>
+            <div className="mb-4 text-borderhover">{item.icon}</div>
             <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-            <p className="text-secondary text-sm">{item.desc}</p>
+            <p className="text-textPri/80 text-sm">{item.desc}</p>
           </div>
         ))}
       </section>

@@ -29,7 +29,7 @@ export default function WireRight({
       >
         <foreignObject x="-147.5" y="-165" width="5px" height="100px">
           <div
-            className={`relative w-full h-full bg-bgsecondary flex items-center justify-center rounded z-10 group-hover:border`}
+            className={`relative w-full h-full cursor-pointer bg-bgsecondary flex items-center justify-center rounded z-10 group-hover:border`}
           >
             <div
               className={`size-1 bg-blue-500 rounded-full ${isUsed.status == "active" ? "animate-signal-flow" : "animate-none"}`}

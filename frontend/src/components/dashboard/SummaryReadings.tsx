@@ -15,7 +15,10 @@ export default function SummaryReadings() {
     return null;
   }
   return summary.reading.data && summary.reading.data.length > 0 ? (
-    <article id="homeReadingRef" className="bg-bgsecondary rounded-xl p-4 flex flex-col mt-4">
+    <article
+      id="homeReadingRef"
+      className="bg-bgsecondary rounded-xl p-4 flex flex-col mt-4"
+    >
       <h2 className="mb-2 text-xl lg:text-2xl px-4">
         Reading
         <span className="border border-border rounded-full px-1 py-0.2 text-[8px] animate-pulse">
@@ -56,10 +59,10 @@ export default function SummaryReadings() {
                   {item.soilMoisture}
                 </td>
                 <td className="px-4 py-2 border-r text-center border-txlight/20 whitespace-nowrap">
-                  {item.temperature}
+                  {item.waterFlow}
                 </td>
                 <td className="px-4 py-2 border-r text-center border-txlight/20 whitespace-nowrap">
-                  {item.waterFlow}
+                  {item.temperature}
                 </td>
                 <td className="px-4 py-2 border-r text-center border-txlight/20 whitespace-nowrap">
                   {getDaysBetween(item.createdAt)}
@@ -71,7 +74,10 @@ export default function SummaryReadings() {
       </div>
     </article>
   ) : (
-    <article id="homeReadingRef" className="bg-bgsecondary rounded-xl p-4 flex justify-between">
+    <article
+      id="homeReadingRef"
+      className="bg-bgsecondary rounded-xl p-4 flex justify-between"
+    >
       <h2 className="mb-2 text-xl lg:text-2xl px-4">
         Farms : <span className="text-red-500">No Readings</span>
       </h2>

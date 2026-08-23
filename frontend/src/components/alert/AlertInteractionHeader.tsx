@@ -42,6 +42,7 @@ import BouncingLoading from "../Loading/BouncingLoading";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getDaysBetween } from "@/utils/getDate";
 import HorizontalBar from "../Loading/HorizontalBar";
+import { removeAlertID, setAlertID } from "@/store/slices/SummarySlice";
 
 export default function AlertInteractionHeader({
   data,
@@ -155,6 +156,7 @@ export default function AlertInteractionHeader({
       if (result && result.success && data) {
         if (data.status) {
           dispatch(deleteAlert(ids));
+          dispatch(removeAlertID(ids));
           dispatch(setSelectedAlerts(null));
           const crossCheck = alerts.alerts?.filter(
             (item) => !ids.includes(item._id),
@@ -243,6 +245,7 @@ export default function AlertInteractionHeader({
       if (result && result.success && data) {
         if (data.status) {
           dispatch(markRead(ids));
+          dispatch(removeAlertID(ids));
           dispatch(setSelectedAlerts(null));
         }
       } else {
@@ -257,6 +260,7 @@ export default function AlertInteractionHeader({
       if (result && result.success && data) {
         if (data.status) {
           dispatch(markUnRead(ids));
+          dispatch(setAlertID(ids));
           dispatch(setSelectedAlerts(null));
         }
       } else {
@@ -524,7 +528,7 @@ export default function AlertInteractionHeader({
       {(isPending || intereactionLoading) && (
         <HorizontalBar position="left-0" />
       )}
-      <article className="w-full grow overflow-y-auto">
+      <article className="w-full grow overflow-y-auto border-4 border-bgsecondary bg-bgprimary rounded-b-xl">
         {alerts.switchLoading.status ? (
           <div className="w-full h-full flex items-center justify-center">
             <BouncingLoading />
@@ -538,7 +542,7 @@ export default function AlertInteractionHeader({
                   automatically deleted.
                 </small>
                 <button
-                  className="rounded-full py-1 px-3 text-sm hover:bg-tertiary/20 text-tertiary cursor-pointer"
+                  className="rounded-full py-1 px-3 text-sm hover:bg-ter/20 text-ter pl-1 cursor-pointer"
                   onClick={() => {
                     if (alerts.alerts) {
                       const ids = alerts.alerts.map((item) => item._id);

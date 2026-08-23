@@ -297,8 +297,8 @@ export default function Register() {
     }
   };
   return (
-    <section className="w-screen h-screen fixed top-0 left-0 z-100 m-auto bg-bgsecondary p-4 flex justify-center-safe items-center-safe text-text">
-      <article className="relative w-full md:w-3/4 lg:w-1/2 p-8 rounded-4xl bg-bgprimary overflow-hidden">
+    <section className="w-screen h-screen fixed top-0 left-0 z-100 m-auto bg-bgprimary p-4 flex justify-center-safe items-center-safe text-text">
+      <article className="relative w-full md:w-3/4 lg:w-1/2 p-8 rounded-4xl bg-bgsecondary shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-hidden">
         {loadingBar && <HorizontalBar position="top-0 left-0" />}
         <div className="pb-4">
           <Image
@@ -311,31 +311,39 @@ export default function Register() {
             }}
           />
         </div>
-        <article className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2">
+        <article className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2 text-textPri">
           <div className="flex flex-col gap-3">
             {currentStep == 1 ? (
               <>
-                <h3 className="text-2xl md:text-4xl">
-                  Create a Google Account
+                <h3 className="text-2xl md:text-4xl font-light">
+                  Create a AgriFlow Account
                 </h3>
-                <p>Enter your name</p>
+                <p className="text-pri text-sm">Enter your name</p>
               </>
             ) : currentStep == 2 ? (
               <>
-                <h3 className="text-2xl md:text-4xl">Basic information</h3>
-                <p>Enter your birthday and gender</p>
+                <h3 className="text-2xl md:text-4xl font-light">
+                  Basic information
+                </h3>
+                <p className="text-pri text-sm">
+                  Enter your birthday and gender
+                </p>
               </>
             ) : currentStep == 3 ? (
               <>
-                <h3 className="text-2xl md:text-4xl">Unique Identity</h3>
-                <p>Enter Email for Unique Identification</p>
+                <h3 className="text-2xl md:text-4xl font-light">
+                  Unique Identity
+                </h3>
+                <p className="text-pri text-sm">
+                  Enter Email for Unique Identification
+                </p>
               </>
             ) : (
               <>
-                <h3 className="text-2xl md:text-4xl">
+                <h3 className="text-2xl md:text-4xl font-light">
                   Create a strong password
                 </h3>
-                <p>
+                <p className="text-pri text-sm">
                   Create a strong password with a mix of letters, numbers and
                   symbols
                 </p>
@@ -391,7 +399,7 @@ export default function Register() {
               <p className=" font-light text-sm">
                 Already have an account?{"  "}
                 <span
-                  className="text-tertiary font-medium cursor-pointer"
+                  className="text-ter font-bold cursor-pointer"
                   onClick={() => router.push("/login")}
                 >
                   SignIn
@@ -399,7 +407,7 @@ export default function Register() {
               </p>
               <button
                 onClick={handleStep1}
-                className="self-end rounded-full mt-10 py-2 px-5 cursor-pointer bg-border hover:bg-border/80 font-medium text-black"
+                className="self-end rounded-full mt-10 py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 font-bold text-black"
               >
                 Next
               </button>
@@ -495,7 +503,7 @@ export default function Register() {
               />
               <button
                 onClick={handleStep2}
-                className="self-end rounded-full mt-10 py-2 px-5 cursor-pointer bg-border hover:bg-border/80 font-medium text-black"
+                className="self-end rounded-full mt-10 py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 font-bold text-black"
               >
                 Next
               </button>
@@ -521,7 +529,7 @@ export default function Register() {
               </div>
               <button
                 onClick={handleStep3}
-                className="self-end rounded-full py-2 px-5 cursor-pointer bg-border hover:bg-border/80 font-medium text-black"
+                className="self-end rounded-full py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 font-bold text-black"
               >
                 Next
               </button>
@@ -578,13 +586,15 @@ export default function Register() {
                   id="showPassword"
                   checked={showPassword}
                   onChange={(e) => setShowPassword(e.currentTarget.checked)}
-                  className="w-4 h-4 accent-tertiary border border-txlight"
+                  className="w-3 h-3 accent-tertiary border border-txlight cursor-pointer"
                 />
-                <label htmlFor="showPassword">Show password</label>
+                <label htmlFor="showPassword" className="text-sm">
+                  Show password
+                </label>
               </div>
               <button
                 onClick={handleStep4}
-                className="self-end rounded-full mt-10 py-2 px-5 cursor-pointer bg-border hover:bg-border/80 text-black"
+                className="self-end rounded-full mt-10 py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 font-bold text-black"
               >
                 Submit
               </button>
@@ -600,7 +610,7 @@ export default function Register() {
             className="absolute left-0 top-0 bottom-0 translate-y-1/2 -ml-3 cursor-pointer"
             onClick={() => handleDirection("left")}
           >
-            <mediaList.FaCaretDown className="text-3xl -rotate-90 scale-x-250 scale-y-125 text-bgsecondary/80" />
+            <mediaList.FaCaretDown className="text-3xl -rotate-90 scale-x-250 scale-y-125 text-bgprimary" />
           </div>
         )}
         {/* Right */}

@@ -344,7 +344,7 @@ const FarmVisual: React.FC<FarmVisualProps> = ({
 
   return (
     <div className="w-full p-4 flex flex-col items-center justify-center select-none">
-      <div className="absolute top-1 right-1 flex flex-col items-center gap-2">
+      <div className="absolute top-2 right-2 flex flex-col items-center gap-2">
         <Focus
           onClick={toggleMagnifier}
           className={` text-3xl cursor-pointer ${focus ? "animate-pulse text-orange-500" : "text-yellow-300 animate-none"} transition-all`}
