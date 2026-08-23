@@ -1,7 +1,7 @@
 import { Alert } from "../models/Alert";
 import { AlertType } from "../constants/Alert";
 import mongoose, { ClientSession } from "mongoose";
-import { io, userSockedIds } from "../socket/socket";
+import { io, userSocketIds } from "../socket/socket";
 import { SystemMetrics } from "../models/SystemMetrics";
 
 export interface CreateAlertInput {
@@ -30,20 +30,22 @@ export const createAlert = async (payload: CreateAlertInput) => {
     await newAlert.populate("deviceId", "_id nickName");
     await session.commitTransaction();
     const userId = newAlert.userId.toString();
-    const targetSocketID = userSockedIds[userId];
+    const targetSocketID = userSocketIds.get(userId);
     if (targetSocketID && newAlert) {
-      io.to(targetSocketID).emit("newAlert", {
-        _id: newAlert._id,
-        type: newAlert.type,
-        status: newAlert.status,
-        severity: newAlert.severity,
-        message: newAlert.message,
-        createdAt: newAlert.createdAt,
-        important: newAlert.important,
-        star: newAlert.star,
-        deleted: newAlert.deleted,
-        deviceId: newAlert.deviceId,
-      });
+      for (const socketID of targetSocketID) {
+        io.to(socketID).emit("newAlert", {
+          _id: newAlert._id,
+          type: newAlert.type,
+          status: newAlert.status,
+          severity: newAlert.severity,
+          message: newAlert.message,
+          createdAt: newAlert.createdAt,
+          important: newAlert.important,
+          star: newAlert.star,
+          deleted: newAlert.deleted,
+          deviceId: newAlert.deviceId,
+        });
+      }
     }
     return newAlert;
   } catch (error) {

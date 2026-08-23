@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 import envVariables from "../envConfig";
 
 export let io: Server;
-export const userSockedIds: Record<string, string> = {};
+export const userSocketIds = new Map<string, Set<string>>();
 export const initSocket = (server: any) => {
   io = new Server(server, {
     cors: {
@@ -14,16 +14,17 @@ export const initSocket = (server: any) => {
   io.on("connection", (socket) => {
     const userID = socket.handshake.query.userID as string;
     console.log("User connected:", userID);
-    if (userID) {
-      userSockedIds[userID] = socket.id;
+    if (!userID) return;
+    if (!userSocketIds.has(userID)) {
+      userSocketIds.set(userID, new Set());
     }
-    io.emit("getOnlineUsers", Object.keys(userSockedIds));
-
+    userSocketIds.get(userID)!.add(socket.id);
+    io.emit("getOnlineUsers", Object.keys(userSocketIds));
     socket.on("disconnect", () => {
       console.log("User disconnected:", userID);
       io.emit("getOfflineUsers", userID);
-      delete userSockedIds[userID];
-      io.emit("getOnlineUsers", Object.keys(userSockedIds));
+      userSocketIds.get(userID)?.delete(socket.id);
+      io.emit("getOnlineUsers", Object.keys(userSocketIds));
     });
   });
 

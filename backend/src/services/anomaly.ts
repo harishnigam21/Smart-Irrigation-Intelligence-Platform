@@ -34,7 +34,7 @@ export const detectAnomalies = (reading: SensorReadingData) => {
     });
   }
 
-  if (reading.waterFlow < 0) {
+  if (reading.waterFlow <= 0) {
     alerts.push({
       type: AlertType.INVALID_WATER_FLOW,
       severity: "HIGH",

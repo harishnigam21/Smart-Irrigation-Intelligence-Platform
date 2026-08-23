@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { ISensorReading, SensorReading } from "../models/SensorReadings";
-import { io, userSockedIds } from "../socket/socket";
+import { io, userSocketIds } from "../socket/socket";
 import { AuthRequest } from "../types/AuthRequest";
 export type ReadingType = Pick<
   ISensorReading,
@@ -34,19 +34,21 @@ export const saveReading = async (data: ReadingType, userId: string) => {
     _id: mongoose.Types.ObjectId;
     nickName: string;
   };
-  const targetSocketID = userSockedIds[userId];
+  const targetSocketID = userSocketIds.get(userId);
   if (targetSocketID && newReading) {
-    io.to(targetSocketID).emit("newReading", {
-      _id: newReading._id,
-      deviceId: {
-        _id: device._id,
-        nickName: device.nickName,
-      },
-      soilMoisture: newReading.soilMoisture,
-      waterFlow: newReading.waterFlow,
-      temperature: newReading.temperature,
-      createdAt: newReading.createdAt,
-    });
+    for (const socketID of targetSocketID) {
+      io.to(socketID).emit("newReading", {
+        _id: newReading._id,
+        deviceId: {
+          _id: device._id,
+          nickName: device.nickName,
+        },
+        soilMoisture: newReading.soilMoisture,
+        waterFlow: newReading.waterFlow,
+        temperature: newReading.temperature,
+        createdAt: newReading.createdAt,
+      });
+    }
   }
   return newReading;
 };
