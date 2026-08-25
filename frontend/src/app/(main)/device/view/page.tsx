@@ -12,6 +12,7 @@ import SimulationReading from "@/components/device/SimulationReading";
 import HorizontalBar from "@/components/Loading/HorizontalBar";
 import { mediaList } from "@/assets/scripts/mediaList";
 import Image from "next/image";
+import DeviceViewLoading from "@/components/device/DeviceViewLoading";
 export default function MicrocontrollerTwin() {
   const summary = useAppSelector((store) => store.summary);
 
@@ -44,7 +45,9 @@ export default function MicrocontrollerTwin() {
       }
     }
   }, [summary, deviceIndex]);
-
+  if (!mounted) {
+    return <DeviceViewLoading />;
+  }
   return mounted && selectedDevice ? (
     <article
       className={`relative w-full h-full flex flex-col justify-center items-center bg-bgprimary blueprint-grid text-textPri`}
