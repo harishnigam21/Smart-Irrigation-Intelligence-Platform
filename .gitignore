@@ -25,5 +25,3 @@ todo.txt
 *.njsproj
 *.sln
 *.sw?
-backend/src/envConfig.ts
-frontend/src/envConfig.ts
