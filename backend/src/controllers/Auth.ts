@@ -51,12 +51,14 @@ export const LogIn = async (req: Request, res: Response) => {
       maxAge: 24 * 60 * 60 * 1000,
       secure: in_production,
       sameSite: in_production ? "none" : "lax",
+      domain: envVariables.TOP_DOMAIN,
     });
     res.cookie("jwt", refresh_token, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
       secure: in_production,
       sameSite: in_production ? "none" : "lax",
+      domain: envVariables.TOP_DOMAIN,
     }); //TODO: add secure:true at production level
     console.log("Successfully Verified User : ", ExistingUser.email);
     return res.status(200).json({
@@ -144,6 +146,7 @@ export const handleRefresh = async (req: Request, res: Response) => {
           maxAge: 24 * 60 * 60 * 1000,
           secure: in_production,
           sameSite: in_production ? "none" : "lax",
+          domain: envVariables.TOP_DOMAIN,
         });
         return res.status(200).json({ acTk: access_token, userInfo: other });
       },

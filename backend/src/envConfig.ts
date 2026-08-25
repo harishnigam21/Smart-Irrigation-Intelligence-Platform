@@ -7,5 +7,6 @@ const envVariables = {
   ACCESS_TOKEN_KEY: process.env.ACCESS_TOKEN_KEY,
   REFRESH_TOKEN_KEY: process.env.REFRESH_TOKEN_KEY,
   MONGO_URI: process.env.MONGO_URI,
+  TOP_DOMAIN: process.env.TOP_DOMAIN,
 };
 export default envVariables;
