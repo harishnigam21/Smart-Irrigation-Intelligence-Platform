@@ -110,29 +110,50 @@ export default function DeviceFeatures() {
             readMore: "Modify Settings",
           },
         ].map((item, i) => (
-          <div
-            onMouseEnter={(e) => {
-              e.currentTarget.childNodes[2]?.classList.remove("line-clamp-2");
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.childNodes[2]?.classList.add("line-clamp-2");
-            }}
+          <FeatureCard
             key={`device/service/card/${i}`}
-            className={`box rounded-2xl bg-bgsecondary/40  backdrop-blur min-w-55 max-w-80 p-3 hover:scale-105 border border-borderhover transition-all ${isVisible ? `animate` : ""}`}
-            style={{ "--delay": `${i * 0.1}s` } as React.CSSProperties}
-          >
-            <div className="mb-4 text-pri">{item.icon}</div>
-            <h3 className="text-lg font-semibold mb-2 line-clamp-1">
-              {item.title}
-            </h3>
-            <p className="text-textPri/80 text-sm line-clamp-2">{item.desc}</p>
-            <small className="text-pri flex gap-1 items-center py-1 cursor-pointer">
-              {item.readMore}
-              <MoveRight className="size-3 mt-1" />
-            </small>
-          </div>
+            item={item}
+            i={i}
+            isVisible={isVisible}
+          />
         ))}
       </article>
     </section>
   );
 }
+
+const FeatureCard = ({
+  item,
+  i,
+  isVisible,
+}: {
+  item: any;
+  i: number;
+  isVisible: boolean;
+}) => {
+  const [more, setMore] = useState<boolean>(false);
+  return (
+    <div
+      onMouseEnter={() => {
+        setMore(true);
+      }}
+      onMouseLeave={() => {
+        setMore(false);
+      }}
+      className={`box rounded-2xl bg-bgsecondary/40  backdrop-blur min-w-55 max-w-80 p-3 hover:scale-105 border border-borderhover transition-all ${isVisible ? `animate` : ""}`}
+      style={{ "--delay": `${i * 0.1}s` } as React.CSSProperties}
+    >
+      <div className="mb-4 text-pri">{item.icon}</div>
+      <h3 className={`text-lg font-semibold mb-2 ${!more && "line-clamp-1"}`}>
+        {item.title}
+      </h3>
+      <p className={`text-textPri/80 text-sm ${!more && "line-clamp-2"}`}>
+        {item.desc}
+      </p>
+      <small className="text-pri flex gap-1 items-center py-1 cursor-pointer">
+        {item.readMore}
+        <MoveRight className="size-3 mt-1" />
+      </small>
+    </div>
+  );
+};

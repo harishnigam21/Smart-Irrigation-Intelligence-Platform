@@ -10,8 +10,6 @@ import Loading from "./loading";
 import DeviceLayout from "@/components/device/DeviceLayout";
 import SimulationReading from "@/components/device/SimulationReading";
 import HorizontalBar from "@/components/Loading/HorizontalBar";
-import { mediaList } from "@/assets/scripts/mediaList";
-import Image from "next/image";
 import DeviceViewLoading from "@/components/device/DeviceViewLoading";
 export default function MicrocontrollerTwin() {
   const summary = useAppSelector((store) => store.summary);
