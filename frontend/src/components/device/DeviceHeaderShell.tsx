@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import MainHeader from "../repeated/MainHeader";
+import DeviceLoading from "./DeviceLoading";
 
 export default function DeviceHeaderShell({
   children,
@@ -14,7 +15,7 @@ export default function DeviceHeaderShell({
     setMounted(true);
   }, []);
   if (!mounted) {
-    return <>Loading....</>;
+    return <DeviceLoading />;
   }
   return (
     <section className="relative w-full h-screen bg-bgsecondary">

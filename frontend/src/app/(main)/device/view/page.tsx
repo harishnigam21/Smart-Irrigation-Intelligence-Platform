@@ -154,7 +154,7 @@ export default function MicrocontrollerTwin() {
                 ease-out cursor-pointer hover:bg-borderhover/50 hover:rounded-full hover:py-1 hover:px-3
                 `}
             >
-              Option 2
+              Add Device
             </p>
 
             <div

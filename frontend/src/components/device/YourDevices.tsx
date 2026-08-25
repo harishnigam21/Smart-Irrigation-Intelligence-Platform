@@ -30,9 +30,9 @@ export default function YourDevices() {
   return (
     <section
       id="your_devices"
-      className="w-full bg-bgprimary mt-20 rounded-b-xl p-4 blueprint-grid12"
+      className="w-full bg-bgprimary pt-14 rounded-b-xl p-4 blueprint-grid12"
     >
-      <div className="sensor-flow-header">
+      <div className="relative sensor-flow-header">
         <div className="eyebrow text-pri">
           <span className="live-dot " />
           <span className="text-pri">List of Devices</span>
@@ -43,7 +43,7 @@ export default function YourDevices() {
       </div>
       {devices && devices.length > 0 ? (
         <article ref={sectionRef} className="relative max-w-fit">
-          <div className=" flex flex-nowrap gap-2 sm:gap-4 overflow-x-auto overflow-y-hidden scrollbar-none py-2 sm:mr-30">
+          <div className=" flex flex-nowrap gap-2 sm:gap-4 overflow-x-auto overflow-y-hidden scrollbar-none py-2 px-3 sm:mr-30">
             {devices.map((item, i) => (
               <div
                 key={`device/card/${i}`}
@@ -64,11 +64,12 @@ export default function YourDevices() {
                     style={{ animationDuration: "1s" }}
                   ></div>
                 </div>
+
                 <small
                   className="text-pri text-xs flex gap-1 items-center py-1 cursor-pointer"
                   onClick={() => {
                     dispatch(setHideHeader(false));
-                    router.push(`/device/view?${item._id}`);
+                    router.push(`/device/view?v=${item._id}`);
                   }}
                 >
                   View it

@@ -1,7 +1,5 @@
-import React from 'react'
+import DeviceLoading from "@/components/device/DeviceLoading";
 
 export default function loading() {
-  return (
-    <div>loading</div>
-  )
+  return <DeviceLoading />;
 }

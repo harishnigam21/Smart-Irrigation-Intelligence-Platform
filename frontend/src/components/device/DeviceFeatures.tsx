@@ -35,7 +35,7 @@ export default function DeviceFeatures() {
   return (
     <section
       id="deviceFeatures"
-      className="w-full bg-bgprimary mt-20 rounded-b-xl p-4 blueprint-grid12"
+      className="w-full bg-bgprimary mt-20 p-4 blueprint-grid12"
     >
       <div className="sensor-flow-header">
         <div className="eyebrow text-pri">
@@ -111,8 +111,14 @@ export default function DeviceFeatures() {
           },
         ].map((item, i) => (
           <div
+            onMouseEnter={(e) => {
+              e.currentTarget.childNodes[2]?.classList.remove("line-clamp-2");
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.childNodes[2]?.classList.add("line-clamp-2");
+            }}
             key={`device/service/card/${i}`}
-            className={`box rounded-2xl bg-bgsecondary/40 backdrop-blur min-w-55 max-w-80 p-3 hover:scale-105 border border-borderhover transition ${isVisible ? `animate` : ""}`}
+            className={`box rounded-2xl bg-bgsecondary/40  backdrop-blur min-w-55 max-w-80 p-3 hover:scale-105 border border-borderhover transition-all ${isVisible ? `animate` : ""}`}
             style={{ "--delay": `${i * 0.1}s` } as React.CSSProperties}
           >
             <div className="mb-4 text-pri">{item.icon}</div>
