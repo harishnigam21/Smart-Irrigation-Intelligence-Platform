@@ -63,8 +63,8 @@ export default function MicrocontrollerTwin() {
           />
         )}
         <h1
-          style={{ fontFamily: "Carrington", fontWeight: "lighter" }}
-          className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-borderhover"
+          style={{ fontFamily: "Carrington" }}
+          className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extralight text-borderhover"
         >
           {selectedDevice.nickName}
         </h1>
