@@ -115,7 +115,7 @@ export default function Login() {
 
   return (
     <section className="w-screen h-screen fixed top-0 left-0 m-auto bg-bgprimary z-100 p-4 flex justify-center-safe items-center-safe text-textPri blueprint-grid12">
-      <article className="relative w-full md:w-3/4 lg:w-1/2 p-8 rounded-4xl bg-bgsecondary shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-x-hidden">
+      <article className="relative w-full md:w-3/4 lg:w-1/2 p-8 rounded-4xl bg-bgsecondary/70 shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-x-hidden">
         {loadingBar && <HorizontalBar position="top-0 left-0" />}
         <div className="pb-4">
           <Image

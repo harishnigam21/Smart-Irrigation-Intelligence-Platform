@@ -137,7 +137,7 @@ export default function MainHeader({
             }
             setShowMore(false);
           }}
-          className={`absolute z-50 ${showMore ? "p-2 opacity-100" : "h-0 overflow-hidden p-0 opacity-0"}  right-1 rounded-xl bg-bgsecondary top-14 gap-4 grid grid-cols-4 lg:grid-cols-5 transition-all duration-200`}
+          className={`absolute z-50 ${showMore ? "p-4 opacity-100" : "h-0 overflow-hidden p-0 opacity-0"}  right-0 rounded-md bg-bgsecondary top-15.5 gap-4 grid grid-cols-3 transition-all duration-200`}
         >
           <Link
             href={"/dashboard"}
