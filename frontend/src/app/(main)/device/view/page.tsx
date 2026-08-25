@@ -10,6 +10,8 @@ import Loading from "./loading";
 import DeviceLayout from "@/components/device/DeviceLayout";
 import SimulationReading from "@/components/device/SimulationReading";
 import HorizontalBar from "@/components/Loading/HorizontalBar";
+import { mediaList } from "@/assets/scripts/mediaList";
+import Image from "next/image";
 export default function MicrocontrollerTwin() {
   const summary = useAppSelector((store) => store.summary);
 
@@ -44,8 +46,10 @@ export default function MicrocontrollerTwin() {
   }, [summary, deviceIndex]);
 
   return mounted && selectedDevice ? (
-    <article className="relative w-full h-full flex flex-col justify-center items-center">
-      <div className="flex items-center justify-center-safe text-textPri gap-3 absolute top-0 z-10 pt-14">
+    <article
+      className={`relative w-full h-full flex flex-col justify-center items-center bg-bgprimary blueprint-grid text-textPri`}
+    >
+      <div className="flex items-center justify-center-safe text-textPri gap-3 absolute top-0 z-10 mt-20">
         {summary.device.length > 1 && deviceIndex !== 0 && !id && (
           <ChevronLeft
             onClick={() => {
@@ -59,7 +63,7 @@ export default function MicrocontrollerTwin() {
         )}
         <h1
           style={{ fontFamily: "Carrington", fontWeight: "lighter" }}
-          className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl"
+          className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-borderhover"
         >
           {selectedDevice.nickName}
         </h1>
@@ -124,7 +128,7 @@ export default function MicrocontrollerTwin() {
         ${moreOptions && "max-w-40 opacity-100 translate-x-0"}
         transition-all
         duration-500
-        ease-out cursor-pointer hover:bg-bgsecondary hover:rounded-full hover:py-1 hover:px-3
+        ease-out cursor-pointer hover:bg-borderhover/50 hover:rounded-full hover:py-1 hover:px-3
       `}
             onClick={() => {
               setMoreOptions(false);
@@ -147,7 +151,7 @@ export default function MicrocontrollerTwin() {
                 ${moreOptions && "max-w-24 opacity-100 translate-x-0"}
                 transition-all
                 duration-500
-                ease-out cursor-pointer hover:bg-bgsecondary hover:rounded-full hover:py-1 hover:px-3
+                ease-out cursor-pointer hover:bg-borderhover/50 hover:rounded-full hover:py-1 hover:px-3
                 `}
             >
               Option 2
@@ -158,7 +162,7 @@ export default function MicrocontrollerTwin() {
               className="
           rounded-full
           size-8
-          bg-bgsecondary
+          bg-borderhover/50
           cursor-pointer
           flex
           items-center
@@ -168,7 +172,7 @@ export default function MicrocontrollerTwin() {
           group-hover:scale-110
         "
             >
-              <div className="size-5 rounded-full bg-bgprimary"></div>
+              <div className="size-5 rounded-full bg-bgprimary/50"></div>
             </div>
 
             <p
@@ -181,7 +185,7 @@ export default function MicrocontrollerTwin() {
                 ${moreOptions && "translate-x-0 opacity-100 max-w-24"}
                 transition-all
                 duration-500
-                ease-out cursor-pointer hover:bg-bgsecondary hover:rounded-full hover:py-1 hover:px-3
+                ease-out cursor-pointer hover:bg-borderhover/50 hover:rounded-full hover:py-1 hover:px-3
                 `}
             >
               Option 3
@@ -199,7 +203,7 @@ export default function MicrocontrollerTwin() {
               ${moreOptions && "max-w-40 opacity-100 translate-x-0"}
               transition-all
               duration-500
-              ease-out cursor-pointer hover:bg-bgsecondary hover:rounded-full hover:py-1 hover:px-3
+              ease-out cursor-pointer hover:bg-borderhover/50 hover:rounded-full hover:py-1 hover:px-3
               `}
           >
             Option 4

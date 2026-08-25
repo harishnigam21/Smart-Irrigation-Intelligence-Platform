@@ -6,6 +6,7 @@ interface screenSizeType {
 interface stateProps {
   screenSize: screenSizeType;
   headerHeight: number | null;
+  hideHeader: boolean;
 }
 const initialState: stateProps = {
   screenSize: {
@@ -13,6 +14,7 @@ const initialState: stateProps = {
     height: 0,
   },
   headerHeight: null,
+  hideHeader: false,
 };
 const LayoutSlice = createSlice({
   name: "mainLayout",
@@ -24,7 +26,11 @@ const LayoutSlice = createSlice({
     setHeaderHeight: (state, action: PayloadAction<number | null>) => {
       state.headerHeight = action.payload;
     },
+    setHideHeader: (state, action: PayloadAction<boolean>) => {
+      state.hideHeader = action.payload;
+    },
   },
 });
 export default LayoutSlice.reducer;
-export const { setScreenSize, setHeaderHeight } = LayoutSlice.actions;
+export const { setScreenSize, setHeaderHeight, setHideHeader } =
+  LayoutSlice.actions;

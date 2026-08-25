@@ -17,7 +17,7 @@ export default function SummaryReadings() {
   return summary.reading.data && summary.reading.data.length > 0 ? (
     <article
       id="homeReadingRef"
-      className="bg-bgsecondary rounded-xl p-4 flex flex-col mt-4"
+      className="bg-bgsecondary/70 rounded-xl p-4 flex flex-col mt-4"
     >
       <h2 className="mb-2 text-xl lg:text-2xl px-4">
         Reading

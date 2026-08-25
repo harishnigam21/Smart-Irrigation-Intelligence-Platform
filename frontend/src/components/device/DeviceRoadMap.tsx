@@ -172,7 +172,7 @@ export default function DeviceRoadMap() {
   };
 
   return (
-    <section className="sensor-flow-section">
+    <section className="sensor-flow-section blueprint-grid09">
       {/* Header */}
 
       <div className="sensor-flow-header">

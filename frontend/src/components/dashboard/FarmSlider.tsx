@@ -40,7 +40,7 @@ export default function FarmSlider() {
     return null;
   }
   return farms && farms.length > 0 ? (
-    <article className="relative max-h-screen bg-bgsecondary rounded-xl py-4">
+    <article className="relative max-h-screen bg-bgsecondary/70 rounded-xl py-4">
       <h2 className="mb-2 text-xl lg:text-2xl px-4">
         Farm{" "}
         <span className="text-ter">

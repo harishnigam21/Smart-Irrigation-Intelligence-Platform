@@ -8,6 +8,7 @@ body,
   overflow: hidden;
   background-color: var(--color-bgprimary);
   color: var(--color-text);
+  scroll-behavior: smooth;
 }
 @font-face {
   font-family: "Carrington";
@@ -193,7 +194,7 @@ select:-webkit-autofill {
 }
 .box {
   opacity: 0;
-  transform: translateY(60px);
+  transform: translateY(30px);
 }
 
 .box.animate {
@@ -211,4 +212,94 @@ select:-webkit-autofill {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* patterns */
+/* =========================================
+   TECH GRID PATTERNS
+========================================= */
+
+/* simple squares */
+.blueprint-grid {
+  background-image:
+    linear-gradient(rgba(222, 222, 227, 0.1) 0.1px, transparent 1px),
+    linear-gradient(90deg, rgba(222, 222, 227, 0.1) 0.1px, transparent 1px),
+    linear-gradient(rgba(222, 222, 227, 0.1) 0.1px, transparent 1px),
+    linear-gradient(90deg, rgba(222, 222, 227, 0.1) 0.1px, transparent 1px);
+
+  background-size:
+    100px 100px,
+    100px 10px,
+    150px 150px,
+    150px 10px;
+}
+
+/* radar */
+.blueprint-grid07 {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+
+  background-color: var(--color-bgprimary);
+
+  background-image: repeating-radial-gradient(
+    circle at center,
+    transparent 0,
+    transparent 70px,
+    rgba(222, 222, 227, 0.045) 71px,
+    transparent 72px
+  );
+}
+
+/* perspective */
+.blueprint-grid08 {
+  position: relative;
+  overflow: hidden;
+  perspective: 800px;
+}
+.blueprint-grid08::before {
+  content: "";
+
+  position: absolute;
+
+  width: 180%;
+  height: 140%;
+
+  left: -40%;
+  top: 15%;
+
+  background-image:
+    linear-gradient(rgba(222, 222, 227, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(222, 222, 227, 0.1) 1px, transparent 1px);
+
+  background-size: 70px 70px;
+
+  transform: rotateX(65deg) scale(1.5);
+
+  transform-origin: center bottom;
+
+  pointer-events: none;
+}
+
+/* circuit */
+.blueprint-grid09 {
+  background-color: var(--color-bgprimary);
+
+  background-image: url("data:image/svg+xml,%3Csvg width='900' height='600' viewBox='0 0 900 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%235f7f9f' stroke-opacity='.18' stroke-width='1'%3E%3Cpath d='M0 100H120V60H220V140H300V90H390'/%3E%3Cpath d='M0 280H80V220H180V300H270V250H350V180H450'/%3E%3Cpath d='M900 80H780V130H700V70H610V160H520'/%3E%3Cpath d='M900 300H820V250H740V330H640V290H560'/%3E%3Cpath d='M120 600V500H180V430H280V480H360V390H440'/%3E%3Cpath d='M700 600V520H640V450H560V500H480V410'/%3E%3Cpath d='M300 0V70H360V120H430V200'/%3E%3Cpath d='M600 0V90H540V150H470V220'/%3E%3C/g%3E%3Cg fill='%235f7f9f' fill-opacity='.25'%3E%3Ccircle cx='120' cy='100' r='3'/%3E%3Ccircle cx='220' cy='60' r='3'/%3E%3Ccircle cx='300' cy='140' r='3'/%3E%3Ccircle cx='80' cy='280' r='3'/%3E%3Ccircle cx='180' cy='220' r='3'/%3E%3Ccircle cx='780' cy='80' r='3'/%3E%3Ccircle cx='700' cy='130' r='3'/%3E%3Ccircle cx='820' cy='300' r='3'/%3E%3Ccircle cx='180' cy='500' r='3'/%3E%3Ccircle cx='280' cy='430' r='3'/%3E%3Ccircle cx='640' cy='520' r='3'/%3E%3Ccircle cx='360' cy='70' r='3'/%3E%3Ccircle cx='540' cy='90' r='3'/%3E%3C/g%3E%3C/svg%3E");
+
+  background-size: 900px 600px;
+}
+
+/* Topographic */
+.blueprint-grid12 {
+  position: relative;
+  overflow: hidden;
+
+  background-color: var(--color-bgprimary);
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'%3E%3Cg fill='none' stroke='%2395a4b8' stroke-opacity='.14' stroke-width='1'%3E%3Cpath d='M-100 130 C40 20 150 80 230 150 C310 220 400 170 470 80 C540 -10 650 40 710 120 C770 200 850 210 930 130 C1010 50 1110 40 1300 120'/%3E%3Cpath d='M-110 155 C30 45 140 105 220 175 C300 245 390 195 460 105 C530 15 640 65 700 145 C760 225 840 235 920 155 C1000 75 1100 65 1310 145'/%3E%3Cpath d='M-120 180 C20 70 130 130 210 200 C290 270 380 220 450 130 C520 40 630 90 690 170 C750 250 830 260 910 180 C990 100 1090 90 1320 170'/%3E%3Cpath d='M-130 205 C10 95 120 155 200 225 C280 295 370 245 440 155 C510 65 620 115 680 195 C740 275 820 285 900 205 C980 125 1080 115 1330 195'/%3E%3Cpath d='M-140 230 C0 120 110 180 190 250 C270 320 360 270 430 180 C500 90 610 140 670 220 C730 300 810 310 890 230 C970 150 1070 140 1340 220'/%3E%3Cpath d='M-150 255 C-10 145 100 205 180 275 C260 345 350 295 420 205 C490 115 600 165 660 245 C720 325 800 335 880 255 C960 175 1060 165 1350 245'/%3E%3Cpath d='M-160 280 C-20 170 90 230 170 300 C250 370 340 320 410 230 C480 140 590 190 650 270 C710 350 790 360 870 280 C950 200 1050 190 1360 270'/%3E%3Cpath d='M-120 500 C20 390 120 420 200 500 C280 580 350 610 440 540 C530 470 600 390 700 430 C800 470 850 570 950 590 C1050 610 1130 520 1320 450'/%3E%3Cpath d='M-130 525 C10 415 110 445 190 525 C270 605 340 635 430 565 C520 495 590 415 690 455 C790 495 840 595 940 615 C1040 635 1120 545 1330 475'/%3E%3Cpath d='M-140 550 C0 440 100 470 180 550 C260 630 330 660 420 590 C510 520 580 440 680 480 C780 520 830 620 930 640 C1030 660 1110 570 1340 500'/%3E%3Cpath d='M-150 575 C-10 465 90 495 170 575 C250 655 320 685 410 615 C500 545 570 465 670 505 C770 545 820 645 920 665 C1020 685 1100 595 1350 525'/%3E%3Cpath d='M-160 600 C-20 490 80 520 160 600 C240 680 310 710 400 640 C490 570 560 490 660 530 C760 570 810 670 910 690 C1010 710 1090 620 1360 550'/%3E%3Cpath d='M100 -80 C170 40 130 120 80 200 C30 280 60 360 150 400 C240 440 260 520 190 600 C120 680 160 760 250 880'/%3E%3Cpath d='M125 -90 C195 30 155 110 105 190 C55 270 85 350 175 390 C265 430 285 510 215 590 C145 670 185 750 275 890'/%3E%3Cpath d='M850 -100 C780 20 820 100 880 180 C940 260 910 340 820 390 C730 440 720 520 790 600 C860 680 820 760 730 890'/%3E%3Cpath d='M875 -110 C805 10 845 90 905 170 C965 250 935 330 845 380 C755 430 745 510 815 590 C885 670 845 750 755 900'/%3E%3C/g%3E%3C/svg%3E");
+
+  background-size: 1200px 800px;
+  background-position: center;
+  background-repeat: repeat;
 }
