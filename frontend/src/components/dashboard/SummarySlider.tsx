@@ -27,12 +27,52 @@ export default function SummarySlider() {
   const [mounted, setMounted] = useState<boolean>(false);
   const alertRef = useRef<HTMLDivElement>(null);
   const handleViewToAlert = () => {
-    alertRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "center",
-    });
+    const element = alertRef.current;
+    if (!element) return;
+    let container = element.parentElement;
+    while (container) {
+      const style = getComputedStyle(container);
+      if (
+        /(auto|scroll)/.test(style.overflowY) &&
+        container.scrollHeight > container.clientHeight
+      ) {
+        break;
+      }
+      container = container.parentElement;
+    }
+    if (!container) return;
+    const sliderID = document.getElementById("summarySlider");
+    if (sliderID && element) {
+      const targetLeft = element.offsetLeft - sliderID.offsetLeft;
+      sliderID.scrollLeft = targetLeft;
+    }
+    const start = container.scrollTop;
+    const containerRect = container.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+    const target =
+      start +
+      (elementRect.top - containerRect.top) -
+      (container.clientHeight / 2 - element.clientHeight / 2);
+    const distance = target - start;
+    const duration = 500;
+    let startTime: number | null = null;
+    const easeInOut = (t: number) => {
+      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    };
+    const animate = (currentTime: number) => {
+      if (startTime === null) {
+        startTime = currentTime;
+      }
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      container.scrollTop = start + distance * easeInOut(progress);
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+    requestAnimationFrame(animate);
   };
+
   const alertAudioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -80,9 +120,10 @@ export default function SummarySlider() {
     return null;
   }
   return (
-    <>
+    <section>
       {summary && (
         <div
+          id="summarySlider"
           ref={summarySliderRef}
           className="flex justify-start relative flex-nowrap overflow-x-auto scrollbar-none gap-4 mb-4"
         >
@@ -104,13 +145,35 @@ export default function SummarySlider() {
           <div
             className="rounded-lg border border-border hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer"
             onClick={() => {
-              const target = document.getElementById("homeReadingRef");
-              if (target) {
-                target.scrollIntoView({
-                  behavior: "smooth",
-                  block: "center",
-                  inline: "center",
-                });
+              const targetele = document.getElementById("homeReadingRef");
+              if (targetele) {
+                const parent = targetele.parentElement;
+                if (!parent) return;
+                const start = parent.scrollTop;
+                const containerRect = parent.getBoundingClientRect();
+                const elementRect = targetele.getBoundingClientRect();
+                const target =
+                  start +
+                  (elementRect.top - containerRect.top) -
+                  (parent.clientHeight / 2 - targetele.clientHeight / 2);
+                const distance = target - start;
+                const duration = 500;
+                let startTime: number | null = null;
+                const easeInOut = (t: number) => {
+                  return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+                };
+                const animate = (currentTime: number) => {
+                  if (startTime === null) {
+                    startTime = currentTime;
+                  }
+                  const elapsed = currentTime - startTime;
+                  const progress = Math.min(elapsed / duration, 1);
+                  parent.scrollTop = start + distance * easeInOut(progress);
+                  if (progress < 1) {
+                    requestAnimationFrame(animate);
+                  }
+                };
+                requestAnimationFrame(animate);
               }
             }}
           >
@@ -399,6 +462,7 @@ export default function SummarySlider() {
           </div>
           {/* Alerts */}
           <div
+            id="alertPlot"
             className={`rounded-lg border ${summary.alerts.length > 0 ? "border-red-500 shadow-red-500 shadow-[0.1px_0.1px_30px_5px_inset] animate-pulse" : "border-border animate-none"} hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer`}
             ref={alertRef}
             onClick={() => {
@@ -446,6 +510,6 @@ export default function SummarySlider() {
           <Siren className="size-8" />
         </div>
       )}
-    </>
+    </section>
   );
 }

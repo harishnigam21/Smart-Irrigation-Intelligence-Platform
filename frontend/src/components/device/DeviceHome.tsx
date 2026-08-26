@@ -9,6 +9,7 @@ import { ChevronsDown } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import DeviceHomeBGVideo from "./DeviceHomeBGVideo";
+import { scrollToSection } from "@/hooks/useScrollToSection";
 
 export default function DeviceHome({ secure }: { secure: boolean }) {
   const [videoRef, videoHeight] = useElementHeight();
@@ -16,45 +17,6 @@ export default function DeviceHome({ secure }: { secure: boolean }) {
   const [isDesktop, setIsDesktop] = useState<boolean>(true);
   const [videoLoaded, setVideoLoaded] = useState<boolean>(false);
   const pipelineParRef = useRef<HTMLElement | null>(null);
-  const scrollToSection = (id: string) => {
-    const container = pipelineParRef.current;
-    const element = document.getElementById(id);
-
-    if (!container || !element) return;
-
-    const start = container.scrollTop;
-
-    const containerRect = container.getBoundingClientRect();
-    const elementRect = element.getBoundingClientRect();
-
-    const target = start + (elementRect.top - containerRect.top);
-
-    const distance = target - start;
-    const duration = 1000;
-
-    let startTime: number | null = null;
-
-    const easeInOut = (t: number) => {
-      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-    };
-
-    const animate = (currentTime: number) => {
-      if (startTime === null) {
-        startTime = currentTime;
-      }
-
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-
-      container.scrollTop = start + distance * easeInOut(progress);
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
-
-    requestAnimationFrame(animate);
-  };
 
   useEffect(() => {
     if (screenWidth >= 640) {
@@ -93,14 +55,14 @@ export default function DeviceHome({ secure }: { secure: boolean }) {
             <div className="flex gap-3 items-center flex-wrap justify-center">
               <button
                 className="px-4 py-2 font-bold rounded-full bg-borderhover/70 flex items-center cursor-pointer"
-                onClick={() => scrollToSection("pipeline")}
+                onClick={() => scrollToSection("pipeline", pipelineParRef)}
               >
                 PipeLine
                 <ChevronsDown className="animate-bounce -mb-2 duration-1000 transition-all" />
               </button>
               <button
                 className="px-4 py-2 font-bold rounded-full bg-pri/70 flex items-center cursor-pointer"
-                onClick={() => scrollToSection("your_devices")}
+                onClick={() => scrollToSection("your_devices", pipelineParRef)}
               >
                 Your Devices
               </button>
