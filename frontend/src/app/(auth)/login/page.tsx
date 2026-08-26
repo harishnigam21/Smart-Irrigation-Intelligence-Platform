@@ -6,7 +6,6 @@ import { setLoginStatus, setUser } from "@/store/slices/UserSlice";
 import { AppDispatch } from "@/store/Store";
 import { Data } from "@/types/data";
 import { User } from "@/types/user";
-import axios from "axios";
 import { User2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -79,31 +78,21 @@ export default function Login() {
           } else {
             if (data?.errors) {
               setErrorMess(data.errors);
+            } else if (result.status == 404) {
+              setTimeout(() => {
+                router.push("/register");
+              }, 2000);
             } else {
               throw new Error(data?.message || "Failed to login");
             }
           }
         },
       );
-    } catch (error: unknown) {
+    } catch (error) {
       dispatch(setLoginStatus("unauthenticated"));
-      if (axios.isAxiosError(error)) {
-        const status = error.response?.status || 500;
-        const errorMsg = error.response?.data.errors;
-        const msg = error.response?.data.message || "Failed to Login";
-        if (status == 404) {
-          setTimeout(() => {
-            router.push("/register");
-          }, 2000);
-        }
-        let errorMessage: string;
-        if (errorMsg) {
-          setErrorMess(errorMsg);
-          errorMessage = Object.values(errorMsg).join(", ");
-        } else {
-          errorMessage = msg;
-        }
-        setErrorMess({ password: errorMessage });
+      if (error instanceof Error) {
+        const msg = error.message || "Failed to Login";
+        setErrorMess({ password: msg });
       } else {
         const err = error as Error;
         console.log("Generic Error:", err.message);
@@ -115,7 +104,7 @@ export default function Login() {
 
   return (
     <section className="w-screen h-screen fixed top-0 left-0 m-auto bg-bgprimary z-100 p-4 flex justify-center-safe items-center-safe text-textPri blueprint-grid12">
-      <article className="relative w-full md:w-3/4 lg:w-1/2 p-8 rounded-4xl bg-bgsecondary/70 shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-x-hidden">
+      <article className="relative max-[380]:w-9/10 w-7/10 md:w-3/4 lg:w-1/2 p-4 md:p-8 rounded-4xl bg-bgsecondary/70 shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-x-hidden">
         {loadingBar && <HorizontalBar position="top-0 left-0" />}
         <div className="pb-4">
           <Image
@@ -128,7 +117,7 @@ export default function Login() {
             }}
           />
         </div>
-        <article className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2 text-textPriPri">
+        <article className="grid grid-cols-1 min-[480]:grid-cols-2 gap-4 md:gap-2 text-textPriPri">
           <div className="flex flex-col gap-3">
             <h3 className="text-2xl md:text-4xl font-light">
               {currentStep == 1 ? "Sign in" : "Welcome"}
@@ -137,40 +126,40 @@ export default function Login() {
               <p className="text-pri">{`to continue to ${envVariables.SITE_NAME}`}</p>
             ) : (
               <div
-                className="flex gap-2 items-center rounded-full border border-pri py-1 px-3 self-start cursor-pointer"
+                className="flex gap-2 items-center rounded-full border border-pri/40 py-1 px-2 text-xs self-start cursor-pointer"
                 onClick={() => setCurrentStep(1)}
               >
-                <User2 size={20} className="text-pri" />
+                <User2 size={10} className="text-pri" />
                 {email}
               </div>
             )}
           </div>
           {currentStep == 1 ? (
             <article className="flex flex-col gap-2">
-              <Input1
-                errorMess={errorMess}
-                setErrorMess={setErrorMess}
-                fieldValue={email}
-                setfieldValue={setEmail}
-                handleNext={handleEmailNext}
-                type="email"
-                name="email"
-                htmlFor="email"
-                id="email"
-                label="Email or phone"
-                autoFocus={true}
-                required={true}
-                errorKey="email"
-              />
+                <Input1
+                  errorMess={errorMess}
+                  setErrorMess={setErrorMess}
+                  fieldValue={email}
+                  setfieldValue={setEmail}
+                  handleNext={handleEmailNext}
+                  type="email"
+                  name="email"
+                  htmlFor="email"
+                  id="email"
+                  label="Email or phone"
+                  autoFocus={true}
+                  required={true}
+                  errorKey="email"
+                />
               <Link
                 href={"/forgot-email"}
-                className="text-ter font-medium self-start transition-all text-xs"
+                className="text-ter font-medium self-start transition-all text-xs pl-2"
               >
                 Forgot email?
               </Link>
-              <div className="flex justify-end-safe gap-4 mt-8">
+              <div className="flex justify-end-safe items-center gap-4 mt-8 whitespace-nowrap flex-wrap">
                 <button
-                  className="rounded-full py-1 px-4 cursor-pointer hover:bg-border/10 text-ter"
+                  className="rounded-full py-1 px-4 cursor-pointer hover:bg-border/10 text-ter font-medium text-sm"
                   onClick={() => {
                     router.push("/register");
                   }}
@@ -210,12 +199,12 @@ export default function Login() {
                   id="showPassword"
                   checked={showPassword}
                   onChange={(e) => setShowPassword(e.currentTarget.checked)}
-                  className="w-4 h-4 accent-ter border border-txlight"
+                  className="w-3 h-3 accent-ter border border-txlight"
                 />
-                <label htmlFor="showPassword">Show password</label>
+                <label htmlFor="showPassword" className="text-sm">Show password</label>
               </div>
-              <div className="flex justify-end-safe gap-4 mt-8">
-                <button className="rounded-full py-1 px-3 cursor-pointer text-ter font-medium">
+              <div className="flex items-center justify-end-safe gap-4 mt-8">
+                <button className="rounded-full py-1 px-3 cursor-pointer text-sm text-ter font-medium">
                   Forgot password?
                 </button>
                 <button

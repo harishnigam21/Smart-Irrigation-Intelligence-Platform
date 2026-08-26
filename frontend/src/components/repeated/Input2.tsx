@@ -69,7 +69,7 @@ export default function Input2<T extends string | number | null>({
     <div className="grow">
       <div className="relative group flex flex-col justify-center-safe cursor-text">
         <div
-          className={`absolute left-3 ${inputField ? `-top-2 bg-${labelBgColor} text-xs whitespace-nowrap` : "bg-transparent whitespace-normal text-base"} ${active ? "text-pri" : "text-txlight"} cursor-text  px-1 transition-all ${required && `after:content-['*'] after:pl-1 after:text-red-500`} `}
+          className={`absolute left-3 mr-2 ${inputField ? `-top-2 bg-${labelBgColor} text-xs` : "bg-transparent text-base"} ${active ? "text-pri" : "text-txlight"} break-all line-clamp-1 cursor-text  px-1 transition-all ${required && `after:content-['*'] after:pl-1 after:text-red-500`}`}
         >
           {label}
         </div>
@@ -77,7 +77,7 @@ export default function Input2<T extends string | number | null>({
         <div
           ref={inputRef}
           tabIndex={0}
-          className={`border-2 ${errorMess && errorMess[errorKey] ? "border-red-500" : "border-txlight"} outline-none focus:border-pri p-4 rounded-sm w-full transition-all`}
+          className={`border-2 ${errorMess && errorMess[errorKey] ? "border-red-500" : "border-txlight"} outline-none focus:border-pri p-2 sm:p-3 rounded-sm w-full transition-all`}
           id={id}
           autoFocus={autoFocus}
           onFocus={handleInputMode}

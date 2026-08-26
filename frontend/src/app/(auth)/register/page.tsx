@@ -298,7 +298,7 @@ export default function Register() {
   };
   return (
     <section className="w-screen h-screen fixed top-0 left-0 z-100 m-auto bg-bgprimary p-4 flex justify-center-safe items-center-safe text-textPri blueprint-grid12">
-      <article className="relative w-full md:w-3/4 lg:w-1/2 p-8 rounded-4xl bg-bgsecondary/70 shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-hidden">
+      <article className="relative max-[380]:w-9/10 w-7/10 md:w-3/4 lg:w-1/2 p-4 md:p-8 rounded-4xl bg-bgsecondary/70 shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-hidden">
         {loadingBar && <HorizontalBar position="top-0 left-0" />}
         <div className="pb-4">
           <Image
@@ -311,7 +311,7 @@ export default function Register() {
             }}
           />
         </div>
-        <article className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2 text-textPri">
+        <article className="grid grid-cols-1 min-[480]:grid-cols-2 gap-4 md:gap-2 text-textPri">
           <div className="flex flex-col gap-3">
             {currentStep == 1 ? (
               <>
