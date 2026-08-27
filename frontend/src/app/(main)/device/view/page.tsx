@@ -11,6 +11,7 @@ import DeviceLayout from "@/components/device/DeviceLayout";
 import SimulationReading from "@/components/device/SimulationReading";
 import HorizontalBar from "@/components/Loading/HorizontalBar";
 import DeviceViewLoading from "@/components/device/DeviceViewLoading";
+import Link from "next/link";
 export default function MicrocontrollerTwin() {
   const summary = useAppSelector((store) => store.summary);
 
@@ -142,7 +143,8 @@ export default function MicrocontrollerTwin() {
 
           {/* Middle */}
           <div className="flex items-center gap-3">
-            <p
+            <Link
+              href={"/device/new"}
               className={`
                 whitespace-nowrap
                 overflow-hidden
@@ -156,7 +158,7 @@ export default function MicrocontrollerTwin() {
                 `}
             >
               Add Device
-            </p>
+            </Link>
 
             <div
               title="more options"
