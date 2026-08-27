@@ -116,6 +116,9 @@ const SummarySlice = createSlice({
     addFarm: (state, action: PayloadAction<FarmInSummary>) => {
       if (action.payload) state.farms.unshift(action.payload);
     },
+    addDevice: (state, action: PayloadAction<DeviceInSummary>) => {
+      if (action.payload) state.device.unshift(action.payload);
+    },
     devicePowerToggle: (state, action: PayloadAction<string>) => {
       const deviceId = action.payload;
       if (deviceId) {
@@ -174,6 +177,7 @@ export const {
   setAlertID,
   addSensor,
   addFarm,
+  addDevice,
   removeAlertID,
   devicePowerToggle,
   devicePowerON,
