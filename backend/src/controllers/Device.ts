@@ -137,7 +137,11 @@ export const addDevices = async (req: AuthRequest, res: Response) => {
     const farmExist = await Farm.findById(farmId);
     if (!farmExist) {
       await session.abortTransaction();
-      return res.status(404).json({ message: `Farm doesn't exist` });
+      return res.status(404).json({
+        errors: {
+          farmId: "Farm doesn't exist, please select from existing",
+        },
+      });
     }
     const farmCoords = {
       A: farmExist.coordinates[0],
@@ -162,7 +166,9 @@ export const addDevices = async (req: AuthRequest, res: Response) => {
     });
     if (conflicetDevice) {
       return res.status(403).json({
-        message: `Try to place your new device ${geofenceLimitMeters}m away from existing devices`,
+        errors: {
+          coordinates: `Try to place your new device ${geofenceLimitMeters}m away from existing devices`,
+        },
       });
     }
     const isInside = singleCoordinatesIntersection(
@@ -171,14 +177,18 @@ export const addDevices = async (req: AuthRequest, res: Response) => {
     );
     if (isInside.success && isInside.message == "outside") {
       await session.abortTransaction();
-      return res
-        .status(400)
-        .json({ message: "This coordinate is not inside farm selected" });
+      return res.status(400).json({
+        errors: {
+          coordinates: "This coordinate is not inside farm selected",
+        },
+      });
     }
     if (!isInside.success && isInside.message.includes("error")) {
       await session.abortTransaction();
       return res.status(400).json({
-        message: `${isInside.message.split(":")[1] || "Error occurred while adding device"}`,
+        errors: {
+          coordinates: `${isInside.message.split(":")[1] || "Error occurred while adding device"}`,
+        },
       });
     }
     const [device] = await Device.create(
@@ -205,7 +215,18 @@ export const addDevices = async (req: AuthRequest, res: Response) => {
     return res.status(201).json({
       message: "Device Added",
       data: {
-        device,
+        _id: device._id,
+        farmId: device.farmId,
+        nickName: device.nickName,
+        macAddress: device.macAddress,
+        farmPoint: device.farmPoint,
+        hardware: {
+          model: device.hardware.model,
+          telemetrySummary: {
+            status: device.hardware.telemetrySummary.status,
+            lastSeen: device.hardware.telemetrySummary.lastSeen,
+          },
+        },
       },
     });
   } catch (error) {

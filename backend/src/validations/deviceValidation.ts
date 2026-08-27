@@ -11,7 +11,7 @@ export const deviceValidation = (
   next: NextFunction,
 ) => {
   if (!req.body || Object.keys(req.body).length == 0) {
-    return sendError(res, "device_all", "Invalid request");
+    return sendError(res, "coordinates", "Invalid request");
   }
   const { farmId, nickName, macAddress, hardware } = req.body as Pick<
     IDevice,
@@ -20,22 +20,15 @@ export const deviceValidation = (
     farmId: string;
   };
   if (!farmId || !ValidateByLoad(farmId as string)) {
-    return sendError(res, "device_farmId", "Please select farm");
+    return sendError(res, "farmId", "Please select farm");
   }
   if (!nickName || nickName.trim().length <= 1) {
-    return sendError(res, "device_nickName", "Invalid NickName");
+    return sendError(res, "nickName", "Invalid NickName");
   }
   const MacRegex =
     /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$|^([0-9A-Fa-f]{4}\.){2}([0-9A-Fa-f]{4})$/;
   if (!macAddress || !MacRegex.test(macAddress)) {
-    return sendError(res, "device_macAddress", "Invalid MacAddress");
-  }
-  if (!hardware || typeof hardware !== "object") {
-    return sendError(
-      res,
-      "device_hardware",
-      "Hardware object data is missing or invalid",
-    );
+    return sendError(res, "macAddress", "Invalid MacAddress");
   }
 
   if (
@@ -45,7 +38,7 @@ export const deviceValidation = (
   ) {
     return sendError(
       res,
-      "device_hardware_model",
+      "model",
       "Hardware model is required",
     );
   }
@@ -57,7 +50,7 @@ export const deviceValidation = (
   ) {
     return sendError(
       res,
-      "device_hardware_firmwareVersion",
+      "firmwareVersion",
       "Firmware version is required",
     );
   }
@@ -67,43 +60,11 @@ export const deviceValidation = (
     !hardware.powerSource ||
     !validPowerSources.includes(hardware.powerSource)
   ) {
-    return sendError(
-      res,
-      "device_hardware_powerSource",
-      "Power source must be solar, battery, or grid",
-    );
+    req.body.hardware.powerSource = "battery";
   }
 
   if (!hardware.pinConfiguration) {
     req.body.hardware.pinConfiguration = [];
-  }
-
-  // 5. Settings validation
-  if (!hardware.settings || typeof hardware.settings !== "object") {
-    return sendError(
-      res,
-      "device_hardware_settings",
-      "Hardware settings are missing",
-    );
-  }
-
-  if (
-    typeof hardware.settings.reportingIntervalInSeconds !== "number" ||
-    hardware.settings.reportingIntervalInSeconds <= 0
-  ) {
-    return sendError(
-      res,
-      "device_hardware_settings_reportingIntervalInSeconds",
-      "Reporting interval must be a number greater than 0",
-    );
-  }
-
-  if (typeof hardware.settings.isDeepSleepEnabled !== "boolean") {
-    return sendError(
-      res,
-      "device_hardware_settings_isDeepSleepEnabled",
-      "Deep sleep configuration must be true or false",
-    );
   }
 
   if (
@@ -115,7 +76,7 @@ export const deviceValidation = (
   ) {
     return sendError(
       res,
-      "device_hardware_location_coordinates",
+      "coordinates",
       "Coordinates must be an array of [latitude, longitude]",
     );
   }
@@ -124,7 +85,7 @@ export const deviceValidation = (
   if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
     return sendError(
       res,
-      "device_hardware_location_coordinates_bounds",
+      "coordinates",
       "Latitude bounds [-90, 90] or Longitude bounds [-180, 180] exceeded",
     );
   }
