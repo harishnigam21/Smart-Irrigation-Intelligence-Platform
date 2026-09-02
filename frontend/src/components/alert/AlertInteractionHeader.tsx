@@ -43,6 +43,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { getDaysBetween } from "@/utils/getDate";
 import HorizontalBar from "../Loading/HorizontalBar";
 import { removeAlertID, setAlertID } from "@/store/slices/SummarySlice";
+import AlertViewRow from "./AlertViewRow";
 
 export default function AlertInteractionHeader({
   data,
@@ -273,6 +274,41 @@ export default function AlertInteractionHeader({
   };
   const handleRecover = async (ids: string[]) => {};
   const handlePDelete = async (ids: string[]) => {};
+  const handleSelection = async (isSelected: boolean, item: Alert) => {
+    if (isSelected) {
+      dispatch(removeSelectedAlert(item._id));
+    } else {
+      const letItemType: string[] = [];
+      if (item.status) {
+        letItemType.push("unread");
+      } else {
+        letItemType.push("read");
+      }
+      if (item.important) {
+        letItemType.push("important");
+      } else {
+        letItemType.push("unimportant");
+      }
+      if (item.star) {
+        letItemType.push("star");
+      } else {
+        letItemType.push("unstar");
+      }
+      dispatch(
+        setSelectedAlerts({
+          _id: item._id,
+          type: letItemType,
+        }),
+      );
+    }
+  };
+  const activeAlertsList =
+    alerts.alerts && alerts.alerts.length > 0
+      ? alerts.alerts
+      : data?.data || [];
+  const isTrulyEmpty =
+    (!alerts.alerts || alerts.alerts.length === 0) &&
+    (!data?.data || data.data.length === 0);
 
   useEffect(() => {
     try {
@@ -292,14 +328,6 @@ export default function AlertInteractionHeader({
       dispatch(setSwitchLoading({ status: false, switch: "" }));
     }
   }, [data, dispatch]);
-
-  const activeAlertsList =
-    alerts.alerts && alerts.alerts.length > 0
-      ? alerts.alerts
-      : data?.data || [];
-  const isTrulyEmpty =
-    (!alerts.alerts || alerts.alerts.length === 0) &&
-    (!data?.data || data.data.length === 0);
   useEffect(() => {
     if (selectedAlerts.length == 0) {
       setExpandItrOptions(false);
@@ -623,41 +651,19 @@ export default function AlertInteractionHeader({
                 .map((item) => item._id)
                 .includes(item._id);
               return (
-                <div
+                <AlertViewRow
                   key={`alert/listed/${index}`}
-                  className={`relative group transition-all py-2 px-2.5 border-b border-txlight/20 w-full grid grid-cols-[minmax(40px,200px)_minmax(40px,1fr)_minmax(40px,max-content)] hover:shadow-sm active:shadow-sm hover:shadow-txlight active:shadow-txlight overflow-hidden items-center gap-8 justify-between cursor-pointer ${item.status ? "" : "bg-bgprimary/80"} ${isSelected && "bg-blue-500/30"} text-sm`}
+                  item={item}
+                  isSelected={isSelected}
+                  selectedAlertsLength={selectedAlerts.length}
+                  handleSelection={handleSelection}
                 >
                   <div className="flex flex-nowrap gap-2 items-center">
                     <div className="flex items-center flex-nowrap gap-2 min-w-fit">
                       <div
-                        className={`size-4 border border-txlight/50 hover:border-txlight active:border-txlight text-white flex items-center justify-center ${isSelected && "bg-blue-500"}`}
+                        className={`size-4 border border-txlight/50 hover:border-txlight active:border-txlight text-white hidden sm:flex items-center justify-center ${isSelected && "bg-blue-500"}`}
                         onClick={() => {
-                          if (isSelected) {
-                            dispatch(removeSelectedAlert(item._id));
-                          } else {
-                            const letItemType: string[] = [];
-                            if (item.status) {
-                              letItemType.push("unread");
-                            } else {
-                              letItemType.push("read");
-                            }
-                            if (item.important) {
-                              letItemType.push("important");
-                            } else {
-                              letItemType.push("unimportant");
-                            }
-                            if (item.star) {
-                              letItemType.push("star");
-                            } else {
-                              letItemType.push("unstar");
-                            }
-                            dispatch(
-                              setSelectedAlerts({
-                                _id: item._id,
-                                type: letItemType,
-                              }),
-                            );
-                          }
+                          handleSelection(isSelected, item);
                         }}
                       >
                         {isSelected && (
@@ -667,7 +673,7 @@ export default function AlertInteractionHeader({
                       {selectedSidebarItem !== "trash" && (
                         <Star
                           fill={item.star ? "yellow" : "transparent"}
-                          className="size-4 text-txlight/50 hover:text-txlight active:text-txlight"
+                          className="size-4 text-txlight/50 hover:text-txlight active:text-txlight hidden sm:block"
                           onClick={() => {
                             if (item.star) {
                               handleUnStar([item._id]);
@@ -678,17 +684,22 @@ export default function AlertInteractionHeader({
                         />
                       )}
                     </div>
-                    <p
-                      className={`line-clamp-1 ${item.status ? "text-textPri font-medium" : "text-txlight"}`}
-                    >
-                      {item.deviceId.nickName}
-                    </p>
+                    <div className="flex flex-col">
+                      <p
+                        className={`line-clamp-1 break-all text-sm ${item.status ? "text-textPri font-medium" : "text-txlight"}`}
+                      >
+                        {item.deviceId.nickName}
+                      </p>
+                      <small className="line-clamp-1 break-all grow text-xs text-txlight sm:hidden">
+                        {item.message}
+                      </small>
+                    </div>
                   </div>
-                  <p className="line-clamp-1 grow text-txlight">
+                  <p className="line-clamp-1 grow text-txlight text-sm hidden sm:block">
                     {item.message}
                   </p>
                   <small
-                    className={`line-clamp-1 flex group-hover:hidden group-active:hidden ${item.status ? "text-textPri" : "text-txlight"}`}
+                    className={`line-clamp-1 break-all flex group-hover:hidden group-active:hidden ${item.status ? "text-textPri" : "text-txlight"}`}
                   >
                     {isMounted ? getDaysBetween(item.createdAt) : "..."}
                   </small>
@@ -728,6 +739,17 @@ export default function AlertInteractionHeader({
                           <title>Mark as Unread</title>
                         </Mail>
                       )}
+                      <Star
+                        fill={item.star ? "yellow" : "transparent"}
+                        className="size-4 text-txlight/50 hover:text-txlight active:text-txlight sm:hidden"
+                        onClick={() => {
+                          if (item.star) {
+                            handleUnStar([item._id]);
+                          } else {
+                            handleStar([item._id]);
+                          }
+                        }}
+                      />
                       <BookMarked
                         className={`size-4 ${item.important ? "text-blue-500 hover:text-blue-500/75 active:text-blue-500/75" : "text-txlight hover:text-txlight/75 active:text-txlight/75"}`}
                         onClick={() => {
@@ -752,7 +774,7 @@ export default function AlertInteractionHeader({
                       </Trash>
                     </div>
                   )}
-                </div>
+                </AlertViewRow>
               );
             })}
           </>

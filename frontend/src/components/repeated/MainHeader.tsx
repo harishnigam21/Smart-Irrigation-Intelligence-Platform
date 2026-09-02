@@ -39,6 +39,12 @@ export default function MainHeader({
   const headerRef = useRef<HTMLDivElement | null>(null);
   const hideHeader = useAppSelector((store) => store.layout.hideHeader);
   const dispatch = useAppDispatch();
+  const GripRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (showMore && GripRef.current) {
+      GripRef.current.focus();
+    }
+  }, [showMore]);
   useEffect(() => {
     if (hideHeader) {
       setShowMore(false);
@@ -129,79 +135,79 @@ export default function MainHeader({
           <User size={20} className="hidden md:block" />
         </div>
         <div
-          tabIndex={1}
-          onTransitionStart={(e) => e.currentTarget.focus()}
+          ref={GripRef}
+          tabIndex={0}
           onBlur={(e) => {
             if (e.currentTarget.contains(e.relatedTarget)) {
               return;
             }
             setShowMore(false);
           }}
-          className={`absolute z-50 ${showMore ? "p-4 opacity-100" : "h-0 overflow-hidden p-0 opacity-0"}  right-0 rounded-md bg-bgsecondary top-15.5 gap-4 grid grid-cols-3 transition-all duration-200`}
+          className={`absolute z-50 ${showMore ? "p-4 opacity-100" : "h-0 overflow-hidden p-0 opacity-0"}  right-0 rounded-md bg-bgsecondary top-15.5 gap-1 grid grid-cols-3 transition-all duration-200`}
         >
           <Link
             href={"/dashboard"}
-            className="flex flex-col items-center justify-center"
+            className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md"
           >
             <LayoutDashboard className="size-6 sm:size-7" />
             <small className="text-[6px] sm:text-[8px]">Dashboard</small>
           </Link>
           <Link
             href={"/device"}
-            className="flex flex-col items-center justify-center"
+            className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md"
           >
             <Cpu className="size-6 sm:size-7" />
             <small className="text-[6px] sm:text-[8px]">Devices</small>
           </Link>
           <Link
             href={"/sensor"}
-            className="flex flex-col items-center justify-center"
+            className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md"
           >
             <RadioTower className="size-6 sm:size-7" />
             <small className="text-[6px] sm:text-[8px]">Sensors</small>
           </Link>
           <Link
             href={"/alerts"}
-            className="flex flex-col items-center justify-center"
+            className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md"
           >
             <Siren className="size-6 sm:size-7" />
             <small className="text-[6px] sm:text-[8px]">Alerts</small>
           </Link>
           <Link
             href={"/farm"}
-            className="flex flex-col items-center justify-center"
+            className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md"
           >
             <LandPlot className="size-6 sm:size-7" />
             <small className="text-[6px] sm:text-[8px]">Farms</small>
           </Link>
           <Link
             href={"/"}
-            className="flex flex-col items-center justify-center md:hidden"
+            className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md md:hidden"
           >
             <CircleQuestionMark className="size-6 sm:size-7" />
             <small className="text-[6px] sm:text-[8px]">Help</small>
           </Link>
           <Link
             href={"/"}
-            className="flex flex-col items-center justify-center md:hidden"
+            className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md md:hidden"
           >
             <Settings className="size-6 sm:size-7" />
             <small className="text-[6px] sm:text-[8px]">Setting</small>
           </Link>
           <Link
             href={"/"}
-            className="flex flex-col items-center justify-center md:hidden"
+            className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md md:hidden"
           >
             <User className="size-6 sm:size-7" />
             <small className="text-[6px] sm:text-[8px]">You</small>
           </Link>
         </div>
       </div>
-      <div
-        tabIndex={1}
+      <button
+        type="button"
+        tabIndex={hideHeader ? 0 : -1}
         onTransitionStart={(e) => e.currentTarget.focus()}
         onMouseOver={(e) => {
-          e.currentTarget.focus();
           dispatch(setHideHeader(false));
         }}
         onFocus={() => {
@@ -216,7 +222,7 @@ export default function MainHeader({
         className={`bg-ter ${hideHeader ? "w-5" : "w-0"} self-start flex justify-center rounded-b-md z-50 cursor-pointer`}
       >
         <ChevronDown className="size-3 stroke-3 text-white" />
-      </div>
+      </button>
     </header>
   );
 }
