@@ -211,7 +211,7 @@ export default function page() {
             </h2>
             <p className="max-w-180 text-center mt-4"></p>
           </div>
-          <article className="relative w-9/10 md:w-3/4 lg:w-1/2 rounded-xl bg-bgsecondary/70 border grid grid-cols-1 min-[480]:grid-cols-2 gap-3">
+          <article className="relative w-[95%] md:w-3/4 lg:w-1/2 rounded-xl bg-bgsecondary/70 border grid grid-cols-1 min-[480]:grid-cols-2 gap-3">
             <div className="flex flex-col justify-between gap-3 p-4 md:p-6">
               <div
                 id="farmSide"
@@ -693,7 +693,7 @@ export function TVRemote({
   };
   const router = useRouter();
   const buttonClass =
-    "flex items-center justify-center rounded-full bg-zinc-800 text-zinc-200 shadow-[inset_0_1px_1px_rgba(255,255,255,.08),0_2px_4px_rgba(0,0,0,.5)] transition-all duration-100 hover:bg-zinc-700 active:scale-90";
+    "flex items-center justify-center rounded-full bg-zinc-800 text-zinc-200 shadow-[inset_0_1px_1px_rgba(255,255,255,.08),0_2px_4px_rgba(0,0,0,.5)] transition-all duration-100 hover:bg-zinc-700 active:bg-zinc-700 hover:scale-90 active:scale-90";
 
   return (
     <div
@@ -740,7 +740,7 @@ export function TVRemote({
               text-white
               shadow-[0_3px_8px_rgba(0,0,0,.6)]
               transition
-              hover:bg-red-500
+              hover:bg-red-500 active:bg-red-500
               active:scale-90
             "
         >
@@ -773,7 +773,7 @@ export function TVRemote({
           press("submit");
           onSubmit();
         }}
-        className={`flex h-15 w-full mb-8 items-center justify-center border rounded-full border-zinc-500 bg-linear-to-b from-borderhover to-borderhover/40 text-lg text-white font-bold shadow-[0_3px_8px_rgba(0,0,0,.7),inset_0_1px_2px_rgba(255,255,255,.8)] transition hover:scale-95 cursor-pointer active:scale-90 ${tvIndc && "animate-pulse"}`}
+        className={`flex h-15 w-full mb-8 items-center justify-center border rounded-full border-zinc-500 bg-linear-to-b from-borderhover to-borderhover/40 text-lg text-white font-bold shadow-[0_3px_8px_rgba(0,0,0,.7),inset_0_1px_2px_rgba(255,255,255,.8)] transition hover:scale-95 active:scale-95 cursor-pointer ${tvIndc && "animate-pulse"}`}
       >
         Submit
       </button>

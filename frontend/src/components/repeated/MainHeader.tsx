@@ -117,7 +117,7 @@ export default function MainHeader({
               name="search"
               id="search"
               placeholder={`Search ${type}...`}
-              className="border-none outline-none focus:outline-none text-sm text-white bg-transparent w-full"
+              className="border-none outline-none active:outline-none text-sm text-white bg-transparent w-full"
             />
             <SlidersHorizontal size={20} />
           </div>

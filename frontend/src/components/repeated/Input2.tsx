@@ -77,7 +77,7 @@ export default function Input2<T extends string | number | null>({
         <div
           ref={inputRef}
           tabIndex={0}
-          className={`border-2 ${errorMess && errorMess[errorKey] ? "border-red-500" : "border-txlight"} outline-none focus:border-pri p-2 sm:p-3 rounded-sm w-full transition-all`}
+          className={`border-2 ${errorMess && errorMess[errorKey] ? "border-red-500" : "border-txlight"} outline-none active:border-pri p-2 sm:p-3 rounded-sm w-full transition-all`}
           id={id}
           autoFocus={autoFocus}
           onFocus={handleInputMode}
@@ -103,7 +103,7 @@ export default function Input2<T extends string | number | null>({
           >
             {options.map((item, index) => (
               <li
-                className="py-2 px-4 hover:bg-borderhover/40 cursor-pointer"
+                className="py-2 px-4 hover:bg-borderhover/40 active:bg-borderhover/40 cursor-pointer"
                 key={`${name}/option/${index}`}
                 onMouseOver={() => {
                   const parsedValue =

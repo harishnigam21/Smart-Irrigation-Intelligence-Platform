@@ -1,4 +1,4 @@
-import React, { Ref } from "react";
+import React, { Ref, useEffect, useRef } from "react";
 
 export default function DeviceHomeBGVideo({
   videoRef,
@@ -11,9 +11,18 @@ export default function DeviceHomeBGVideo({
   isDesktop: boolean;
   videoLoaded: boolean;
 }) {
+  const inVideoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const video = inVideoRef.current;
+    if (!video) return;
+    if (video.readyState >= 2) {
+      setVideoLoaded(true);
+    }
+  }, []);
   return (
     <div ref={videoRef} className="fixed top-0 left-0 z-1 w-full">
       <video
+        ref={inVideoRef}
         key={isDesktop ? "desktop" : "mobile"}
         autoPlay
         muted

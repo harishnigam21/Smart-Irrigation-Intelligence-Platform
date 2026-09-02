@@ -36,7 +36,7 @@ import {
   StarOff,
   Trash,
 } from "lucide-react";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import BouncingLoading from "../Loading/BouncingLoading";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -65,6 +65,7 @@ export default function AlertInteractionHeader({
     star: false,
     unstar: false,
   });
+  const [expandItrOptions, setExpandItrOptions] = useState<boolean>(false);
   useEffect(() => {
     const allType = selectedAlerts.map((item) => item.type);
     const flatedAllType = allType.flat();
@@ -102,6 +103,7 @@ export default function AlertInteractionHeader({
   const router = useRouter();
   const { sendRequest, loading: intereactionLoading } = useApi();
   const searchParams = useSearchParams();
+  const expandItrRef = useRef<HTMLDivElement>(null);
   const handleStar = async (ids: string[]) => {
     await sendRequest(`api/alert/star`, "PATCH", { ids }).then((result) => {
       const data = result.data as Data<null> | undefined;
@@ -298,6 +300,16 @@ export default function AlertInteractionHeader({
   const isTrulyEmpty =
     (!alerts.alerts || alerts.alerts.length === 0) &&
     (!data?.data || data.data.length === 0);
+  useEffect(() => {
+    if (selectedAlerts.length == 0) {
+      setExpandItrOptions(false);
+    }
+  }, [selectedAlerts]);
+  useEffect(() => {
+    if (expandItrOptions && expandItrRef.current) {
+      expandItrRef.current.focus();
+    }
+  }, [expandItrOptions]);
   return (
     <>
       <div className="bg-bgsecondary text-txlight shrink-0 flex items-center justify-between gap-4 py-4 px-4 w-full overflow-x-hidden">
@@ -336,7 +348,7 @@ export default function AlertInteractionHeader({
             {selectedAlerts.length > 0 && (
               <div className={`flex gap-4 items-center`}>
                 <RotateCw
-                  className="size-4 text-txlight hover:text-txlight/75"
+                  className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75"
                   onClick={() =>
                     handleRecover(selectedAlerts.map((item) => item._id))
                   }
@@ -344,7 +356,7 @@ export default function AlertInteractionHeader({
                   <title>Recover</title>
                 </RotateCw>
                 <Trash
-                  className="size-4 text-txlight hover:text-txlight/75"
+                  className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75"
                   onClick={() =>
                     handlePDelete(selectedAlerts.map((item) => item._id))
                   }
@@ -400,77 +412,129 @@ export default function AlertInteractionHeader({
               <mediaList.FaCaretDown className="text-sm" />
             </div>
             <RotateCw className="size-4" />
-            <EllipsisVertical className="size-4" />
             {selectedAlerts.length > 0 && (
-              <div className={`flex gap-4 items-center`}>
-                {interectionToShow.star && (
-                  <Star
-                    className="size-4 text-txlight hover:text-txlight/75"
-                    onClick={() =>
-                      handleStar(selectedAlerts.map((item) => item._id))
-                    }
+              <div className="">
+                <EllipsisVertical
+                  className="size-4"
+                  onClick={(e) => {
+                    setExpandItrOptions((prev) => !prev);
+                  }}
+                />
+                {selectedAlerts.length > 0 && (
+                  <div
+                    ref={expandItrRef}
+                    tabIndex={0}
+                    onBlur={(e) => {
+                      if (e.currentTarget.contains(e.relatedTarget)) {
+                        return;
+                      }
+                      setExpandItrOptions(false);
+                    }}
+                    className={`flex flex-col justify-center absolute top-10 z-1 bg-bgsecondary text-textPri rounded-md ${expandItrOptions ? "opacity-100" : "h-0 overflow-hidden opacity-0"} transition-all duration-200`}
                   >
-                    <title>Star</title>
-                  </Star>
+                    {interectionToShow.star && (
+                      <div
+                        onClick={() =>
+                          handleStar(selectedAlerts.map((item) => item._id))
+                        }
+                        className="flex items-center gap-2 p-2 hover:bg-blue-500/30 active:bg-blue-500/30 transition-all cursor-pointer"
+                      >
+                        <Star className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75">
+                          <title>Star</title>
+                        </Star>
+                        <small className="font-bold text-xs">Star</small>
+                      </div>
+                    )}
+                    {interectionToShow.unstar && (
+                      <div
+                        onClick={() =>
+                          handleUnStar(selectedAlerts.map((item) => item._id))
+                        }
+                        className="flex items-center gap-2 p-2 hover:bg-blue-500/30 active:bg-blue-500/30 transition-all cursor-pointer"
+                      >
+                        <StarOff className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75">
+                          <title>unStar</title>
+                        </StarOff>
+                        <small className="font-bold text-xs">unStar</small>
+                      </div>
+                    )}
+                    {interectionToShow.important && (
+                      <div
+                        onClick={() =>
+                          handleImportant(
+                            selectedAlerts.map((item) => item._id),
+                          )
+                        }
+                        className="flex items-center gap-2 p-2 hover:bg-blue-500/30 active:bg-blue-500/30 transition-all cursor-pointer"
+                      >
+                        <BookMarked className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75">
+                          <title>Mark Important</title>
+                        </BookMarked>
+                        <small className="font-bold text-xs">
+                          Mark Important
+                        </small>
+                      </div>
+                    )}
+                    {interectionToShow.unimportant && (
+                      <div
+                        onClick={() =>
+                          handleUnImportant(
+                            selectedAlerts.map((item) => item._id),
+                          )
+                        }
+                        className="flex items-center gap-2 p-2 hover:bg-blue-500/30 active:bg-blue-500/30 transition-all cursor-pointer"
+                      >
+                        <BookmarkOff className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75">
+                          <title>Mark unImportant</title>
+                        </BookmarkOff>
+                        <small className="font-bold text-xs">
+                          Mark unImportant
+                        </small>
+                      </div>
+                    )}
+                    {interectionToShow.read && (
+                      <div
+                        onClick={() =>
+                          handleRead(selectedAlerts.map((item) => item._id))
+                        }
+                        className="flex items-center gap-2 p-2 hover:bg-blue-500/30 active:bg-blue-500/30 transition-all cursor-pointer"
+                      >
+                        <MailOpen className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75">
+                          <title>Mark as read</title>
+                        </MailOpen>
+                        <small className="font-bold text-xs">
+                          Mark as read
+                        </small>
+                      </div>
+                    )}
+                    {interectionToShow.unread && (
+                      <div
+                        onClick={() =>
+                          handleUnread(selectedAlerts.map((item) => item._id))
+                        }
+                        className="flex items-center gap-2 p-2 hover:bg-blue-500/30 active:bg-blue-500/30 transition-all cursor-pointer"
+                      >
+                        <Mail className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75">
+                          <title>Mark as unread</title>
+                        </Mail>
+                        <small className="font-bold text-xs">
+                          Mark as unread
+                        </small>
+                      </div>
+                    )}
+                    <div
+                      onClick={() =>
+                        handleDelete(selectedAlerts.map((item) => item._id))
+                      }
+                      className="flex items-center gap-2 p-2 hover:bg-blue-500/30 active:bg-blue-500/30 transition-all cursor-pointer"
+                    >
+                      <Trash className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75">
+                        <title>Delete</title>
+                      </Trash>
+                      <small className="font-bold text-xs">Delete</small>
+                    </div>
+                  </div>
                 )}
-                {interectionToShow.unstar && (
-                  <StarOff
-                    className="size-4 text-txlight hover:text-txlight/75"
-                    onClick={() =>
-                      handleUnStar(selectedAlerts.map((item) => item._id))
-                    }
-                  >
-                    <title>unStar</title>
-                  </StarOff>
-                )}
-                {interectionToShow.important && (
-                  <BookMarked
-                    className="size-4 text-txlight hover:text-txlight/75"
-                    onClick={() =>
-                      handleImportant(selectedAlerts.map((item) => item._id))
-                    }
-                  >
-                    <title>Mark Important</title>
-                  </BookMarked>
-                )}
-                {interectionToShow.unimportant && (
-                  <BookmarkOff
-                    className="size-4 text-txlight hover:text-txlight/75"
-                    onClick={() =>
-                      handleUnImportant(selectedAlerts.map((item) => item._id))
-                    }
-                  >
-                    <title>Mark unImportant</title>
-                  </BookmarkOff>
-                )}
-                {interectionToShow.read && (
-                  <MailOpen
-                    className="size-4 text-txlight hover:text-txlight/75"
-                    onClick={() =>
-                      handleRead(selectedAlerts.map((item) => item._id))
-                    }
-                  >
-                    <title>Mark as read</title>
-                  </MailOpen>
-                )}
-                {interectionToShow.unread && (
-                  <Mail
-                    className="size-4 text-txlight hover:text-txlight/75"
-                    onClick={() =>
-                      handleUnread(selectedAlerts.map((item) => item._id))
-                    }
-                  >
-                    <title>Mark as unread</title>
-                  </Mail>
-                )}
-                <Trash
-                  className="size-4 text-txlight hover:text-txlight/75"
-                  onClick={() =>
-                    handleDelete(selectedAlerts.map((item) => item._id))
-                  }
-                >
-                  <title>Delete</title>
-                </Trash>
               </div>
             )}
           </div>
@@ -561,12 +625,12 @@ export default function AlertInteractionHeader({
               return (
                 <div
                   key={`alert/listed/${index}`}
-                  className={`relative group transition-all py-2 px-4 border-b border-txlight/20 w-full grid grid-cols-[minmax(40px,200px)_minmax(40px,1fr)_minmax(40px,max-content)] hover:shadow-sm hover:shadow-txlight overflow-hidden items-center gap-8 justify-between cursor-pointer ${item.status ? "" : "bg-bgprimary/80"} ${isSelected && "bg-blue-500/30"} text-sm`}
+                  className={`relative group transition-all py-2 px-2.5 border-b border-txlight/20 w-full grid grid-cols-[minmax(40px,200px)_minmax(40px,1fr)_minmax(40px,max-content)] hover:shadow-sm active:shadow-sm hover:shadow-txlight active:shadow-txlight overflow-hidden items-center gap-8 justify-between cursor-pointer ${item.status ? "" : "bg-bgprimary/80"} ${isSelected && "bg-blue-500/30"} text-sm`}
                 >
                   <div className="flex flex-nowrap gap-2 items-center">
                     <div className="flex items-center flex-nowrap gap-2 min-w-fit">
                       <div
-                        className={`size-4 border border-txlight/50 hover:border-txlight text-white flex items-center justify-center ${isSelected && "bg-blue-500"}`}
+                        className={`size-4 border border-txlight/50 hover:border-txlight active:border-txlight text-white flex items-center justify-center ${isSelected && "bg-blue-500"}`}
                         onClick={() => {
                           if (isSelected) {
                             dispatch(removeSelectedAlert(item._id));
@@ -603,7 +667,7 @@ export default function AlertInteractionHeader({
                       {selectedSidebarItem !== "trash" && (
                         <Star
                           fill={item.star ? "yellow" : "transparent"}
-                          className="size-4 text-txlight/50 hover:text-txlight"
+                          className="size-4 text-txlight/50 hover:text-txlight active:text-txlight"
                           onClick={() => {
                             if (item.star) {
                               handleUnStar([item._id]);
@@ -624,22 +688,22 @@ export default function AlertInteractionHeader({
                     {item.message}
                   </p>
                   <small
-                    className={`line-clamp-1 flex group-hover:hidden ${item.status ? "text-textPri" : "text-txlight"}`}
+                    className={`line-clamp-1 flex group-hover:hidden group-active:hidden ${item.status ? "text-textPri" : "text-txlight"}`}
                   >
                     {isMounted ? getDaysBetween(item.createdAt) : "..."}
                   </small>
                   {selectedSidebarItem == "trash" ? (
                     <div
-                      className={`h-full hidden group-hover:flex gap-4 items-center`}
+                      className={`h-full hidden group-hover:flex group-active:flex gap-4 items-center`}
                     >
                       <RotateCw
-                        className="size-4 text-txlight hover:text-txlight/75"
+                        className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75"
                         onClick={() => handleRecover([item._id])}
                       >
                         <title>recover</title>
                       </RotateCw>
                       <Trash
-                        className="size-4 text-txlight hover:text-txlight/75"
+                        className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75"
                         onClick={() => handlePDelete([item._id])}
                       >
                         <title>Permanent Delete</title>
@@ -647,25 +711,25 @@ export default function AlertInteractionHeader({
                     </div>
                   ) : (
                     <div
-                      className={`h-full hidden group-hover:flex gap-4 items-center`}
+                      className={`h-full hidden group-hover:flex group-active:flex gap-4 items-center`}
                     >
                       {item.status ? (
                         <MailOpen
-                          className="size-4 text-txlight hover:text-txlight/75"
+                          className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75"
                           onClick={() => handleRead([item._id])}
                         >
                           <title>Mark as Read</title>
                         </MailOpen>
                       ) : (
                         <Mail
-                          className="size-4 text-txlight hover:text-txlight/75"
+                          className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75"
                           onClick={() => handleUnread([item._id])}
                         >
                           <title>Mark as Unread</title>
                         </Mail>
                       )}
                       <BookMarked
-                        className={`size-4 ${item.important ? "text-blue-500 hover:text-blue-500/75" : "text-txlight hover:text-txlight/75"}`}
+                        className={`size-4 ${item.important ? "text-blue-500 hover:text-blue-500/75 active:text-blue-500/75" : "text-txlight hover:text-txlight/75 active:text-txlight/75"}`}
                         onClick={() => {
                           if (item.important) {
                             handleUnImportant([item._id]);
@@ -681,7 +745,7 @@ export default function AlertInteractionHeader({
                         </title>
                       </BookMarked>
                       <Trash
-                        className="size-4 text-txlight hover:text-txlight/75"
+                        className="size-4 text-txlight hover:text-txlight/75 active:text-txlight/75"
                         onClick={() => handleDelete([item._id])}
                       >
                         <title>Delete</title>

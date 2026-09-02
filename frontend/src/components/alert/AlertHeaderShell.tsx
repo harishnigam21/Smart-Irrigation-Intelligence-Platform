@@ -55,15 +55,15 @@ export default function AlertHeaderShell({
   return (
     <section className="w-full h-screen bg-bgprimary text-textPri">
       <MainHeader setSideBar={setSideBar} title="Alerts" type="alert" />
-      <article className="w-full h-full flex flex-nowrap gap-3 pt-15">
+      <article className="w-full h-full flex flex-nowrap pt-15">
         {/* sidebar */}
         <article
-          className={` max-h-full overflow-auto min-w-fit flex flex-col py-4`}
+          className={`max-h-full overflow-auto min-w-fit flex flex-col py-4 max-[480px]:hidden`}
           onMouseOver={() => setSideBar(true)}
           onMouseOut={() => setSideBar(false)}
         >
           <div
-            className={`flex items-center cursor-pointer mb-4 flex-nowrap py-1 px-3 rounded-full hover:bg-pri/20 ${selectedSidebarItem == "inbox" && "bg-pri/20"} overflow-hidden transition-all`}
+            className={`flex items-center cursor-pointer mb-4 flex-nowrap py-1 px-3 rounded-full hover:bg-pri/20 active:bg-pri/20  ${selectedSidebarItem == "inbox" && "bg-pri/20"} overflow-hidden transition-all`}
             onClick={() => {
               dispatch(setSwitchLoading({ status: true, switch: "inbox" }));
             }}
@@ -79,7 +79,7 @@ export default function AlertHeaderShell({
             </p>
           </div>
           <div
-            className={`flex items-center cursor-pointer mb-4 flex-nowrap py-1 px-3 rounded-full hover:bg-pri/20 ${selectedSidebarItem == "star" && "bg-pri/20"} overflow-hidden transition-all`}
+            className={`flex items-center cursor-pointer mb-4 flex-nowrap py-1 px-3 rounded-full hover:bg-pri/20 active:bg-pri/20 ${selectedSidebarItem == "star" && "bg-pri/20"} overflow-hidden transition-all`}
             onClick={() => {
               dispatch(setSwitchLoading({ status: true, switch: "star" }));
             }}
@@ -91,7 +91,7 @@ export default function AlertHeaderShell({
               Starred
             </p>
           </div>
-          <div className="flex items-center cursor-pointer mb-4 flex-nowrap py-1 px-3 rounded-full hover:bg-pri/20 overflow-hidden transition-all">
+          <div className="flex items-center cursor-pointer mb-4 flex-nowrap py-1 px-3 rounded-full hover:bg-pri/20 active:bg-pri/20 overflow-hidden transition-all">
             <Clock size={18} />
             <p
               className={`${sideBar ? "min-w-20 max-w-40 overflow-hidden opacity-100 pl-2" : "max-w-0 p-0 opacity-0"} transition-all duration-200`}
@@ -100,7 +100,7 @@ export default function AlertHeaderShell({
             </p>
           </div>
           <div
-            className={`flex items-center cursor-pointer mb-4 flex-nowrap py-1 px-3 rounded-full hover:bg-pri/20 ${selectedSidebarItem == "important" && "bg-pri/20"} overflow-hidden transition-all`}
+            className={`flex items-center cursor-pointer mb-4 flex-nowrap py-1 px-3 rounded-full hover:bg-pri/20 active:bg-pri/20 ${selectedSidebarItem == "important" && "bg-pri/20"} overflow-hidden transition-all`}
             onClick={() => {
               dispatch(setSwitchLoading({ status: true, switch: "important" }));
             }}
@@ -113,7 +113,7 @@ export default function AlertHeaderShell({
             </p>
           </div>
           <div
-            className={`flex items-center cursor-pointer mb-4 flex-nowrap py-1 px-3 rounded-full hover:bg-pri/20 ${selectedSidebarItem == "trash" && "bg-pri/20"} overflow-hidden transition-all`}
+            className={`flex items-center cursor-pointer mb-4 flex-nowrap py-1 px-3 rounded-full hover:bg-pri/20 active:bg-pri/20 ${selectedSidebarItem == "trash" && "bg-pri/20"} overflow-hidden transition-all`}
             onClick={() => {
               dispatch(setSwitchLoading({ status: true, switch: "trash" }));
             }}

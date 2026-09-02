@@ -31,7 +31,7 @@ export default function WireLeft({
       >
         <foreignObject x="-148" y="280" width="5px" height="100px">
           <div
-            className={`relative w-full h-full cursor-pointer group-hover:border bg-bgsecondary flex items-center justify-center rounded`}
+            className={`relative w-full h-full cursor-pointer group-hover:border group-active:border bg-bgsecondary flex items-center justify-center rounded`}
           >
             <div
               className={`size-1 bg-blue-500 rounded-full ${isUsed.status == "active" ? "animate-signal-flow-opp" : "animate-none"}`}

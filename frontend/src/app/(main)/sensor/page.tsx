@@ -121,7 +121,7 @@ export default function Sensor() {
                     return (
                       <div
                         key={`show/device/${index}`}
-                        className={`p-2 rounded-xl flex flex-col border ${deviceSelected?._id == item._id ? "border-ter" : "border-border"} hover:scale-103 hover:border-ter cursor-pointer transition-all w-50 max-w-80 grow`}
+                        className={`p-2 rounded-xl flex flex-col border ${deviceSelected?._id == item._id ? "border-ter" : "border-border"} hover:scale-103 hover:border-ter active:scale-103 active:border-ter cursor-pointer transition-all w-50 max-w-80 grow`}
                         onClick={() => {
                           setLoading(true);
                           setDeviceSelected({
@@ -163,7 +163,7 @@ export default function Sensor() {
                 <div className="flex items-center justify-between">
                   <strong className="text-red-500">no devices...</strong>
                   <button
-                    className="py-1 px-3 rounded-full bg-pri cursor-pointer text-sm hover:bg-pri/75 transition-all"
+                    className="py-1 px-3 rounded-full bg-pri cursor-pointer text-sm hover:bg-pri/75 active:bg-pri/75 transition-all"
                     onClick={() => router.push("/device")}
                   >
                     Add Device
@@ -266,7 +266,7 @@ export default function Sensor() {
                 )}
                 <button
                   onClick={handleSensorSubmit}
-                  className="self-end rounded-full mt-6 font-medium py-2 px-5 cursor-pointer bg-ter hover:bg-ter/80 text-black"
+                  className="self-end rounded-full mt-6 font-medium py-2 px-5 cursor-pointer bg-ter hover:bg-ter/80 active:bg-ter/80 text-black"
                 >
                   Submit
                 </button>

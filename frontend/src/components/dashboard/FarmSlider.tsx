@@ -59,7 +59,7 @@ export default function FarmSlider() {
                   farms[selectedFarmSlide.index].devices.map((item, index) => (
                     <small
                       key={`farm/listedDevice/${index}`}
-                      className="px-2 text-[10px] py-1 sm:px-3 sm:text-xs rounded-full bg-ter font-bold hover:bg-ter/75 transition-all text-black cursor-pointer"
+                      className="px-2 text-[10px] py-1 sm:px-3 sm:text-xs rounded-full bg-ter font-bold hover:bg-ter/75 active:bg-ter/75 transition-all text-black cursor-pointer"
                       onClick={() =>
                         setSelectedFarmSlide((prev) => ({
                           ...prev,
@@ -163,7 +163,7 @@ export default function FarmSlider() {
             }
           >
             <p
-              className={`w-full h-1 ${index == selectedFarmSlide.index ? "bg-border" : "bg-borderhover"} group-hover:bg-border transition-all`}
+              className={`w-full h-1 ${index == selectedFarmSlide.index ? "bg-border" : "bg-borderhover"} group-hover:bg-border group-active:bg-border transition-all`}
             ></p>
           </div>
         ))}
@@ -175,7 +175,7 @@ export default function FarmSlider() {
         Farms : <span className="text-red-500">No Farms Found !</span>
       </h2>
       <div
-        className="py-2 px-4 rounded-full bg-ter text-black font-semibold cursor-pointer hover:bg-ter/80 hover:scale-105"
+        className="py-2 px-4 rounded-full bg-ter text-black font-semibold cursor-pointer hover:bg-ter/80 hover:scale-105 active:bg-ter/80 active:scale-105"
         onClick={() => {
           router.push("/farm");
         }}

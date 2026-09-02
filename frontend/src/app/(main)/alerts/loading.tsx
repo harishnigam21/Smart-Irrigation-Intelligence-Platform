@@ -19,7 +19,7 @@ export default function loading() {
         {skeletonRows.map((_, index) => (
           <div
             key={`alert-skeleton-row-${index}`}
-            className="flex items-center justify-between px-6 py-3.5 hover:bg-zinc-900/40 transition-colors"
+            className="flex items-center justify-between px-6 py-3.5 hover:bg-zinc-900/40 active:bg-zinc-900/40 transition-colors"
           >
             <div className="flex items-center gap-4 w-1/4 min-w-50">
               <div className="w-4 h-4 bg-zinc-800 border border-zinc-700/50 rounded shrink-0 animate-pulse" />

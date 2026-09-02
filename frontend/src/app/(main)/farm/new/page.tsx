@@ -191,8 +191,8 @@ export default function Farm() {
     setMounted(true);
   }, []);
   return (
-    <section className="w-full h-full m-auto p-4 flex justify-center-safe items-center-safe text-textPri">
-      <article className="relative max-h-full w-full md:w-[75%] p-8 rounded-4xl bg-bgsecondary overflow-x-hidden overflow-y-auto">
+    <section className="w-full h-full m-auto flex justify-center-safe items-center-safe text-textPri">
+      <article className="relative max-h-full w-full md:w-[75%] p-4 sm:p-8 rounded-4xl bg-bgsecondary/70 overflow-x-hidden overflow-y-auto scrollbar-none">
         {(loading || !mounted) && <HorizontalBar position="top-0 left-0" />}
         <article className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="flex flex-wrap justify-between gap-3">
@@ -247,7 +247,7 @@ export default function Farm() {
                 </div>
               )}
             </div>
-            <div className="xl:basis-full">
+            <div className="xl:basis-full flex justify-center w-full">
               <div className="relative w-50 h-50 border skew-y-1 skew-x-2">
                 <div className="absolute -top-2 -left-2 flex">
                   <div
@@ -356,7 +356,7 @@ export default function Farm() {
                 height="300"
               />
               {soil.toLowerCase() == "na" && (
-                <small className="text-red-500">
+                <small className="text-red-500 ml-2">
                   Note -{" "}
                   <span className="text-border">
                     NA means here, you don't know
@@ -370,7 +370,7 @@ export default function Farm() {
                   <button
                     key={`coordinates/button/${index}`}
                     title={`Farm Corner ${index + 1}`}
-                    className={`rounded-full w-9 h-9 flex items-center justify-center aspect-square p-2 ${coordinateSelected.toLowerCase() == item.toLowerCase() ? "bg-ter text-black" : "bg-bgprimary text-white"} font-bold  cursor-pointer hover:scale-90 hover:opacity-75 transition-all`}
+                    className={`rounded-full w-9 h-9 flex items-center justify-center aspect-square p-2 ${coordinateSelected.toLowerCase() == item.toLowerCase() ? "bg-ter text-black" : "bg-bgprimary text-white"} font-bold  cursor-pointer hover:scale-90 hover:opacity-75 active:scale-90 active:opacity-75 transition-all`}
                     onClick={() => setCoordinatedSelected(item)}
                   >
                     {item}
@@ -430,10 +430,10 @@ export default function Farm() {
                     {errorMess["farm_coordinates"] || errorMess["message"]}
                   </small>
                 )}
-              <p>
+              <p className="text-xs">
                 {`If you don't know coordinated, then `}
                 <span
-                  className={`font-bold text-ter cursor-pointer whitespace-nowrap`}
+                  className={`font-bold text-ter cursor-pointer whitespace-nowrap text-sm`}
                   onClick={getLocation}
                 >
                   Click me
@@ -445,7 +445,7 @@ export default function Farm() {
               </p>
             </div>
             <button
-              className="rounded-full self-end my-4 py-1 px-4 cursor-pointer font-medium bg-ter hover:bg-ter/80 text-black"
+              className="rounded-full self-end my-4 py-1 px-4 cursor-pointer font-medium bg-ter hover:bg-ter/80 active:bg-ter/80 text-black"
               onClick={handleSubmit}
             >
               Submit

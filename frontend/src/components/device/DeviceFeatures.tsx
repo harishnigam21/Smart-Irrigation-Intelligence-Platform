@@ -140,7 +140,7 @@ const FeatureCard = ({
       onMouseLeave={() => {
         setMore(false);
       }}
-      className={`box rounded-2xl bg-bgsecondary/40  backdrop-blur min-w-55 max-w-80 p-3 hover:scale-105 border border-borderhover transition-all ${isVisible ? `animate` : ""}`}
+      className={`box rounded-2xl bg-bgsecondary/40  backdrop-blur min-w-55 max-w-80 p-3 hover:scale-105 active:scale-105 border border-borderhover transition-all ${isVisible ? `animate` : ""}`}
       style={{ "--delay": `${i * 0.1}s` } as React.CSSProperties}
     >
       <div className="mb-4 text-pri">{item.icon}</div>

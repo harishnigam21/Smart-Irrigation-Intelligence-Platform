@@ -2490,7 +2490,7 @@ export default function DeviceLayout({
               cy={219.377}
               rx={11.246}
               ry={11.941}
-              className="hover:fill-bgsecondary fill-[#333] cursor-pointer transition-all"
+              className="hover:fill-bgsecondary active:fill-bgsecondary fill-[#333] cursor-pointer transition-all"
               style={{
                 fillOpacity: 1,
                 stroke: "none",
@@ -3938,7 +3938,7 @@ export default function DeviceLayout({
                 cy={219.377}
                 rx={11.246}
                 ry={11.941}
-                className="hover:fill-bgsecondary fill-[#333] cursor-pointer transition-all"
+                className="hover:fill-bgsecondary active:fill-bgsecondary fill-[#333] cursor-pointer transition-all"
                 style={{
                   fillOpacity: 1,
                   stroke: "none",

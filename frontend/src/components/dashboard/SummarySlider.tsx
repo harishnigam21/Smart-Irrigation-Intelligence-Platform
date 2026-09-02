@@ -143,7 +143,7 @@ export default function SummarySlider() {
           )}
           {/* Average Readings */}
           <div
-            className="rounded-lg border border-border hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer"
+            className="rounded-lg border border-border hover:bg-bgsecondary active:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer"
             onClick={() => {
               const targetele = document.getElementById("homeReadingRef");
               if (targetele) {
@@ -338,7 +338,7 @@ export default function SummarySlider() {
           </div>
           {/* devices */}
           <div
-            className="rounded-lg border border-border hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer"
+            className="rounded-lg border border-border hover:bg-bgsecondary active:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer"
             onClick={() => {
               router.push("/device");
             }}
@@ -396,7 +396,7 @@ export default function SummarySlider() {
           </div>
           {/* sensors */}
           <div
-            className="rounded-lg border border-border hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer"
+            className="rounded-lg border border-border hover:bg-bgsecondary active:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer"
             onClick={() => {
               router.push("/sensor");
             }}
@@ -463,7 +463,7 @@ export default function SummarySlider() {
           {/* Alerts */}
           <div
             id="alertPlot"
-            className={`rounded-lg border ${summary.alerts.length > 0 ? "border-red-500 shadow-red-500 shadow-[0.1px_0.1px_30px_5px_inset] animate-pulse" : "border-border animate-none"} hover:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer`}
+            className={`rounded-lg border ${summary.alerts.length > 0 ? "border-red-500 shadow-red-500 shadow-[0.1px_0.1px_30px_5px_inset] animate-pulse" : "border-border animate-none"} hover:bg-bgsecondary active:bg-bgsecondary transition-all p-2 sm:p-3 lg:px-4 lg:py-2 cursor-pointer`}
             ref={alertRef}
             onClick={() => {
               router.push("/alerts");

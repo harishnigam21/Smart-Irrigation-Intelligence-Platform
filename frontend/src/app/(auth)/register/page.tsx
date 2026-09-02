@@ -298,7 +298,7 @@ export default function Register() {
   };
   return (
     <section className="w-screen h-screen fixed top-0 left-0 z-100 m-auto bg-bgprimary p-4 flex justify-center-safe items-center-safe text-textPri blueprint-grid12">
-      <article className="relative max-[380]:w-9/10 w-7/10 md:w-3/4 lg:w-1/2 p-4 md:p-8 rounded-4xl bg-bgsecondary/70 shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-hidden">
+      <article className="relative max-[380]:w-9/10 w-7/10 md:w-3/4 lg:w-1/2 p-4 md:p-8 rounded-xl lg:rounded-4xl bg-bgsecondary/70 shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-hidden">
         {loadingBar && <HorizontalBar position="top-0 left-0" />}
         <div className="pb-4">
           <Image
@@ -407,7 +407,7 @@ export default function Register() {
               </p>
               <button
                 onClick={handleStep1}
-                className="self-end rounded-full mt-10 py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 font-bold text-black"
+                className="self-end rounded-full mt-10 py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 active:bg-pri/80 font-bold text-black"
               >
                 Next
               </button>
@@ -503,7 +503,7 @@ export default function Register() {
               />
               <button
                 onClick={handleStep2}
-                className="self-end rounded-full mt-10 py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 font-bold text-black"
+                className="self-end rounded-full mt-10 py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 active:bg-pri/80 font-bold text-black"
               >
                 Next
               </button>
@@ -529,7 +529,7 @@ export default function Register() {
               </div>
               <button
                 onClick={handleStep3}
-                className="self-end rounded-full py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 font-bold text-black"
+                className="self-end rounded-full py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 active:bg-pri/80 font-bold text-black"
               >
                 Next
               </button>
@@ -594,7 +594,7 @@ export default function Register() {
               </div>
               <button
                 onClick={handleStep4}
-                className="self-end rounded-full mt-10 py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 font-bold text-black"
+                className="self-end rounded-full mt-10 py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 active:bg-pri/80 font-bold text-black"
               >
                 Submit
               </button>

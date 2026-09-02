@@ -12,7 +12,7 @@ export default function DashboardHeaderShell({
   return (
     <section className="relative w-full h-screen bg-bgprimary text-textPri blueprint-grid09">
       <MainHeader setSideBar={setSideBar} title="Dashboard" type="dashboard" />
-      <section className="relative m-auto h-full w-full p-6 space-y-6 overflow-y-auto pt-16">
+      <section className="relative m-auto h-full w-full p-2 space-y-6 overflow-y-auto pt-16">
         {children}
       </section>
     </section>

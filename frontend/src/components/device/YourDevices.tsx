@@ -47,7 +47,7 @@ export default function YourDevices() {
             {devices.map((item, i) => (
               <div
                 key={`device/card/${i}`}
-                className={`box rounded-2xl bg-bgsecondary/40 backdrop-blur min-w-55 max-w-80 p-3 hover:scale-105 border border-borderhover transition ${isVisible ? `animate` : ""}`}
+                className={`box rounded-2xl bg-bgsecondary/40 backdrop-blur min-w-55 max-w-80 p-3 hover:scale-105 active:scale-105 border border-borderhover transition ${isVisible ? `animate` : ""}`}
                 style={{ "--delay": `${i * 0.1}s` } as React.CSSProperties}
               >
                 <h3 className="text-lg font-semibold mb-2 text-pri line-clamp-1">
@@ -97,7 +97,7 @@ export default function YourDevices() {
             onClick={() => {
               router.push("/device/new");
             }}
-            className="py-1 px-3 rounded-full bg-borderhover hover:scale-95 text-sm font-bold cursor-pointer transition-all"
+            className="py-1 px-3 rounded-full bg-borderhover hover:scale-95 active:scale-95 text-sm font-bold cursor-pointer transition-all"
           >
             Add Device
           </button>

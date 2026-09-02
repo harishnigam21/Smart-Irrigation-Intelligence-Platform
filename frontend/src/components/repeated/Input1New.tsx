@@ -86,7 +86,7 @@ export default function Input1New<T extends string | number | null>({
           min={min}
           autoFocus={autoFocus}
           required={required}
-          className={`no-spinner border-2 ${errorMess && errorMess[errorKey] ? "border-red-500" : "border-txlight"} outline-none focus:border-pri p-2 sm:p-3 rounded-sm w-full transition-all`}
+          className={`no-spinner border-2 ${errorMess && errorMess[errorKey] ? "border-red-500" : "border-txlight"} outline-none active:border-pri p-2 sm:p-3 rounded-sm w-full transition-all`}
           onFocus={handleInputMode}
           onBlur={handleInputMode}
           onChange={(e) => {

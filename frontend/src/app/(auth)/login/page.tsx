@@ -104,7 +104,7 @@ export default function Login() {
 
   return (
     <section className="w-screen h-screen fixed top-0 left-0 m-auto bg-bgprimary z-100 p-4 flex justify-center-safe items-center-safe text-textPri blueprint-grid12">
-      <article className="relative max-[380]:w-9/10 w-7/10 md:w-3/4 lg:w-1/2 p-4 md:p-8 rounded-4xl bg-bgsecondary/70 shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-x-hidden">
+      <article className="relative max-[380]:w-9/10 w-7/10 md:w-3/4 lg:w-1/2 p-4 md:p-8 rounded-xl lg:rounded-4xl bg-bgsecondary/70 shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-x-hidden">
         {loadingBar && <HorizontalBar position="top-0 left-0" />}
         <div className="pb-4">
           <Image
@@ -136,21 +136,21 @@ export default function Login() {
           </div>
           {currentStep == 1 ? (
             <article className="flex flex-col gap-2">
-                <Input1
-                  errorMess={errorMess}
-                  setErrorMess={setErrorMess}
-                  fieldValue={email}
-                  setfieldValue={setEmail}
-                  handleNext={handleEmailNext}
-                  type="email"
-                  name="email"
-                  htmlFor="email"
-                  id="email"
-                  label="Email or phone"
-                  autoFocus={true}
-                  required={true}
-                  errorKey="email"
-                />
+              <Input1
+                errorMess={errorMess}
+                setErrorMess={setErrorMess}
+                fieldValue={email}
+                setfieldValue={setEmail}
+                handleNext={handleEmailNext}
+                type="email"
+                name="email"
+                htmlFor="email"
+                id="email"
+                label="Email or phone"
+                autoFocus={true}
+                required={true}
+                errorKey="email"
+              />
               <Link
                 href={"/forgot-email"}
                 className="text-ter font-medium self-start transition-all text-xs pl-2"
@@ -159,7 +159,7 @@ export default function Login() {
               </Link>
               <div className="flex justify-end-safe items-center gap-4 mt-8 whitespace-nowrap flex-wrap">
                 <button
-                  className="rounded-full py-1 px-4 cursor-pointer hover:bg-border/10 text-ter font-medium text-sm"
+                  className="rounded-full py-1 px-4 cursor-pointer hover:bg-border/10 active:bg-border/10 text-ter font-medium text-sm"
                   onClick={() => {
                     router.push("/register");
                   }}
@@ -168,7 +168,7 @@ export default function Login() {
                 </button>
                 <button
                   onClick={handleEmailNext}
-                  className="rounded-full py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 text-black font-bold"
+                  className="rounded-full py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 active:bg-pri/80 text-black font-bold"
                 >
                   Next
                 </button>
@@ -201,7 +201,9 @@ export default function Login() {
                   onChange={(e) => setShowPassword(e.currentTarget.checked)}
                   className="w-3 h-3 accent-ter border border-txlight"
                 />
-                <label htmlFor="showPassword" className="text-sm">Show password</label>
+                <label htmlFor="showPassword" className="text-sm">
+                  Show password
+                </label>
               </div>
               <div className="flex items-center justify-end-safe gap-4 mt-8">
                 <button className="rounded-full py-1 px-3 cursor-pointer text-sm text-ter font-medium">
@@ -209,7 +211,7 @@ export default function Login() {
                 </button>
                 <button
                   onClick={handlePasswordNext}
-                  className="rounded-full py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 text-black font-bold transition-all"
+                  className="rounded-full py-1 px-4 cursor-pointer bg-pri hover:bg-pri/80 active:bg-pri/80 text-black font-bold transition-all"
                 >
                   Next
                 </button>

@@ -10,9 +10,9 @@ export default function FarmHeaderShell({
 }) {
   const [sideBar, setSideBar] = useState<boolean>(false);
   return (
-    <section className="relative w-full h-screen bg-bgprimary">
+    <section className="relative w-full h-screen bg-bgprimary blueprint-grid">
       <MainHeader setSideBar={setSideBar} title="Farm" type="farm" />
-      <section className="relative m-auto h-screen w-full p-6 space-y-6 overflow-y-auto pt-16">
+      <section className="relative m-auto h-screen w-full p-2 space-y-6 overflow-y-auto pt-16">
         {children}
       </section>
     </section>

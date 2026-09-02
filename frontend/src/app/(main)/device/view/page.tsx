@@ -130,7 +130,7 @@ export default function MicrocontrollerTwin() {
         ${moreOptions && "max-w-40 opacity-100 translate-x-0"}
         transition-all
         duration-500
-        ease-out cursor-pointer hover:bg-borderhover/50 hover:rounded-full hover:py-1 hover:px-3
+        ease-out cursor-pointer hover:bg-borderhover/50 hover:rounded-full hover:py-1 hover:px-3 active:bg-borderhover/50 active:rounded-full active:py-1 active:px-3
       `}
             onClick={() => {
               setMoreOptions(false);
@@ -154,7 +154,7 @@ export default function MicrocontrollerTwin() {
                 ${moreOptions && "max-w-24 opacity-100 translate-x-0"}
                 transition-all
                 duration-500
-                ease-out cursor-pointer hover:bg-borderhover/50 hover:rounded-full hover:py-1 hover:px-3
+                ease-out cursor-pointer hover:bg-borderhover/50 hover:rounded-full hover:py-1 hover:px-3 active:bg-borderhover/50 active:rounded-full active:py-1 active:px-3
                 `}
             >
               Add Device
@@ -173,6 +173,7 @@ export default function MicrocontrollerTwin() {
           transition-transform
           duration-300
           group-hover:scale-110
+          group-active:scale-110
         "
             >
               <div className="size-5 rounded-full bg-bgprimary/50"></div>
@@ -188,7 +189,7 @@ export default function MicrocontrollerTwin() {
                 ${moreOptions && "translate-x-0 opacity-100 max-w-24"}
                 transition-all
                 duration-500
-                ease-out cursor-pointer hover:bg-borderhover/50 hover:rounded-full hover:py-1 hover:px-3
+                ease-out cursor-pointer hover:bg-borderhover/50 hover:rounded-full hover:py-1 hover:px-3 active:bg-borderhover/50 active:rounded-full active:py-1 active:px-3
                 `}
             >
               Option 3
@@ -206,7 +207,7 @@ export default function MicrocontrollerTwin() {
               ${moreOptions && "max-w-40 opacity-100 translate-x-0"}
               transition-all
               duration-500
-              ease-out cursor-pointer hover:bg-borderhover/50 hover:rounded-full hover:py-1 hover:px-3
+              ease-out cursor-pointer hover:bg-borderhover/50 hover:rounded-full hover:py-1 hover:px-3 active:bg-borderhover/50 active:rounded-full active:py-1 active:px-3
               `}
           >
             Option 4

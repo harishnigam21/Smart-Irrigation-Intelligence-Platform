@@ -12,25 +12,25 @@ export default function publicLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen bg-linear-to-br from-pri/60 via-ter/60 to-pri/60 flex flex-col text-textPri">
-      <header className="flex justify-between max-w-full items-center px-8 py-4 border-b-[0.1px] gap-4 border-borderhover backdrop-blur-md blueprint-grid">
+    <main className="h-screen w-full bg-linear-to-br from-pri/60 via-ter/60 to-pri/60 flex flex-col text-textPri overflow-x-hidden overflow-y-auto">
+      <header className="flex justify-between w-full items-center px-8 py-4 border-b-[0.1px] gap-4 border-borderhover backdrop-blur-xl blueprint-grid sticky top-0 left-0">
         <h1 className="text-2xl font-bold tracking-wide text-white">AgriFlow</h1>
         <div className=" hidden sm:flex gap-3">
           <Link
             href="/login"
-            className="px-4 py-2 rounded-xl border border-borderhover font-bold hover:bg-borderhover/20 transition"
+            className="px-4 py-2 rounded-xl border border-borderhover font-bold hover:bg-borderhover/20 active:bg-borderhover/20 transition"
           >
             Login
           </Link>
           <Link
             href="/dashboard"
-            className="px-5 py-2 rounded-xl bg-pri/80 font-bold text-black hover:bg-pri transition"
+            className="px-5 py-2 rounded-xl bg-pri/80 font-bold text-black hover:bg-pri active:bg-pri transition"
           >
             Dashboard
           </Link>
         </div>
       </header>
-      <section className="w-full h-screen overflow-x-hidden overflow-y-auto">{children}</section>
-    </div>
+      <section className="blueprint-grid w-full">{children}</section>
+    </main>
   );
 }
