@@ -194,6 +194,7 @@ const AlertSlice = createSlice({
       action: PayloadAction<{ status: boolean; switch: string }>,
     ) => {
       if (action.payload) {
+        state.selectedAlerts = [];
         state.switchLoading = action.payload;
       }
     },
@@ -222,6 +223,9 @@ const AlertSlice = createSlice({
         state.selectedAlerts = current.filter((inthere) => inthere._id !== id);
       }
     },
+    clearSelectedAlert: (state) => {
+      state.selectedAlerts = [];
+    },
   },
 });
 export const {
@@ -242,5 +246,6 @@ export const {
   setSelectedSidebarItem,
   setSelectedAlerts,
   removeSelectedAlert,
+  clearSelectedAlert,
 } = AlertSlice.actions;
 export default AlertSlice.reducer;
