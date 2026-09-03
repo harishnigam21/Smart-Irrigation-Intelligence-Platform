@@ -20,6 +20,7 @@ export default function Home() {
         <div className="flex gap-4">
           <Link
             href="/dashboard"
+            prefetch={false}
             className="px-6 py-3 rounded-xl bg-pri/80 font-bold text-black hover:bg-pri active:bg-pri transition"
           >
             Get Started

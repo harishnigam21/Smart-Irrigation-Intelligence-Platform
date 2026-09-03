@@ -74,6 +74,7 @@ export default function Login() {
               dispatch(setLoginStatus("authenticated"));
               localStorage.setItem("userInfo", JSON.stringify(data.data));
             }
+            router.refresh();
             router.push("/dashboard");
           } else {
             if (data?.errors) {
