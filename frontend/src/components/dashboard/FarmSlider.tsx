@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import FarmVisual from "../Imp/FarmVisual";
 import { useRouter } from "next/navigation";
+import { useSwipe } from "@/hooks/useSwiper";
 
 export default function FarmSlider() {
   const summary = useAppSelector((store) => store.summary);
@@ -32,6 +33,35 @@ export default function FarmSlider() {
     setFarms(calculate);
   }, [summary.farms, summary.device]);
   const router = useRouter();
+  const swipe = useSwipe({
+    onSwipeLeft: () => {
+      if (farms.length == selectedFarmSlide.index + 1) {
+        setSelectedFarmSlide({
+          type: "farm",
+          index: 0,
+        });
+      } else {
+        setSelectedFarmSlide((prev) => ({
+          type: "farm",
+          index: prev.index + 1,
+        }));
+      }
+    },
+
+    onSwipeRight: () => {
+      if (selectedFarmSlide.index == 0) {
+        setSelectedFarmSlide({
+          type: "farm",
+          index: farms.length - 1,
+        });
+      } else {
+        setSelectedFarmSlide((prev) => ({
+          type: "farm",
+          index: prev.index - 1,
+        }));
+      }
+    },
+  });
   const [mounted, setMounted] = useState<boolean>(false);
   useEffect(() => {
     setMounted(true);
@@ -72,12 +102,12 @@ export default function FarmSlider() {
                     </small>
                   ))
                 ) : (
-                  <small className="md:py-1 md:px-3 rounded-full bg-ter text-black font-bold">
+                  <small className="px-2 md:py-1 md:px-3 rounded-full bg-ter text-black font-bold">
                     No device Found
                   </small>
                 )}
               </div>
-              <div className="w-full flex justify-center">
+              <div className="w-full flex justify-center touch-pan-y" {...swipe}>
                 <div
                   className="absolute self-center left-0 bg-bgprimary py-4 rounded-r-xl z-10 cursor-pointer"
                   onClick={() => {
