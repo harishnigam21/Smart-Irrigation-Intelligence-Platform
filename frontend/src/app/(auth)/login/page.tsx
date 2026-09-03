@@ -10,7 +10,7 @@ import { User2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import envVariables from "../../../../envConfig";
@@ -26,6 +26,7 @@ export default function Login() {
   const { sendRequest } = useApi();
   const [loadingBar, setLoadingBar] = useState<boolean>(false);
   const [currentStep, setCurrentStep] = useState<number>(1);
+  const [isPending, startTransition] = useTransition();
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const handleEmailNext = () => {
@@ -74,9 +75,11 @@ export default function Login() {
               dispatch(setLoginStatus("authenticated"));
               localStorage.setItem("userInfo", JSON.stringify(data.data));
             }
-            router.refresh();
-            router.push("/dashboard");
+            startTransition(() => {
+              window.location.replace("/dashboard");
+            });
           } else {
+            console.log("Caused Error while login");
             if (data?.errors) {
               setErrorMess(data.errors);
             } else if (result.status == 404) {
@@ -92,6 +95,7 @@ export default function Login() {
     } catch (error) {
       dispatch(setLoginStatus("unauthenticated"));
       if (error instanceof Error) {
+        console.error("Error at Login SIde", error);
         const msg = error.message || "Failed to Login";
         setErrorMess({ password: msg });
       } else {
@@ -106,7 +110,7 @@ export default function Login() {
   return (
     <section className="w-screen h-screen fixed top-0 left-0 m-auto bg-bgprimary z-100 p-4 flex justify-center-safe items-center-safe text-textPri blueprint-grid12">
       <article className="relative max-[380]:w-9/10 w-7/10 md:w-3/4 lg:w-1/2 p-4 md:p-8 rounded-xl lg:rounded-4xl bg-bgsecondary/70 shadow-[0.1px_0.1px_10px_1px] shadow-borderhover/40 overflow-x-hidden">
-        {loadingBar && <HorizontalBar position="top-0 left-0" />}
+        {(loadingBar || isPending) && <HorizontalBar position="top-0 left-0" />}
         <div className="pb-4">
           <Image
             src={mediaList.shortLogo}
@@ -154,6 +158,7 @@ export default function Login() {
               />
               <Link
                 href={"/forgot-email"}
+                prefetch={false}
                 className="text-ter font-medium self-start transition-all text-xs pl-2"
               >
                 Forgot email?

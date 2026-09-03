@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
 export default function MainHeader({
@@ -28,23 +28,33 @@ export default function MainHeader({
   type = "",
   bgcolor = false,
   targetID = null,
+  filterArray = [],
 }: {
   setSideBar: React.Dispatch<React.SetStateAction<boolean>>;
   title?: string;
   type?: string;
   bgcolor?: boolean;
   targetID?: string | null;
+  filterArray?: string[];
 }) {
   const [showMore, setShowMore] = useState<boolean>(false);
+  const [showFilter, setShowFilter] = useState<boolean>(false);
   const headerRef = useRef<HTMLDivElement | null>(null);
   const hideHeader = useAppSelector((store) => store.layout.hideHeader);
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const GripRef = useRef<HTMLDivElement>(null);
+  const filterRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (showMore && GripRef.current) {
       GripRef.current.focus();
     }
   }, [showMore]);
+  useEffect(() => {
+    if (showFilter && filterRef.current) {
+      filterRef.current.focus();
+    }
+  }, [showFilter]);
   useEffect(() => {
     if (hideHeader) {
       setShowMore(false);
@@ -125,7 +135,41 @@ export default function MainHeader({
               placeholder={`Search ${type}...`}
               className="border-none outline-none active:outline-none text-sm text-white bg-transparent w-full"
             />
-            <SlidersHorizontal size={20} />
+            {filterArray && filterArray.length > 0 && (
+              <div className="relative">
+                <SlidersHorizontal
+                  size={20}
+                  onClick={() => {
+                    setShowFilter((prev) => !prev);
+                  }}
+                />
+                {showFilter && (
+                  <div
+                    ref={filterRef}
+                    tabIndex={0}
+                    onBlur={() => setShowFilter(false)}
+                    className="absolute -right-2 top-6.5 rounded-md overflow-hidden bg-bgprimary"
+                  >
+                    <div className="flex flex-col justify-center bg-txlight/20">
+                      {filterArray.map((item, i) => (
+                        <p
+                          onClick={() => {
+                            const params = new URLSearchParams({
+                              filter: `${item.toLowerCase()}`,
+                            });
+                            router.push(`/${type}?${params.toString()}`);
+                          }}
+                          key={`header/${type}/filter/${i}`}
+                          className="py-1.5 px-3 hover:bg-txlight/10 cursor-pointer text-xs font-medium"
+                        >
+                          {item}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
         <div className="flex items-center gap-5">
@@ -143,9 +187,10 @@ export default function MainHeader({
             }
             setShowMore(false);
           }}
-          className={`absolute z-50 ${showMore ? "p-4 opacity-100" : "h-0 overflow-hidden p-0 opacity-0"}  right-0 rounded-md bg-bgsecondary top-15.5 gap-1 grid grid-cols-3 transition-all duration-200`}
+          className={`absolute z-50 ${showMore ? "p-4 opacity-100" : "h-0 overflow-hidden p-0 opacity-0"}  right-0.5 rounded-b-md rounded-l-md bg-bgsecondary top-15 gap-1 grid grid-cols-3 transition-all duration-200`}
         >
           <Link
+            prefetch={false}
             href={"/dashboard"}
             className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md"
           >
@@ -153,6 +198,7 @@ export default function MainHeader({
             <small className="text-[6px] sm:text-[8px]">Dashboard</small>
           </Link>
           <Link
+            prefetch={false}
             href={"/device"}
             className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md"
           >
@@ -160,6 +206,7 @@ export default function MainHeader({
             <small className="text-[6px] sm:text-[8px]">Devices</small>
           </Link>
           <Link
+            prefetch={false}
             href={"/sensor"}
             className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md"
           >
@@ -167,6 +214,7 @@ export default function MainHeader({
             <small className="text-[6px] sm:text-[8px]">Sensors</small>
           </Link>
           <Link
+            prefetch={false}
             href={"/alerts"}
             className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md"
           >
@@ -174,6 +222,7 @@ export default function MainHeader({
             <small className="text-[6px] sm:text-[8px]">Alerts</small>
           </Link>
           <Link
+            prefetch={false}
             href={"/farm"}
             className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md"
           >
@@ -181,6 +230,7 @@ export default function MainHeader({
             <small className="text-[6px] sm:text-[8px]">Farms</small>
           </Link>
           <Link
+            prefetch={false}
             href={"/"}
             className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md md:hidden"
           >
@@ -188,6 +238,7 @@ export default function MainHeader({
             <small className="text-[6px] sm:text-[8px]">Help</small>
           </Link>
           <Link
+            prefetch={false}
             href={"/"}
             className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md md:hidden"
           >
@@ -195,6 +246,7 @@ export default function MainHeader({
             <small className="text-[6px] sm:text-[8px]">Setting</small>
           </Link>
           <Link
+            prefetch={false}
             href={"/"}
             className="flex flex-col items-center justify-center hover:bg-bgprimary/60 active:bg-bgprimary/60 p-2 rounded-md md:hidden"
           >

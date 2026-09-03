@@ -257,6 +257,7 @@ export default function page() {
                 <Link
                   href={`/farm/new`}
                   className="text-xs text-ter font-bold pt-4 cursor-pointer ml-2 w-fit"
+                  prefetch={false}
                 >
                   Add new Farm ?
                 </Link>

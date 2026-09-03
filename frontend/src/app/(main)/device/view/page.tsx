@@ -145,6 +145,7 @@ export default function MicrocontrollerTwin() {
           <div className="flex items-center gap-3">
             <Link
               href={"/device/new"}
+              prefetch={false}
               className={`
                 whitespace-nowrap
                 overflow-hidden

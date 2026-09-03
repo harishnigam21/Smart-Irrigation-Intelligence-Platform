@@ -340,7 +340,7 @@ export default function AlertInteractionHeader({
   }, [expandItrOptions]);
   return (
     <>
-      <div className="bg-bgsecondary text-txlight shrink-0 flex items-center justify-between gap-4 py-4 px-4 w-full overflow-x-hidden">
+      <div className="bg-bgsecondary text-txlight shrink-0 flex items-center justify-between gap-4 pt-2 pb-1 px-4 w-full overflow-x-hidden">
         {selectedSidebarItem == "trash" ? (
           <div className="flex flex-nowrap items-center gap-4">
             <div className="flex flex-nowrap items-center gap-1">
@@ -576,14 +576,9 @@ export default function AlertInteractionHeader({
               disabled={alerts.currentPage == 1}
               className="cursor-pointer size-4"
               onClick={() => {
-                const params = new URLSearchParams({
-                  cursor: alerts.prevCursor || "null",
-                  direction: "previous",
-                });
-                if (searchParams.get("st") === "1") params.append("st", "1");
-                if (searchParams.get("sr") === "1") params.append("sr", "1");
-                if (searchParams.get("tr") === "1") params.append("tr", "1");
-                if (searchParams.get("im") === "1") params.append("im", "1");
+                const params = new URLSearchParams(searchParams.toString());
+                params.set("cursor", alerts.prevCursor || "null");
+                params.set("direction", "previous");
                 dispatch(setSelectedAlerts(null));
                 startTransition(() => {
                   router.push(`/alerts?${params.toString()}`);
@@ -598,14 +593,9 @@ export default function AlertInteractionHeader({
               title="next"
               className="cursor-pointer size-4"
               onClick={() => {
-                const params = new URLSearchParams({
-                  cursor: alerts.nextCursor || "null",
-                  direction: "next",
-                });
-                if (searchParams.get("st") === "1") params.append("st", "1");
-                if (searchParams.get("sr") === "1") params.append("sr", "1");
-                if (searchParams.get("tr") === "1") params.append("tr", "1");
-                if (searchParams.get("im") === "1") params.append("im", "1");
+                const params = new URLSearchParams(searchParams.toString());
+                params.set("cursor", alerts.nextCursor || "null");
+                params.set("direction", "next");
                 dispatch(setSelectedAlerts(null));
                 startTransition(() => {
                   router.push(`/alerts?${params.toString()}`);

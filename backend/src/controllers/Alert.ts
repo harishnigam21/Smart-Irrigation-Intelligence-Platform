@@ -47,6 +47,7 @@ interface AlertQueryFilter {
   sr?: string;
   tr?: string;
   im?: string;
+  filter?: string;
 }
 export const getAlerts = async (
   req: AuthRequest<{}, {}, {}, AlertQueryFilter>,
@@ -64,6 +65,7 @@ export const getAlerts = async (
       sr,
       tr,
       im,
+      filter,
     } = req.query;
     const lm = limit ? parseInt(limit, 10) : 25;
     const ifPage = page ? parseInt(page, 10) : null;
@@ -76,6 +78,14 @@ export const getAlerts = async (
 
     if (farmId) {
       baseFilter.farmId = new mongoose.Types.ObjectId(farmId as string);
+    }
+
+    if (filter) {
+      if (filter == "read") {
+        baseFilter.status = false;
+      } else if (filter == "unread") {
+        baseFilter.status = true;
+      }
     }
     if (deviceId) {
       baseFilter.deviceId = new mongoose.Types.ObjectId(deviceId as string);

@@ -20,14 +20,16 @@ export default async function Alert({ searchParams }: PageProps) {
   if (resolvedParams.sr === "1") params.append("sr", "1");
   if (resolvedParams.tr === "1") params.append("tr", "1");
   if (resolvedParams.im === "1") params.append("im", "1");
-
+  if (resolvedParams.filter) {
+    params.append("filter", String(resolvedParams.filter));
+  }
   const response = await serverFetch(`api/alerts?${params.toString()}`, "GET");
   const data = response.data as Data<Alert[]> | null;
 
   return (
     <article className="relative w-full h-[98%] flex flex-col justify-between mx-3 bg-bgprimary rounded-xl overflow-hidden">
       <AlertInteractionHeader data={data || null} />
-      <div className="w-full flex items-center justify-center py-2">
+      <div className="w-full flex items-center justify-center pt-4">
         <small className="text-[10px] text-txlight">
           Terms · Privacy · Program Policies
         </small>

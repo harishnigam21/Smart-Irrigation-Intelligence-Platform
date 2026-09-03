@@ -80,7 +80,12 @@ export default function AlertHeaderShell({
   }, [sideBar, screenWidth]);
   return (
     <section className="w-full h-screen bg-bgprimary text-textPri">
-      <MainHeader setSideBar={setSideBar} title="Alerts" type="alert" />
+      <MainHeader
+        setSideBar={setSideBar}
+        title="Alerts"
+        type="alerts"
+        filterArray={["Read", "UnRead"]}
+      />
       <article className="w-full h-full flex flex-nowrap pt-15">
         {/* sidebar */}
         <article
