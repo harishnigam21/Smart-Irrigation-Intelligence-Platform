@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
 export default function MainHeader({
@@ -45,6 +45,7 @@ export default function MainHeader({
   const router = useRouter();
   const GripRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<HTMLDivElement>(null);
+  const searchParams = useSearchParams();
   useEffect(() => {
     if (showMore && GripRef.current) {
       GripRef.current.focus();
@@ -154,9 +155,17 @@ export default function MainHeader({
                       {filterArray.map((item, i) => (
                         <p
                           onClick={() => {
-                            const params = new URLSearchParams({
-                              filter: `${item.toLowerCase()}`,
-                            });
+                            const params = new URLSearchParams(
+                              searchParams.toString(),
+                            );
+                            if (params.has("filter")) {
+                              params.set("filter", String(item.toLowerCase()));
+                            } else {
+                              params.append(
+                                "filter",
+                                String(item.toLowerCase()),
+                              );
+                            }
                             router.push(`/${type}?${params.toString()}`);
                           }}
                           key={`header/${type}/filter/${i}`}
